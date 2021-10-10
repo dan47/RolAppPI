@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "733296278768",
+    "project_id": "fir-rolapppi",
+    "storage_bucket": "fir-rolapppi.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:733296278768:android:19249f89d6efebac795635",
+        "android_client_info": {
+          "package_name": "com.example.rolapppi"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "733296278768-igcfc5i1lbj73fjrigatotlkltdigr3n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDbEmvwz0VnOIy9hsG-xUpm_5uD2vB5mmA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "733296278768-igcfc5i1lbj73fjrigatotlkltdigr3n.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
