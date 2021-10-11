@@ -10,7 +10,7 @@ public class CattleViewModel extends ViewModel {
 
     public CattleViewModel() {
         mText = new MutableLiveData<>();
-        mText.setValue("Galeria");
+        mText.setValue("Galeria tutaj jest");
     }
 
     public LiveData<String> getText() {

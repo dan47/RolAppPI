@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.rolapppi.databinding.FragmentCattleBinding;
 
+
 public class CattleFragment extends Fragment {
 
     private CattleViewModel cattleViewModel;
