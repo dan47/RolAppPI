@@ -4,16 +4,31 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class CattleViewModel extends ViewModel {
+import java.util.List;
 
-    private MutableLiveData<String> mText;
+public class CattleViewModel extends ViewModel implements CattleRepository.OnFireStoreDataAdded {
+
+    MutableLiveData<List<CattleModel>> cattleModelListData = new MutableLiveData<>();
+
+
+    CattleRepository firebaseRepo = new CattleRepository(this);
 
     public CattleViewModel() {
-        mText = new MutableLiveData<>();
-        mText.setValue("Galeria tutaj jest");
+        firebaseRepo.getDataFromFireStore();
     }
 
-    public LiveData<String> getText() {
-        return mText;
+    public LiveData<List<CattleModel>> getLiveDatafromFireStore() {
+        return cattleModelListData;
     }
+
+    @Override
+    public void cattleDataAdded(List<CattleModel> cattleModelList) {
+        cattleModelListData.setValue(cattleModelList);
+    }
+
+    @Override
+    public void OnError(Exception e) {
+
+    }
+
 }
