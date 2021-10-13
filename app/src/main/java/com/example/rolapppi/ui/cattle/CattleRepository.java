@@ -35,35 +35,35 @@ public class CattleRepository {
 
     public void getDataFromFireStore() {
 
-        cattleRef.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-            @Override
-            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-
-                if(!queryDocumentSnapshots.isEmpty()){
-                    fireStoreDataAdded.cattleDataAdded(queryDocumentSnapshots.toObjects(CattleModel.class));
-                }
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.e("dd", "dupa", e);
-            }
-        });
-
-//        cattleRef.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//        cattleRef.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
 //            @Override
-//            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
 //
-//                if (task.isSuccessful()) {
-//
-//                    fireStoreDataAdded.cattleDataAdded(task.getResult().toObjects(CattleModel.class));
-//
-//                } else {
-//
-//                    fireStoreDataAdded.OnError(task.getException());
+//                if(!queryDocumentSnapshots.isEmpty()){
+//                    fireStoreDataAdded.cattleDataAdded(queryDocumentSnapshots.toObjects(CattleModel.class));
 //                }
 //            }
+//        }).addOnFailureListener(new OnFailureListener() {
+//            @Override
+//            public void onFailure(@NonNull Exception e) {
+//                Log.e("dd", "dupa", e);
+//            }
 //        });
+
+        cattleRef.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
+                if (task.isSuccessful()) {
+
+                    fireStoreDataAdded.cattleDataAdded(task.getResult().toObjects(CattleModel.class));
+
+                } else {
+
+                    fireStoreDataAdded.OnError(task.getException());
+                }
+            }
+        });
 
 
 

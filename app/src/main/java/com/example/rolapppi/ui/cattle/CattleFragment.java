@@ -72,7 +72,7 @@ public class CattleFragment extends Fragment implements MyAdapter.OnItemClicked{
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(myAdapter);
 
-
+        progressBar.setVisibility(View.INVISIBLE);
 
         addBtn = view.findViewById(R.id.addBtn);
         addBtn.setOnClickListener(new View.OnClickListener() {
@@ -89,12 +89,14 @@ public class CattleFragment extends Fragment implements MyAdapter.OnItemClicked{
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        progressBar.setVisibility(View.VISIBLE);
 //        getActivity()).get(CattleViewModel.class
         viewModel = new ViewModelProvider(requireActivity()).get(CattleViewModel.class);
         viewModel.getLiveDatafromFireStore().observe(getViewLifecycleOwner(), new Observer<List<CattleModel>>() {
             @Override
             public void onChanged(List<CattleModel> cattleModels) {
 //                cattleModels.add(new CattleModel("Hajs","121","dsd","dad"));
+
                 myAdapter.setCattleModelData(cattleModels);
                 myAdapter.notifyDataSetChanged();
                 progressBar.setVisibility(View.GONE);

@@ -17,6 +17,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -54,7 +55,7 @@ public class AddCattleDialog extends AppCompatDialogFragment {
 //                        data.put("birthday", birthday);
 //                        data.put("gender", gender);
 //                        data.put("mother_id", mother_id);
-                        CattleModel model = new CattleModel(animal_id,birthday,gender,mother_id);
+                        CattleModel model = new CattleModel(animal_id, birthday, gender, mother_id);
 
 
                         FirebaseFirestore.getInstance().collection("user_data").document(FirebaseAuth.getInstance().getUid())
