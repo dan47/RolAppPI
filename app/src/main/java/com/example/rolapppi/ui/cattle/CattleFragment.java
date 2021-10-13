@@ -17,7 +17,9 @@ import android.widget.ProgressBar;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.OnLifecycleEvent;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -70,6 +72,8 @@ public class CattleFragment extends Fragment implements MyAdapter.OnItemClicked{
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(myAdapter);
 
+
+
         addBtn = view.findViewById(R.id.addBtn);
         addBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -85,12 +89,12 @@ public class CattleFragment extends Fragment implements MyAdapter.OnItemClicked{
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
-        viewModel = new ViewModelProvider(getActivity()).get(CattleViewModel.class);
+//        getActivity()).get(CattleViewModel.class
+        viewModel = new ViewModelProvider(requireActivity()).get(CattleViewModel.class);
         viewModel.getLiveDatafromFireStore().observe(getViewLifecycleOwner(), new Observer<List<CattleModel>>() {
             @Override
             public void onChanged(List<CattleModel> cattleModels) {
-
+//                cattleModels.add(new CattleModel("Hajs","121","dsd","dad"));
                 myAdapter.setCattleModelData(cattleModels);
                 myAdapter.notifyDataSetChanged();
                 progressBar.setVisibility(View.GONE);

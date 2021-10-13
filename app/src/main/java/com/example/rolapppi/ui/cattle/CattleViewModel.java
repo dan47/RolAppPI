@@ -17,12 +17,15 @@ public class CattleViewModel extends ViewModel implements CattleRepository.OnFir
         firebaseRepo.getDataFromFireStore();
     }
 
+//    public void doIt(){firebaseRepo.getDataFromFireStore();}
+
     public LiveData<List<CattleModel>> getLiveDatafromFireStore() {
         return cattleModelListData;
     }
 
     @Override
     public void cattleDataAdded(List<CattleModel> cattleModelList) {
+        firebaseRepo.getDataFromFireStore();
         cattleModelListData.setValue(cattleModelList);
     }
 
