@@ -46,7 +46,7 @@ public class CattleRepository {
     }
 
     public interface OnFireStoreDataAdded {
-        void cattleDataAdded(List<CattleModel> quizModelList);
+        void cattleDataAdded(List<CattleModel> cattleModelList);
         void OnError(Exception e);
 
     }

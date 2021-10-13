@@ -7,9 +7,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -33,6 +36,9 @@ public class CattleFragment extends Fragment implements MyAdapter.OnItemClicked{
     MyAdapter myAdapter;
     CattleViewModel viewModel;
     FloatingActionButton addBtn;
+    ProgressBar progressBar;
+    Animation fadein;
+    Animation fadeout;
 
     public CattleFragment() {
         // Required empty public constructor
@@ -55,8 +61,9 @@ public class CattleFragment extends Fragment implements MyAdapter.OnItemClicked{
 //        navController = Navigation.findNavController(view);
         recyclerView = view.findViewById(R.id.recyclerView);
 
-
-
+//        fadein = AnimationUtils.loadAnimation(getContext(), R.anim.fade_in);
+//        fadeout= AnimationUtils.loadAnimation(getContext(), R.anim.fade_out);
+        progressBar = view.findViewById(R.id.progressBarCattleFragment);
 
         myAdapter = new MyAdapter((MyAdapter.OnItemClicked) this);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -86,6 +93,7 @@ public class CattleFragment extends Fragment implements MyAdapter.OnItemClicked{
 
                 myAdapter.setCattleModelData(cattleModels);
                 myAdapter.notifyDataSetChanged();
+                progressBar.setVisibility(View.GONE);
 //                recyclerView.setAnimation(fadein);
 //                progressBar.setAnimation(fadeout);
 

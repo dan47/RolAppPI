@@ -50,14 +50,15 @@ public class AddCattleDialog extends AppCompatDialogFragment {
                         String mother_id = mother_idE.getText().toString();
                         String birthday = birthdayE.getText().toString();
                         String gender = genderE.getText().toString();
-                        Map<String, Object> data = new HashMap<>();
-                        data.put("birthday", birthday);
-                        data.put("gender", gender);
-                        data.put("mother_id", mother_id);
+//                        Map<String, Object> data = new HashMap<>();
+//                        data.put("birthday", birthday);
+//                        data.put("gender", gender);
+//                        data.put("mother_id", mother_id);
+                        CattleModel model = new CattleModel(animal_id,birthday,gender,mother_id);
 
 
                         FirebaseFirestore.getInstance().collection("user_data").document(FirebaseAuth.getInstance().getUid())
-                                .collection("cattle").document(animal_id).set(data);
+                                .collection("cattle").document(animal_id).set(model);
 //                        listener.applyTexts(animal_id, birthday, gender);
                     }
                 });

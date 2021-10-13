@@ -89,6 +89,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> {
         public void onClick(View v) {
 
             itemClicked.somethingClicked(getAdapterPosition());
+
         }
 
 
