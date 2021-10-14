@@ -10,14 +10,12 @@ public class CattleViewModel extends ViewModel implements CattleRepository.OnFir
 
     MutableLiveData<List<CattleModel>> cattleModelListData = new MutableLiveData<>();
 
-
     CattleRepository firebaseRepo = new CattleRepository(this);
 
-    public CattleViewModel() {
-        firebaseRepo.getDataFromFireStore();
-    }
 
-//    public void doIt(){firebaseRepo.getDataFromFireStore();}
+    public CattleViewModel() {
+        firebaseRepo.loadData();
+    }
 
     public LiveData<List<CattleModel>> getLiveDatafromFireStore() {
         return cattleModelListData;
@@ -25,9 +23,13 @@ public class CattleViewModel extends ViewModel implements CattleRepository.OnFir
 
     @Override
     public void cattleDataAdded(List<CattleModel> cattleModelList) {
-        firebaseRepo.getDataFromFireStore();
         cattleModelListData.setValue(cattleModelList);
     }
+
+    public void cattleAdd(CattleModel cattleModel) {
+        firebaseRepo.addCattle(cattleModel);
+    }
+
 
     @Override
     public void OnError(Exception e) {

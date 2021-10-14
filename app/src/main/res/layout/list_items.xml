@@ -27,25 +27,33 @@
             android:id="@+id/gender"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@id/animal_id"
             android:layout_marginStart="10dp"
             android:layout_marginLeft="10dp"
-            android:layout_below="@id/animal_id"
+            android:text="gender"
             android:textColor="#6B000000"
             android:textSize="20sp"
-            android:textStyle="bold"
-            android:text="gender" />
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/birthday"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/gender"
             android:layout_below="@id/animal_id"
             android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@+id/gender"
+            android:text="birthday"
             android:textColor="#6B000000"
             android:textSize="20sp"
-            android:textStyle="bold"
-            android:text="birthday" />
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/birthday"
+            android:text="Button"
+            android:visibility="gone"/>
 
 
     </RelativeLayout>

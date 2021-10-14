@@ -25,14 +25,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.rolapppi.R;
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
 
 
-public class CattleFragment extends Fragment implements MyAdapter.OnItemClicked{
-
-
+public class CattleFragment extends Fragment implements MyAdapter.OnModelListener{
 
     RecyclerView recyclerView;
     MyAdapter myAdapter;
@@ -50,7 +49,6 @@ public class CattleFragment extends Fragment implements MyAdapter.OnItemClicked{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_cattle, container, false);
     }
 
@@ -59,7 +57,6 @@ public class CattleFragment extends Fragment implements MyAdapter.OnItemClicked{
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-
 //        navController = Navigation.findNavController(view);
         recyclerView = view.findViewById(R.id.recyclerView);
 
@@ -67,7 +64,7 @@ public class CattleFragment extends Fragment implements MyAdapter.OnItemClicked{
 //        fadeout= AnimationUtils.loadAnimation(getContext(), R.anim.fade_out);
         progressBar = view.findViewById(R.id.progressBarCattleFragment);
 
-        myAdapter = new MyAdapter((MyAdapter.OnItemClicked) this);
+        myAdapter = new MyAdapter(this);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(myAdapter);
@@ -86,16 +83,17 @@ public class CattleFragment extends Fragment implements MyAdapter.OnItemClicked{
 
     }
 
+
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
         progressBar.setVisibility(View.VISIBLE);
-//        getActivity()).get(CattleViewModel.class
+
         viewModel = new ViewModelProvider(requireActivity()).get(CattleViewModel.class);
         viewModel.getLiveDatafromFireStore().observe(getViewLifecycleOwner(), new Observer<List<CattleModel>>() {
             @Override
             public void onChanged(List<CattleModel> cattleModels) {
-//                cattleModels.add(new CattleModel("Hajs","121","dsd","dad"));
 
                 myAdapter.setCattleModelData(cattleModels);
                 myAdapter.notifyDataSetChanged();
@@ -109,13 +107,7 @@ public class CattleFragment extends Fragment implements MyAdapter.OnItemClicked{
     }
 
     @Override
-    public void somethingClicked(int position) {
-
-
-
-//        ListFragmentDirections.ActionListFragmentToDetailFragment action = ListFragmentDirections.actionListFragmentToDetailFragment();
-//        action.setPosition(position);
-//        navController.navigate(action);
-
+    public void onModelClick(int position) {
+        Log.e("DD",String.valueOf(position));
     }
 }

@@ -2,47 +2,49 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="16dp">
-
+    android:layout_margin="16dp"
+    android:orientation="vertical">
 
 
     <EditText
+        android:id="@+id/animal_id"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="textCapCharacters"
         android:hint="Numer identyfikacyjny zwierzęcia"
         android:imeOptions="actionNext"
-        android:id="@+id/animal_id"/>
-<androidx.constraintlayout.widget.ConstraintLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+        android:inputType="textCapCharacters"
+        android:maxLength="14" />
 
-    <TextView
-        android:id="@+id/birthday"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_toRightOf="@+id/birthdayBtn"
-        android:hint="Data urodzin"
-        android:inputType="text"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/birthdayBtn"
-        app:layout_constraintTop_toTopOf="parent" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <Button
-        android:id="@+id/birthdayBtn"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="8dp"
-        android:background="@drawable/calendar"
-        android:shadowColor="@color/black"
-        android:textColorHighlight="@color/purple_500"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/birthday"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_toRightOf="@+id/birthdayBtn"
+            android:hint="Data urodzin"
+            android:inputType="text"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/birthdayBtn"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/birthdayBtn"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="8dp"
+            android:background="@drawable/calendar"
+            android:shadowColor="@color/black"
+            android:textColorHighlight="@color/purple_500"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -61,39 +63,52 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <com.google.android.material.chip.ChipGroup
+            android:id="@+id/genderGroup"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:id="@+id/genderGroup"
-            app:singleSelection="true"
             android:layout_marginStart="24dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/gender"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            app:singleSelection="true">
 
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/male"
+                style="@style/Widget.MaterialComponents.Chip.Filter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/Widget.MaterialComponents.Chip.Filter"
                 android:text="Samiec" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/female"
+                style="@style/Widget.MaterialComponents.Chip.Filter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/Widget.MaterialComponents.Chip.Filter"
                 android:text="Samica" />
         </com.google.android.material.chip.ChipGroup>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <EditText
+        android:id="@+id/mother_id"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="text"
+        android:layout_marginBottom="32dp"
         android:hint="Numer identyfikacyjny matki"
-        android:id="@+id/mother_id"
-        android:layout_marginBottom="16dp"/>
+        android:inputType="text"
+        android:maxLength="14" />
+
+    <Button
+        android:id="@+id/scanBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Scan" />
+
+    <Button
+        android:id="@+id/submitBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Zatwierdź" />
 
 
 </LinearLayout>
