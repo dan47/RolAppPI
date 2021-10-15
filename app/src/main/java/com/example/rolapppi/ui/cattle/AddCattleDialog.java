@@ -3,21 +3,17 @@ package com.example.rolapppi.ui.cattle;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatDialog;
 import androidx.appcompat.app.AppCompatDialogFragment;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -26,11 +22,14 @@ import com.google.android.material.chip.Chip;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 
 public class AddCattleDialog extends AppCompatDialogFragment {
 
     public static EditText animal_idE;
-    private EditText mother_idE;
+//    private EditText mother_idE;
     private Chip male_chip, female_chip;
     private TextView birthdayE;
     private Button mPickDateButton;
@@ -38,6 +37,8 @@ public class AddCattleDialog extends AppCompatDialogFragment {
     private Button submitBtnE, scanBtnE;
     private Boolean edit;
     private CattleModel cattleModel;
+    private AutoCompleteTextView mother_idChoose;
+    private ArrayAdapter arrayAdapter;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -73,20 +74,24 @@ public class AddCattleDialog extends AppCompatDialogFragment {
                 .setTitle("Bydło dodanie zwierzęcia");
 
         animal_idE = view.findViewById(R.id.animal_id);
-        mother_idE = view.findViewById(R.id.mother_id);
+//        mother_idE = view.findViewById(R.id.mother_id);
         birthdayE = view.findViewById(R.id.birthday);
         submitBtnE = view.findViewById(R.id.submitBtn);
         scanBtnE = view.findViewById(R.id.scanBtn);
         male_chip = view.findViewById(R.id.male);
         female_chip = view.findViewById(R.id.female);
+        mother_idChoose = view.findViewById(R.id.autoCompleteTextView);
         male_chip.setChecked(true);
 
 
+
         cattleViewModel = new ViewModelProvider(requireActivity()).get(CattleViewModel.class);
+
         try {
             cattleModel = cattleViewModel.selected.getValue();
             animal_idE.setText(cattleModel.getAnimal_id());
-            mother_idE.setText(cattleModel.getMother_id());
+//            mother_idE.setText(cattleModel.getMother_id());
+            mother_idChoose.setText(cattleModel.getMother_id());
             birthdayE.setText(cattleModel.getBirthday());
             edit = true;
             if (cattleModel.getGender().equals("Samica")) {
@@ -95,6 +100,12 @@ public class AddCattleDialog extends AppCompatDialogFragment {
         } catch (Exception e) {
             edit = false;
         }
+
+        List<String> mothers_list = cattleViewModel.getLiveDatafromFireStore().getValue().stream().filter(e->e.getGender().equals("Samica")).map(x->x.getAnimal_id()).collect(Collectors.toList());
+        arrayAdapter = new ArrayAdapter(getContext(), android.R.layout.simple_dropdown_item_1line, mothers_list);
+        mother_idChoose.setAdapter(arrayAdapter);
+
+
         scanBtnE.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -108,7 +119,8 @@ public class AddCattleDialog extends AppCompatDialogFragment {
             public void onClick(View view) {
 
                 String animal_id = animal_idE.getText().toString();
-                String mother_id = mother_idE.getText().toString();
+//                String mother_id = mother_idE.getText().toString();
+                String mother_id = mother_idChoose.getText().toString();
                 String birthday = birthdayE.getText().toString();
                 String gender;
 
@@ -117,14 +129,22 @@ public class AddCattleDialog extends AppCompatDialogFragment {
                     animal_idE.setError("Proszę wprowadzić numer identyfikacyjny");
                     return;
                 }
+//                if (animal_id.length()<13){
+//                    animal_idE.setError("Za krótki numer identyfikacyjny");
+//                    return;
+//                }
                 if (TextUtils.isEmpty(birthday)) {
                     birthdayE.setError("Proszę wybrać datę urodzin");
                     return;
                 }
                 if (TextUtils.isEmpty(mother_id)) {
-                    mother_idE.setError("Proszę wprowadzić numer identyfikacyjny matki");
+                    mother_idChoose.setError("Proszę wprowadzić numer identyfikacyjny matki");
                     return;
                 }
+//                if (mother_id.length()<13){
+//                    mother_idE.setError("Za krótki numer identyfikacyjny");
+//                    return;
+//                }
 
                 if (male_chip.isChecked()) {
                     gender = "Samiec";
