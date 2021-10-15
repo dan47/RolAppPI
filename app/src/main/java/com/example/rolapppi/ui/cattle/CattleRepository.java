@@ -79,6 +79,11 @@ public class CattleRepository {
                                         .collection("cattle").document(cattleModel.getAnimal_id()).set(cattleModel);
     }
 
+    public void deleteCattle(CattleModel cattleModel){
+        FirebaseFirestore.getInstance().collection("user_data").document(FirebaseAuth.getInstance().getUid())
+                .collection("cattle").document(cattleModel.getAnimal_id()).delete();
+    }
+
     public interface OnFireStoreDataAdded {
         void cattleDataAdded(List<CattleModel> cattleModelList);
         void OnError(Exception e);

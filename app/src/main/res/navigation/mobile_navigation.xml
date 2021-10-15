@@ -15,11 +15,19 @@
         android:id="@+id/nav_cattle"
         android:name="com.example.rolapppi.ui.cattle.CattleFragment"
         android:label="@string/menu_cattle"
-        tools:layout="@layout/fragment_cattle" />
+        tools:layout="@layout/fragment_cattle" >
+        <action
+            android:id="@+id/action_nav_cattle_to_detailsCattleFragment"
+            app:destination="@id/detailsCattleFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/nav_logout"
         android:name="com.example.rolapppi.ui.auth.LogoutFragment"
         android:label="@string/menu_logout"
         tools:layout="@layout/fragment_logout" />
+    <fragment
+        android:id="@+id/detailsCattleFragment"
+        android:name="com.example.rolapppi.ui.cattle.DetailsCattleFragment"
+        android:label="DetailsCattleFragment" />
 </navigation>

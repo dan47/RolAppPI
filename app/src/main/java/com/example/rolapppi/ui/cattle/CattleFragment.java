@@ -21,6 +21,8 @@ import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.OnLifecycleEvent;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -33,6 +35,7 @@ import java.util.List;
 
 public class CattleFragment extends Fragment implements MyAdapter.OnModelListener{
 
+    private DetailsCattleFragment detailsCattleFragment = new DetailsCattleFragment();
     RecyclerView recyclerView;
     MyAdapter myAdapter;
     CattleViewModel viewModel;
@@ -40,6 +43,7 @@ public class CattleFragment extends Fragment implements MyAdapter.OnModelListene
     ProgressBar progressBar;
     Animation fadein;
     Animation fadeout;
+    private NavController navController;
 
     public CattleFragment() {
         // Required empty public constructor
@@ -69,8 +73,10 @@ public class CattleFragment extends Fragment implements MyAdapter.OnModelListene
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(myAdapter);
 
-        progressBar.setVisibility(View.INVISIBLE);
 
+
+        progressBar.setVisibility(View.INVISIBLE);
+        navController = Navigation.findNavController(view);
         addBtn = view.findViewById(R.id.addBtn);
         addBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -91,6 +97,7 @@ public class CattleFragment extends Fragment implements MyAdapter.OnModelListene
         progressBar.setVisibility(View.VISIBLE);
 
         viewModel = new ViewModelProvider(requireActivity()).get(CattleViewModel.class);
+        viewModel.selected.setValue(null);
         viewModel.getLiveDatafromFireStore().observe(getViewLifecycleOwner(), new Observer<List<CattleModel>>() {
             @Override
             public void onChanged(List<CattleModel> cattleModels) {
@@ -108,6 +115,14 @@ public class CattleFragment extends Fragment implements MyAdapter.OnModelListene
 
     @Override
     public void onModelClick(int position) {
+
+        viewModel.setSelected(myAdapter.cattleModelList.get(position));
         Log.e("DD",String.valueOf(position));
+
+        navController.navigate(R.id.action_nav_cattle_to_detailsCattleFragment);
+//        getParentFragmentManager().beginTransaction()
+//                .replace(, detailsCattleFragment,"name")
+//                .addToBackStack("name")
+//                .commit();
     }
 }

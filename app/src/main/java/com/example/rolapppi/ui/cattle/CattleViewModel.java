@@ -9,6 +9,7 @@ import java.util.List;
 public class CattleViewModel extends ViewModel implements CattleRepository.OnFireStoreDataAdded {
 
     MutableLiveData<List<CattleModel>> cattleModelListData = new MutableLiveData<>();
+    MutableLiveData<CattleModel> selected = new MutableLiveData<>();
 
     CattleRepository firebaseRepo = new CattleRepository(this);
 
@@ -26,14 +27,29 @@ public class CattleViewModel extends ViewModel implements CattleRepository.OnFir
         cattleModelListData.setValue(cattleModelList);
     }
 
+    public void cattleEdit(CattleModel cattleModel){
+        selected.setValue(cattleModel);
+        firebaseRepo.addCattle(cattleModel);
+    }
+
     public void cattleAdd(CattleModel cattleModel) {
         firebaseRepo.addCattle(cattleModel);
     }
 
+    public void cattleDelete(CattleModel cattleModel) {
+        firebaseRepo.deleteCattle(cattleModel);
+    }
 
     @Override
     public void OnError(Exception e) {
 
     }
 
+    public void setSelected(CattleModel cattleModel) {
+        selected.setValue(cattleModel);
+    }
+
+    public MutableLiveData<CattleModel> getSelected() {
+        return selected;
+    }
 }
