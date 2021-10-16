@@ -22,6 +22,8 @@ import com.google.android.material.chip.Chip;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -39,6 +41,7 @@ public class AddCattleDialog extends AppCompatDialogFragment {
     private CattleModel cattleModel;
     private AutoCompleteTextView mother_idChoose;
     private ArrayAdapter arrayAdapter;
+    private String calving;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -65,13 +68,12 @@ public class AddCattleDialog extends AppCompatDialogFragment {
                     @SuppressLint("SetTextI18n")
                     @Override
                     public void onPositiveButtonClick(Object selection) {
-
-                        birthdayE.setText(materialDatePicker.getHeaderText().toString());
+                        SimpleDateFormat simpleFormat = new SimpleDateFormat("dd.MM.yyyy");
+                        Date date = new Date((Long) selection);
+                        birthdayE.setText(simpleFormat.format(date));
                     }
                 });
 
-        builder.setView(view)
-                .setTitle("Bydło dodanie zwierzęcia");
 
         animal_idE = view.findViewById(R.id.animal_id);
 //        mother_idE = view.findViewById(R.id.mother_id);
@@ -93,6 +95,7 @@ public class AddCattleDialog extends AppCompatDialogFragment {
 //            mother_idE.setText(cattleModel.getMother_id());
             mother_idChoose.setText(cattleModel.getMother_id());
             birthdayE.setText(cattleModel.getBirthday());
+            calving = cattleModel.getCaliving();
             edit = true;
             if (cattleModel.getGender().equals("Samica")) {
                 female_chip.setChecked(true);
@@ -100,8 +103,25 @@ public class AddCattleDialog extends AppCompatDialogFragment {
         } catch (Exception e) {
             edit = false;
         }
+        List<String> mothers_list;
+        if(edit){
+            builder.setView(view)
+                    .setTitle("Bydło edycja zwierzęcia");
+            mothers_list = cattleViewModel.getLiveDatafromFireStore().getValue().stream()
+                    .filter(e->e.getGender().equals("Samica"))
+                    .map(x->x.getAnimal_id()).collect(Collectors.toList());
+        }else{
+            builder.setView(view)
+                    .setTitle("Bydło dodanie zwierzęcia");
+            mothers_list = cattleViewModel.getLiveDatafromFireStore().getValue().stream()
+                    .filter(e->e.getGender().equals("Samica"))
+                    .filter(y->!y.getCaliving().isEmpty())
+                    .map(x->x.getAnimal_id()).collect(Collectors.toList());
+        }
 
-        List<String> mothers_list = cattleViewModel.getLiveDatafromFireStore().getValue().stream().filter(e->e.getGender().equals("Samica")).map(x->x.getAnimal_id()).collect(Collectors.toList());
+
+
+
         arrayAdapter = new ArrayAdapter(getContext(), android.R.layout.simple_dropdown_item_1line, mothers_list);
         mother_idChoose.setAdapter(arrayAdapter);
 
@@ -151,15 +171,20 @@ public class AddCattleDialog extends AppCompatDialogFragment {
                 } else {
                     gender = "Samica";
                 }
-                CattleModel model = new CattleModel(animal_id, birthday, gender, mother_id);
+
 
                 if (edit) {
+                    CattleModel model = new CattleModel(animal_id, birthday, gender, mother_id, calving);
                         cattleViewModel.cattleEdit(model);
                         if (!model.getAnimal_id().equals(cattleModel.getAnimal_id())) {
                             cattleViewModel.cattleDelete(cattleModel);
                         }
                 } else {
+                    CattleModel model = new CattleModel(animal_id, birthday, gender, mother_id);
                     cattleViewModel.cattleAdd(model);
+                    if(mothers_list.contains(mother_id)){
+                        cattleViewModel.cattleUpdateMother(mother_id);
+                    }
                 }
                 dismiss();
 

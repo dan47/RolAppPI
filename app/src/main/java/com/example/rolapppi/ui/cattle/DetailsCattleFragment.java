@@ -21,6 +21,9 @@ import com.example.rolapppi.databinding.FragmentDetailsCattleBinding;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class DetailsCattleFragment extends Fragment {
 
     TextView animal_id, birthday, gender, mother_id, calving;
@@ -88,8 +91,10 @@ public class DetailsCattleFragment extends Fragment {
                     @SuppressLint("SetTextI18n")
                     @Override
                     public void onPositiveButtonClick(Object selection) {
-                        calving.setText(materialDatePicker.getHeaderText().toString());
-                        cattleViewModel.addCalving(cattleViewModel.getSelected().getValue(), materialDatePicker.getHeaderText().toString());
+                        SimpleDateFormat simpleFormat = new SimpleDateFormat("dd.MM.yyyy");
+                        Date date = new Date((Long) selection);
+                        calving.setText(simpleFormat.format(date));
+                        cattleViewModel.addCalving(cattleViewModel.getSelected().getValue(), simpleFormat.format(date));
                     }
                 });
 

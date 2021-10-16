@@ -13,6 +13,7 @@ public class ScannerCode extends AppCompatActivity implements ZXingScannerView.R
 
 
     ZXingScannerView scannerView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,7 +23,11 @@ public class ScannerCode extends AppCompatActivity implements ZXingScannerView.R
 
     @Override
     public void handleResult(Result result) {
-        AddCattleDialog.animal_idE.setText("PL" + result.getText());
+        if (result.getText().matches("[A-Z]{2}[0-9]+")) {
+            AddCattleDialog.animal_idE.setText(result.getText());
+        } else {
+            AddCattleDialog.animal_idE.setText("PL" + result.getText());
+        }
         onBackPressed();
     }
 

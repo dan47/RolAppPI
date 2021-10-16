@@ -29,5 +29,5 @@
     <fragment
         android:id="@+id/detailsCattleFragment"
         android:name="com.example.rolapppi.ui.cattle.DetailsCattleFragment"
-        android:label="DetailsCattleFragment" />
+        android:label="Szczegóły zwierzęcia" />
 </navigation>

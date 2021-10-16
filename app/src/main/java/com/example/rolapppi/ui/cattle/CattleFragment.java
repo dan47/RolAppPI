@@ -30,6 +30,9 @@ import com.example.rolapppi.R;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 
@@ -95,13 +98,13 @@ public class CattleFragment extends Fragment implements MyAdapter.OnModelListene
         super.onActivityCreated(savedInstanceState);
 
         progressBar.setVisibility(View.VISIBLE);
-
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
         viewModel = new ViewModelProvider(requireActivity()).get(CattleViewModel.class);
         viewModel.selected.setValue(null);
         viewModel.getLiveDatafromFireStore().observe(getViewLifecycleOwner(), new Observer<List<CattleModel>>() {
             @Override
             public void onChanged(List<CattleModel> cattleModels) {
-                cattleModels.sort((d1, d2) -> d1.getBirthday().compareTo(d2.getBirthday()));
+                cattleModels.sort((d1, d2) -> LocalDate.parse(d1.getBirthday(), formatter).compareTo(LocalDate.parse(d2.getBirthday(), formatter)));
                 myAdapter.setCattleModelData(cattleModels);
                 myAdapter.notifyDataSetChanged();
                 progressBar.setVisibility(View.GONE);

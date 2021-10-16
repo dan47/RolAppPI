@@ -40,6 +40,8 @@ public class CattleViewModel extends ViewModel implements CattleRepository.OnFir
         firebaseRepo.deleteCattle(cattleModel);
     }
 
+    public void cattleUpdateMother(String cattleMotherId){ firebaseRepo.updateCattleMother(cattleMotherId);}
+
     @Override
     public void OnError(Exception e) {
 
