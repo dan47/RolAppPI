@@ -16,12 +16,16 @@ public class CattleModel {
     private String birthday;
     private String gender, mother_id;
 
+    private String caliving;
+
     public CattleModel(String animal_id, String birthday, String gender, String mother_id) {
         this.animal_id = animal_id;
         this.birthday = birthday;
         this.gender = gender;
         this.mother_id = mother_id;
     }
+
+
 
     public CattleModel(){
 
@@ -61,5 +65,13 @@ public class CattleModel {
 
     public void setMother_id(String mother_id) {
         this.mother_id = mother_id;
+    }
+
+    public String getCaliving() {
+        return caliving;
+    }
+
+    public void setCaliving(String caliving) {
+        this.caliving = caliving;
     }
 }

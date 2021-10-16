@@ -52,4 +52,9 @@ public class CattleViewModel extends ViewModel implements CattleRepository.OnFir
     public MutableLiveData<CattleModel> getSelected() {
         return selected;
     }
+
+    public void addCalving(CattleModel cattleModel, String calving) {
+        cattleModel.setCaliving(calving);
+        firebaseRepo.addCattle(cattleModel);
+    }
 }

@@ -101,7 +101,7 @@ public class CattleFragment extends Fragment implements MyAdapter.OnModelListene
         viewModel.getLiveDatafromFireStore().observe(getViewLifecycleOwner(), new Observer<List<CattleModel>>() {
             @Override
             public void onChanged(List<CattleModel> cattleModels) {
-
+                cattleModels.sort((d1, d2) -> d1.getBirthday().compareTo(d2.getBirthday()));
                 myAdapter.setCattleModelData(cattleModels);
                 myAdapter.notifyDataSetChanged();
                 progressBar.setVisibility(View.GONE);
