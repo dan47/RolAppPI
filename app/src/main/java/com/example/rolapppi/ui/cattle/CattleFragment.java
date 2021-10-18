@@ -88,15 +88,6 @@ public class CattleFragment extends Fragment implements MyAdapter.OnModelListene
                         exampleDialog.show(getParentFragmentManager() , "example dialog");
                     }
                 });
-
-
-    }
-
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
         progressBar.setVisibility(View.VISIBLE);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
         viewModel = new ViewModelProvider(requireActivity()).get(CattleViewModel.class);
@@ -114,18 +105,16 @@ public class CattleFragment extends Fragment implements MyAdapter.OnModelListene
 
             }
         });
+
     }
+
+
+
 
     @Override
     public void onModelClick(int position) {
 
         viewModel.setSelected(myAdapter.cattleModelList.get(position));
-        Log.e("DD",String.valueOf(position));
-
         navController.navigate(R.id.action_nav_cattle_to_detailsCattleFragment);
-//        getParentFragmentManager().beginTransaction()
-//                .replace(, detailsCattleFragment,"name")
-//                .addToBackStack("name")
-//                .commit();
     }
 }

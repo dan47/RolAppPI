@@ -29,7 +29,6 @@ public class DetailsCattleFragment extends Fragment {
     TextView animal_id, birthday, gender, mother_id, calving;
     LinearLayout calvingLayout;
     Button editBtn, deleteBtn, calvingBtn;
-    private NavController navController;
 
     public DetailsCattleFragment() {
 
@@ -65,9 +64,13 @@ public class DetailsCattleFragment extends Fragment {
             birthday.setText(cattleModel.getBirthday());
             gender.setText(cattleModel.getGender());
             mother_id.setText(cattleModel.getMother_id());
-//            String calvingT = cattleModel.getGender();
-            if (cattleModel.getGender().equals("Samica")) {
-                calving.setText(cattleModel.getCaliving());
+            if (cattleModel.getGender().equals(getString(R.string.female))) {
+                String calvingT = cattleModel.getCaliving();
+                if (calvingT.isEmpty()) {
+                    calving.setText(getString(R.string.no_calivng));
+                } else {
+                    calving.setText(calvingT);
+                }
                 calvingLayout.setVisibility(View.VISIBLE);
                 calvingBtn.setVisibility(View.VISIBLE);
             } else {
@@ -77,7 +80,7 @@ public class DetailsCattleFragment extends Fragment {
         });
 
         MaterialDatePicker.Builder materialDateBuilder = MaterialDatePicker.Builder.datePicker();
-        materialDateBuilder.setTitleText("Wybierz datę");
+        materialDateBuilder.setTitleText("Wybierz datę zacielenia");
 
         final MaterialDatePicker materialDatePicker = materialDateBuilder.build();
         calvingBtn.setOnClickListener(new View.OnClickListener() {

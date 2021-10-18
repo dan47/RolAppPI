@@ -33,7 +33,9 @@ public class CattleViewModel extends ViewModel implements CattleRepository.OnFir
     }
 
     public void cattleAdd(CattleModel cattleModel) {
-        firebaseRepo.addCattle(cattleModel);
+        if (!cattleModelListData.getValue().stream().anyMatch(e -> e.getAnimal_id().equals(cattleModel.getAnimal_id()))) {
+                 firebaseRepo.addCattle(cattleModel);
+        }
     }
 
     public void cattleDelete(CattleModel cattleModel) {
@@ -43,9 +45,7 @@ public class CattleViewModel extends ViewModel implements CattleRepository.OnFir
     public void cattleUpdateMother(String cattleMotherId){ firebaseRepo.updateCattleMother(cattleMotherId);}
 
     @Override
-    public void OnError(Exception e) {
-
-    }
+    public void OnError(Exception e) { }
 
     public void setSelected(CattleModel cattleModel) {
         selected.setValue(cattleModel);

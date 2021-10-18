@@ -34,6 +34,7 @@ public class LoginFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         viewModel = new ViewModelProvider(this , ViewModelProvider.AndroidViewModelFactory
                 .getInstance(getActivity().getApplication())).get(AuthenticationViewModel.class);
         viewModel.getUserData().observe(this, new Observer<FirebaseUser>() {
@@ -56,7 +57,6 @@ public class LoginFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         emailView = view.findViewById(R.id.inputEmail);
         passwordView = view.findViewById(R.id.inputPassword);
         createAccuont = view.findViewById(R.id.createNewAccount);

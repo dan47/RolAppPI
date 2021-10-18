@@ -26,9 +26,7 @@ public class CattleModel {
         this.caliving = "";
     }
 
-    public CattleModel(){
-
-    }
+    public CattleModel(){ }
 
     public CattleModel(String animal_id, String birthday, String gender, String mother_id, String caliving) {
         this.animal_id = animal_id;
@@ -46,13 +44,7 @@ public class CattleModel {
         this.animal_id = animal_id;
     }
 
-    public String getBirthday() {
-//        Calendar calendar = Calendar.getInstance();
-//        calendar.setTime(birthday.toDate());
-//        String date = DateFormat.format("dd-MM-yyyy", calendar).toString();
-//        return date;
-        return birthday;
-    }
+    public String getBirthday() { return birthday; }
 
     public void setBirthday(String birthday) {
         this.birthday = birthday;

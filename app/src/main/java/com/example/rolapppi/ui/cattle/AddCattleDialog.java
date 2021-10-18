@@ -31,7 +31,6 @@ import java.util.stream.Collectors;
 public class AddCattleDialog extends AppCompatDialogFragment {
 
     public static EditText animal_idE;
-//    private EditText mother_idE;
     private Chip male_chip, female_chip;
     private TextView birthdayE;
     private Button mPickDateButton;
@@ -76,7 +75,6 @@ public class AddCattleDialog extends AppCompatDialogFragment {
 
 
         animal_idE = view.findViewById(R.id.animal_id);
-//        mother_idE = view.findViewById(R.id.mother_id);
         birthdayE = view.findViewById(R.id.birthday);
         submitBtnE = view.findViewById(R.id.submitBtn);
         scanBtnE = view.findViewById(R.id.scanBtn);
@@ -86,18 +84,16 @@ public class AddCattleDialog extends AppCompatDialogFragment {
         male_chip.setChecked(true);
 
 
-
         cattleViewModel = new ViewModelProvider(requireActivity()).get(CattleViewModel.class);
 
         try {
             cattleModel = cattleViewModel.selected.getValue();
             animal_idE.setText(cattleModel.getAnimal_id());
-//            mother_idE.setText(cattleModel.getMother_id());
             mother_idChoose.setText(cattleModel.getMother_id());
             birthdayE.setText(cattleModel.getBirthday());
             calving = cattleModel.getCaliving();
             edit = true;
-            if (cattleModel.getGender().equals("Samica")) {
+            if (cattleModel.getGender().equals(getString(R.string.female))) {
                 female_chip.setChecked(true);
             }
         } catch (Exception e) {
@@ -108,13 +104,13 @@ public class AddCattleDialog extends AppCompatDialogFragment {
             builder.setView(view)
                     .setTitle("Bydło edycja zwierzęcia");
             mothers_list = cattleViewModel.getLiveDatafromFireStore().getValue().stream()
-                    .filter(e->e.getGender().equals("Samica"))
+                    .filter(e->e.getGender().equals(getString(R.string.female)))
                     .map(x->x.getAnimal_id()).collect(Collectors.toList());
         }else{
             builder.setView(view)
                     .setTitle("Bydło dodanie zwierzęcia");
             mothers_list = cattleViewModel.getLiveDatafromFireStore().getValue().stream()
-                    .filter(e->e.getGender().equals("Samica"))
+                    .filter(e->e.getGender().equals(getString(R.string.female)))
                     .filter(y->!y.getCaliving().isEmpty())
                     .map(x->x.getAnimal_id()).collect(Collectors.toList());
         }
@@ -167,9 +163,9 @@ public class AddCattleDialog extends AppCompatDialogFragment {
 //                }
 
                 if (male_chip.isChecked()) {
-                    gender = "Samiec";
+                    gender = getString(R.string.male);
                 } else {
-                    gender = "Samica";
+                    gender = getString(R.string.female);
                 }
 
 
