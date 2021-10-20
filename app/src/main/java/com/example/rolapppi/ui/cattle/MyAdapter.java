@@ -8,6 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -17,20 +19,23 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.rolapppi.R;
 
 
-import java.time.Duration;
-
 import java.time.LocalDate;
-import java.time.Period;
 import java.time.format.DateTimeFormatter;;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
-public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> {
+public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> implements Filterable {
 
     List<CattleModel> cattleModelList;
+    List<CattleModel> cattleModelListAll;
     private OnModelListener mOnModelListener;
 
     public void setCattleModelData(List<CattleModel> cattleModelData) {
-        this.cattleModelList = cattleModelData;
+        this.cattleModelList = new ArrayList<>();
+        this.cattleModelListAll = new ArrayList<>();
+        this.cattleModelList.addAll(cattleModelData);
+        this.cattleModelListAll.addAll(cattleModelData);
     }
 
     public MyAdapter(OnModelListener onModelListener) {
@@ -53,7 +58,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> {
         holder.animal_id.setText(cattleModelList.get(position).getAnimal_id());
         holder.birthday.setText(cattleModelList.get(position).getBirthday());
         holder.gender.setText(gender);
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 
 
         if (gender.equals("Samica")) {
@@ -61,6 +65,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> {
             String calving = cattleModelList.get(position).getCaliving();
             if (!calving.isEmpty()) {
 
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
                 LocalDate localDate = java.time.LocalDate.parse(calving, formatter);
                 long duration = DAYS.between(localDate, LocalDate.now());
                 if (duration > 250) {
@@ -95,6 +100,48 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> {
 
     }
 
+    @Override
+    public Filter getFilter() {
+        return filter;
+    }
+
+    Filter filter = new Filter() {
+
+        //run on background thread
+        @Override
+        protected FilterResults performFiltering(CharSequence charSequence) {
+
+            List<CattleModel> filteredList = new ArrayList<>();
+            if (charSequence.toString().isEmpty()) {
+                filteredList.addAll(cattleModelListAll);
+            } else {
+                for (CattleModel item : cattleModelListAll) {
+                    if (item.getAnimal_id().toLowerCase().contains(charSequence.toString().toLowerCase())) {
+                        filteredList.add(item);
+                    }
+                }
+            }
+
+            FilterResults filterResults = new FilterResults();
+            filterResults.values = filteredList;
+            filterResults.count = filteredList.size();
+            return filterResults;
+        }
+
+        //run on a ui thread
+        @Override
+        protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+
+            if (filterResults.values != null) {
+                cattleModelList.clear();
+                cattleModelList.addAll((Collection<? extends CattleModel>) filterResults.values);
+            }
+
+            notifyDataSetChanged();
+
+        }
+    };
+
     //    class MyHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
     public class MyHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
@@ -102,9 +149,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> {
         RelativeLayout relativeLayoutCard;
         Button button;
         OnModelListener onModelListener;
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDate now = java.time.LocalDate.parse(LocalDate.now().toString(), formatter);
-
 
         public MyHolder(@NonNull View itemView, OnModelListener onModelListener) {
             super(itemView);

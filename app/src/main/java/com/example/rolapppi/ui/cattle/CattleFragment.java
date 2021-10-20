@@ -16,6 +16,7 @@ import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.Observer;
@@ -33,6 +34,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -40,6 +42,7 @@ public class CattleFragment extends Fragment implements MyAdapter.OnModelListene
 
     private DetailsCattleFragment detailsCattleFragment = new DetailsCattleFragment();
     RecyclerView recyclerView;
+    SearchView searchView;
     MyAdapter myAdapter;
     CattleViewModel viewModel;
     FloatingActionButton addBtn;
@@ -66,6 +69,7 @@ public class CattleFragment extends Fragment implements MyAdapter.OnModelListene
 
 //        navController = Navigation.findNavController(view);
         recyclerView = view.findViewById(R.id.recyclerView);
+        searchView = view.findViewById(R.id.searchView);
 
 //        fadein = AnimationUtils.loadAnimation(getContext(), R.anim.fade_in);
 //        fadeout= AnimationUtils.loadAnimation(getContext(), R.anim.fade_out);
@@ -105,16 +109,34 @@ public class CattleFragment extends Fragment implements MyAdapter.OnModelListene
 
             }
         });
+        searchView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                searchView.onActionViewExpanded();
+            }
+        });
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                myAdapter.getFilter().filter(newText);
+                return true;
+            }
+        });
 
     }
 
 
-
-
     @Override
     public void onModelClick(int position) {
-
         viewModel.setSelected(myAdapter.cattleModelList.get(position));
+        searchView.setQuery("", false);
+        searchView.setIconified(true);
+        searchView.clearFocus();
         navController.navigate(R.id.action_nav_cattle_to_detailsCattleFragment);
     }
 }
