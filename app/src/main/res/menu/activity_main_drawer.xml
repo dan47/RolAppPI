@@ -2,7 +2,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
-
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_home"
@@ -12,6 +11,7 @@
             android:id="@+id/nav_cattle"
             android:icon="@drawable/cow"
             android:title="@string/menu_cattle" />
+
         <item
             android:id="@+id/nav_logout"
             android:icon="@drawable/logout"

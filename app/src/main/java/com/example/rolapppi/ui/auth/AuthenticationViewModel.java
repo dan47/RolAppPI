@@ -13,29 +13,37 @@ public class AuthenticationViewModel extends AndroidViewModel {
     private AuthenticationRepository repository;
     private MutableLiveData<FirebaseUser> userData;
     private MutableLiveData<Boolean> loggedStatus;
+    private MutableLiveData<Boolean> progressbarObservable;
 
     public MutableLiveData<FirebaseUser> getUserData() {
         return userData;
+    }
+
+    public MutableLiveData<Boolean> getProgressbarObservable() {
+        return progressbarObservable;
     }
 
     public MutableLiveData<Boolean> getLoggedStatus() {
         return loggedStatus;
     }
 
-    public AuthenticationViewModel(@NonNull  Application application) {
+    public AuthenticationViewModel(@NonNull Application application) {
         super(application);
         repository = new AuthenticationRepository(application);
         userData = repository.getFirebaseUserMutableLiveData();
         loggedStatus = repository.getUserLoggedMutableLiveData();
+        progressbarObservable = repository.getProgressbarObservable();
     }
 
-    public void register(String email , String pass){
+    public void register(String email, String pass) {
         repository.register(email, pass);
     }
-    public void signIn(String email , String pass){
+
+    public void signIn(String email, String pass) {
         repository.login(email, pass);
     }
-    public void logOut(){
+
+    public void logOut() {
         repository.logOut();
     }
 }

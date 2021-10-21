@@ -23,6 +23,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> implements Filterable {
@@ -68,7 +69,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> implemen
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
                 LocalDate localDate = java.time.LocalDate.parse(calving, formatter);
                 long duration = DAYS.between(localDate, LocalDate.now());
-                if (duration > 250) {
+                if (duration(calving) > 250) {
                     holder.relativeLayoutCard.setBackgroundColor(Color.parseColor("#FF7F7F"));
                 } else if (duration > 140) {
                     holder.relativeLayoutCard.setBackgroundColor(Color.parseColor("#FFFF99"));
@@ -85,6 +86,13 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> implemen
 
 //        Glide.with(holder.itemView.getContext()).load(cattleModelList.get(position).getImage())
 //                .placeholder(R.drawable.placeholder_image).centerCrop().into(holder.imageView);
+    }
+
+    private long duration(String calving) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+        LocalDate localDate = java.time.LocalDate.parse(calving, formatter);
+        long duration = DAYS.between(localDate, LocalDate.now());
+        return duration;
     }
 
     @Override
@@ -115,19 +123,21 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> implemen
             if (charSequence.toString().isEmpty()) {
                 filteredList.addAll(cattleModelListAll);
             } else {
-               if(charSequence.equals("Samiec")||charSequence.equals("Samica")){
+                if (charSequence.equals("Samiec") || charSequence.equals("Samica")) {
                     for (CattleModel item : cattleModelListAll) {
                         if (item.getGender().equals(charSequence.toString())) {
                             filteredList.add(item);
                         }
                     }
-                }else if(charSequence.equals("Zacielenie")){
+                } else if (charSequence.equals("Zacielenie")) {
                     for (CattleModel item : cattleModelListAll) {
                         if (!item.getCaliving().isEmpty()) {
                             filteredList.add(item);
+                            filteredList.sort((a, b) -> Long.compare(duration(a.getCaliving()), duration(b.getCaliving())));
+                            Collections.reverse(filteredList);
                         }
                     }
-                }else{
+                } else {
                     for (CattleModel item : cattleModelListAll) {
                         if (item.getAnimal_id().toLowerCase().contains(charSequence.toString().toLowerCase())) {
                             filteredList.add(item);

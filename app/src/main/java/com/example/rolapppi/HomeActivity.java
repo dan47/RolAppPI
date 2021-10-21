@@ -1,8 +1,11 @@
 package com.example.rolapppi;
 
 import android.app.Dialog;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
 import android.view.Window;
@@ -10,10 +13,16 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 
+import com.example.rolapppi.ui.cattle.CattleModel;
+import com.example.rolapppi.ui.cattle.CattleViewModel;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -22,11 +31,17 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.rolapppi.databinding.ActivityHomeBinding;
+import com.opencsv.CSVReader;
+
+import java.io.File;
+import java.io.FileReader;
 
 public class HomeActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityHomeBinding binding;
+    private CattleViewModel viewModel;
+    private final int CHOOSE_FILE = 1001;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +51,7 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         setSupportActionBar(binding.appBarHome.toolbar);
+
 //        binding.appBarHome.fab.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View view) {
@@ -60,7 +76,7 @@ public class HomeActivity extends AppCompatActivity {
 //                    public void onClick(View v) {
 //                        String name = nameEt.getText().toString();
 //                        String age = ageEt.getText().toString();
-//                        Boolean hasAccepted = termsCb.isChecked();
+//                        Boolean hasAccepted = termsCb.isChecked();R.o
 //                        // populateInfoTv(name,age,hasAccepted);
 //                        dialog.dismiss();
 //                    }
@@ -93,9 +109,56 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.action_import) {
+            Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+            intent.setType("*/*");
+//                intent.addCategory("application/csv");
+//                startActivity(intent);
+            startActivityForResult(intent, CHOOSE_FILE);
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     public boolean onSupportNavigateUp() {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_home);
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
+    }
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == CHOOSE_FILE && resultCode == RESULT_OK) {
+            if ((data != null)) {
+                File file = new File(data.getData().getPath());
+                String path = file.getAbsolutePath().replace("/document/raw:", "");
+
+                try {
+                    FileReader fileReader = new FileReader(path);
+                    CSVReader reader = new CSVReader(fileReader);
+
+                    String[] line = reader.readNext();
+                    viewModel = new ViewModelProvider((ViewModelStoreOwner) binding.getRoot()).get(CattleViewModel.class);
+                    while (line != null) {
+                        line = reader.readNext();
+                        // nextLine[] is an array of values from the line
+                        String[] lineN = line;
+                        String[] dd = lineN[0].split(";");
+
+                        if (lineN[0].contains("PARAMETRY")) {
+                            return;
+                        }
+                        dd[3] = dd[3].replace("-", ".");
+                        viewModel.cattleAdd(new CattleModel(dd[2], dd[3], dd[5], dd[18]));
+                    }
+                } catch (Exception e) {
+                    Log.e("DIPA", e.toString());
+                }
+
+            }
+        }
     }
 }
