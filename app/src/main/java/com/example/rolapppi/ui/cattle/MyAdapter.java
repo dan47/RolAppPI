@@ -115,9 +115,23 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> implemen
             if (charSequence.toString().isEmpty()) {
                 filteredList.addAll(cattleModelListAll);
             } else {
-                for (CattleModel item : cattleModelListAll) {
-                    if (item.getAnimal_id().toLowerCase().contains(charSequence.toString().toLowerCase())) {
-                        filteredList.add(item);
+               if(charSequence.equals("Samiec")||charSequence.equals("Samica")){
+                    for (CattleModel item : cattleModelListAll) {
+                        if (item.getGender().equals(charSequence.toString())) {
+                            filteredList.add(item);
+                        }
+                    }
+                }else if(charSequence.equals("Zacielenie")){
+                    for (CattleModel item : cattleModelListAll) {
+                        if (!item.getCaliving().isEmpty()) {
+                            filteredList.add(item);
+                        }
+                    }
+                }else{
+                    for (CattleModel item : cattleModelListAll) {
+                        if (item.getAnimal_id().toLowerCase().contains(charSequence.toString().toLowerCase())) {
+                            filteredList.add(item);
+                        }
                     }
                 }
             }

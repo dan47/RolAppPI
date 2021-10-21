@@ -1,6 +1,8 @@
 package com.example.rolapppi.ui.cattle;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,6 +15,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -35,6 +38,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -45,6 +49,7 @@ public class CattleFragment extends Fragment implements MyAdapter.OnModelListene
     SearchView searchView;
     MyAdapter myAdapter;
     CattleViewModel viewModel;
+    Button filterBtn;
     FloatingActionButton addBtn;
     ProgressBar progressBar;
     Animation fadein;
@@ -73,6 +78,8 @@ public class CattleFragment extends Fragment implements MyAdapter.OnModelListene
 
 //        fadein = AnimationUtils.loadAnimation(getContext(), R.anim.fade_in);
 //        fadeout= AnimationUtils.loadAnimation(getContext(), R.anim.fade_out);
+        filterBtn = view.findViewById(R.id.filterBtn);
+        addBtn = view.findViewById(R.id.addBtn);
         progressBar = view.findViewById(R.id.progressBarCattleFragment);
 
         myAdapter = new MyAdapter(this);
@@ -82,9 +89,8 @@ public class CattleFragment extends Fragment implements MyAdapter.OnModelListene
 
 
 
-        progressBar.setVisibility(View.INVISIBLE);
+
         navController = Navigation.findNavController(view);
-        addBtn = view.findViewById(R.id.addBtn);
         addBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -92,10 +98,11 @@ public class CattleFragment extends Fragment implements MyAdapter.OnModelListene
                         exampleDialog.show(getParentFragmentManager() , "example dialog");
                     }
                 });
-        progressBar.setVisibility(View.VISIBLE);
+
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
         viewModel = new ViewModelProvider(requireActivity()).get(CattleViewModel.class);
         viewModel.selected.setValue(null);
+
         viewModel.getLiveDatafromFireStore().observe(getViewLifecycleOwner(), new Observer<List<CattleModel>>() {
             @Override
             public void onChanged(List<CattleModel> cattleModels) {
@@ -105,16 +112,17 @@ public class CattleFragment extends Fragment implements MyAdapter.OnModelListene
                 progressBar.setVisibility(View.GONE);
 //                recyclerView.setAnimation(fadein);
 //                progressBar.setAnimation(fadeout);
-
-
             }
         });
+
+
         searchView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 searchView.onActionViewExpanded();
             }
         });
+
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -125,6 +133,34 @@ public class CattleFragment extends Fragment implements MyAdapter.OnModelListene
             public boolean onQueryTextChange(String newText) {
                 myAdapter.getFilter().filter(newText);
                 return true;
+            }
+        });
+
+        filterBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder builder =  new AlertDialog.Builder(getContext());
+
+                String[] choicesArray =  new String[]{"Samica", "Samiec", "Zacielenie"};
+
+                List<String> choicesList = Arrays.asList(choicesArray);
+                builder.setTitle("Filtr")
+                        .setSingleChoiceItems(choicesArray, -1, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                String currentItem = choicesList.get(i);
+                                myAdapter.getFilter().filter(currentItem);
+                                dialogInterface.dismiss();
+                            }
+                        });
+                builder.setNegativeButton("Anuluj", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        myAdapter.getFilter().filter("");
+                        dialogInterface.dismiss();
+                    }
+                });
+                builder.create().show();
             }
         });
 
