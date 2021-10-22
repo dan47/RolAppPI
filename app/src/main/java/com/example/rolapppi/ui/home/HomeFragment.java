@@ -1,17 +1,9 @@
 package com.example.rolapppi.ui.home;
 
-import static android.app.Activity.RESULT_OK;
-
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -24,46 +16,55 @@ import com.example.rolapppi.R;
 import com.example.rolapppi.databinding.FragmentHomeBinding;
 import com.example.rolapppi.ui.cattle.CattleModel;
 import com.example.rolapppi.ui.cattle.CattleViewModel;
-import com.opencsv.CSVReader;
 
-import java.io.File;
-import java.io.FileReader;
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class HomeFragment extends Fragment {
 
-    private HomeViewModel homeViewModel;
-    private FragmentHomeBinding binding;
+    private CattleViewModel viewModel;
+    private TextView countCattle, countGender, countCalving;
+
+
+    public HomeFragment() {
+        // Required empty public constructor
+    }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        homeViewModel =
-                new ViewModelProvider(this).get(HomeViewModel.class);
-
-        binding = FragmentHomeBinding.inflate(inflater, container, false);
-        View root = binding.getRoot();
-
-
-        final TextView textView = binding.textHome;
-        homeViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
-        return root;
+        return inflater.inflate(R.layout.fragment_home, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+
+        countCattle = view.findViewById(R.id.countCattle);
+        countGender = view.findViewById(R.id.countGender);
+        countCalving = view.findViewById(R.id.countCalving);
+
+        viewModel = new ViewModelProvider(requireActivity()).get(CattleViewModel.class);
+
+        viewModel.getLiveDatafromFireStore().observe(getViewLifecycleOwner(), new Observer<List<CattleModel>>() {
+            @Override
+            public void onChanged(List<CattleModel> cattleModels) {
+                countCattle.setText(Integer.toString(cattleModels.size()));
+                List<CattleModel> countG = new ArrayList<>();
+                cattleModels.stream().filter(e-> e.getGender().equals("Samica")).forEach(e-> countG.add(e));
+                countGender.setText(Integer.toString(countG.size())+"/"+Integer.toString(cattleModels.size()-countG.size()));
+                countG.clear();
+                cattleModels.stream().filter(e-> !e.getCaliving().isEmpty()).forEach(e-> countG.add(e));
+                countCalving.setText(Integer.toString(countG.size()));
+//                cattleModels.sort((d1, d2) -> LocalDate.parse(d1.getBirthday(), formatter).compareTo(LocalDate.parse(d2.getBirthday(), formatter)));
+//                myAdapter.setCattleModelData(cattleModels);
+//                myAdapter.notifyDataSetChanged();
+//                progressBar.setVisibility(View.GONE);
+//                recyclerView.setAnimation(fadein);
+//                progressBar.setAnimation(fadeout);
+            }
+        });
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        binding = null;
-    }
 }
