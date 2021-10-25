@@ -1,14 +1,7 @@
 package com.example.rolapppi.ui.cattle;
 
-import android.text.format.DateFormat;
-
-import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentId;
 
-import java.sql.Date;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Locale;
 
 public class CattleModel {
     @DocumentId

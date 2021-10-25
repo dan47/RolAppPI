@@ -52,6 +52,7 @@ public class AddCattleDialog extends AppCompatDialogFragment {
         mPickDateButton = view.findViewById(R.id.birthdayBtn);
         MaterialDatePicker.Builder materialDateBuilder = MaterialDatePicker.Builder.datePicker();
         materialDateBuilder.setTitleText("Wybierz datę");
+        SimpleDateFormat simpleFormat = new SimpleDateFormat("dd.MM.yyyy");
 
         final MaterialDatePicker materialDatePicker = materialDateBuilder.build();
         mPickDateButton.setOnClickListener(
@@ -67,7 +68,6 @@ public class AddCattleDialog extends AppCompatDialogFragment {
                     @SuppressLint("SetTextI18n")
                     @Override
                     public void onPositiveButtonClick(Object selection) {
-                        SimpleDateFormat simpleFormat = new SimpleDateFormat("dd.MM.yyyy");
                         Date date = new Date((Long) selection);
                         birthdayE.setText(simpleFormat.format(date));
                     }
@@ -83,6 +83,8 @@ public class AddCattleDialog extends AppCompatDialogFragment {
         mother_idChoose = view.findViewById(R.id.autoCompleteTextView);
         male_chip.setChecked(true);
 
+        Date date = new Date();
+        birthdayE.setText(simpleFormat.format(date));
 
         cattleViewModel = new ViewModelProvider(requireActivity()).get(CattleViewModel.class);
 
@@ -149,10 +151,10 @@ public class AddCattleDialog extends AppCompatDialogFragment {
 //                    animal_idE.setError("Za krótki numer identyfikacyjny");
 //                    return;
 //                }
-                if (TextUtils.isEmpty(birthday)) {
-                    birthdayE.setError("Proszę wybrać datę urodzin");
-                    return;
-                }
+//                if (TextUtils.isEmpty(birthday)) {
+//                    birthdayE.setError("Proszę wybrać datę urodzin");
+//                    return;
+//                }
                 if (TextUtils.isEmpty(mother_id)) {
                     mother_idChoose.setError("Proszę wprowadzić numer identyfikacyjny matki");
                     return;

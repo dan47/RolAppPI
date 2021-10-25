@@ -1,29 +1,23 @@
 package com.example.rolapppi.ui.cattle;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.EditText;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.OnLifecycleEvent;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -31,23 +25,19 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.rolapppi.R;
-import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 
-public class CattleFragment extends Fragment implements MyAdapter.OnModelListener{
+public class CattleFragment extends Fragment implements CAdapter.OnModelListener{
 
-    private DetailsCattleFragment detailsCattleFragment = new DetailsCattleFragment();
     RecyclerView recyclerView;
     SearchView searchView;
-    MyAdapter myAdapter;
+    CAdapter cAdapter;
     CattleViewModel viewModel;
     Button filterBtn;
     FloatingActionButton addBtn;
@@ -73,21 +63,26 @@ public class CattleFragment extends Fragment implements MyAdapter.OnModelListene
         super.onViewCreated(view, savedInstanceState);
 
 //        navController = Navigation.findNavController(view);
-        recyclerView = view.findViewById(R.id.recyclerView);
+        recyclerView = view.findViewById(R.id.cattleRecyclerView);
         searchView = view.findViewById(R.id.searchView);
-
+//        fadein = new AlphaAnimation(0, 1);
+//        fadein.setInterpolator(new DecelerateInterpolator()); //add this
+//        fadein.setDuration(1500); //time in m
+//
+//        fadeout = new AlphaAnimation(1, 0);
+//        fadeout.setInterpolator(new AccelerateInterpolator()); //and this
+//        fadeout.setStartOffset(1000);
+//        fadeout.setDuration(1500);
 //        fadein = AnimationUtils.loadAnimation(getContext(), R.anim.fade_in);
 //        fadeout= AnimationUtils.loadAnimation(getContext(), R.anim.fade_out);
         filterBtn = view.findViewById(R.id.filterBtn);
         addBtn = view.findViewById(R.id.addBtn);
         progressBar = view.findViewById(R.id.progressBarCattleFragment);
 
-        myAdapter = new MyAdapter(this);
+        cAdapter = new CAdapter(this);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setHasFixedSize(true);
-        recyclerView.setAdapter(myAdapter);
-
-
+        recyclerView.setAdapter(cAdapter);
 
 
         navController = Navigation.findNavController(view);
@@ -107,8 +102,8 @@ public class CattleFragment extends Fragment implements MyAdapter.OnModelListene
             @Override
             public void onChanged(List<CattleModel> cattleModels) {
                 cattleModels.sort((d1, d2) -> LocalDate.parse(d1.getBirthday(), formatter).compareTo(LocalDate.parse(d2.getBirthday(), formatter)));
-                myAdapter.setCattleModelData(cattleModels);
-                myAdapter.notifyDataSetChanged();
+                cAdapter.setCattleModelData(cattleModels);
+                cAdapter.notifyDataSetChanged();
                 progressBar.setVisibility(View.GONE);
 //                recyclerView.setAnimation(fadein);
 //                progressBar.setAnimation(fadeout);
@@ -131,7 +126,7 @@ public class CattleFragment extends Fragment implements MyAdapter.OnModelListene
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                myAdapter.getFilter().filter(newText);
+                cAdapter.getFilter().filter(newText);
                 return true;
             }
         });
@@ -149,14 +144,14 @@ public class CattleFragment extends Fragment implements MyAdapter.OnModelListene
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 String currentItem = choicesList.get(i);
-                                myAdapter.getFilter().filter(currentItem);
+                                cAdapter.getFilter().filter(currentItem);
                                 dialogInterface.dismiss();
                             }
                         });
                 builder.setNegativeButton("Anuluj", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        myAdapter.getFilter().filter("");
+                        cAdapter.getFilter().filter("");
                         dialogInterface.dismiss();
                     }
                 });
@@ -169,7 +164,7 @@ public class CattleFragment extends Fragment implements MyAdapter.OnModelListene
 
     @Override
     public void onModelClick(int position) {
-        viewModel.setSelected(myAdapter.cattleModelList.get(position));
+        viewModel.setSelected(cAdapter.cattleModelList.get(position));
         searchView.setQuery("", false);
         searchView.setIconified(true);
         searchView.clearFocus();

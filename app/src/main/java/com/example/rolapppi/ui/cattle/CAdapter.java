@@ -3,11 +3,12 @@ package com.example.rolapppi.ui.cattle;
 import static java.time.temporal.ChronoUnit.DAYS;
 
 import android.graphics.Color;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.ScaleAnimation;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.RelativeLayout;
@@ -26,11 +27,12 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> implements Filterable {
+public class CAdapter extends RecyclerView.Adapter<CAdapter.MyHolder> implements Filterable {
 
     List<CattleModel> cattleModelList;
     List<CattleModel> cattleModelListAll;
     private OnModelListener mOnModelListener;
+    private final static int FADE_DURATION = 1000;
 
     public void setCattleModelData(List<CattleModel> cattleModelData) {
         this.cattleModelList = new ArrayList<>();
@@ -39,7 +41,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> implemen
         this.cattleModelListAll.addAll(cattleModelData);
     }
 
-    public MyAdapter(OnModelListener onModelListener) {
+    public CAdapter(OnModelListener onModelListener) {
         this.mOnModelListener = onModelListener;
     }
 
@@ -47,7 +49,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> implemen
     @Override
     public MyHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_items, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.cattle_list_items, parent, false);
         return new MyHolder(view, mOnModelListener);
     }
 
@@ -87,6 +89,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> implemen
 //        Glide.with(holder.itemView.getContext()).load(cattleModelList.get(position).getImage())
 //                .placeholder(R.drawable.placeholder_image).centerCrop().into(holder.imageView);
     }
+
 
     private long duration(String calving) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
@@ -171,7 +174,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> implemen
 
         TextView animal_id, birthday, gender;
         RelativeLayout relativeLayoutCard;
-        Button button;
         OnModelListener onModelListener;
 
         public MyHolder(@NonNull View itemView, OnModelListener onModelListener) {
@@ -182,12 +184,10 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyHolder> implemen
             gender = itemView.findViewById(R.id.gender);
             relativeLayoutCard = itemView.findViewById(R.id.relativeLayoutCard);
 
-            button = itemView.findViewById(R.id.button);
             this.onModelListener = onModelListener;
 //            button.setOnClickListener(this);
             itemView.setOnClickListener(this);
         }
-
 
         @Override
         public void onClick(View view) {
