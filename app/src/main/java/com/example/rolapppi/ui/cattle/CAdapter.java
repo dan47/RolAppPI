@@ -71,7 +71,7 @@ public class CAdapter extends RecyclerView.Adapter<CAdapter.MyHolder> implements
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
                 LocalDate localDate = java.time.LocalDate.parse(calving, formatter);
                 long duration = DAYS.between(localDate, LocalDate.now());
-                if (duration(calving) > 250) {
+                if (duration(calving) > 235) {
                     holder.relativeLayoutCard.setBackgroundColor(Color.parseColor("#FF7F7F"));
                 } else if (duration > 140) {
                     holder.relativeLayoutCard.setBackgroundColor(Color.parseColor("#FFFF99"));

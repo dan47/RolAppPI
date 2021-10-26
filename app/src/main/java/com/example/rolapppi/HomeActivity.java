@@ -1,28 +1,19 @@
 package com.example.rolapppi;
 
-import android.app.Dialog;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.Menu;
-import android.view.Window;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.EditText;
 
 import com.example.rolapppi.ui.cattle.CattleModel;
 import com.example.rolapppi.ui.cattle.CattleViewModel;
-import com.google.android.material.snackbar.Snackbar;
+import com.example.rolapppi.ui.cropProtection.CropProtectionModel;
+import com.example.rolapppi.ui.cropProtection.CropProtectionViewModel;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -40,7 +31,7 @@ public class HomeActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityHomeBinding binding;
-    private CattleViewModel viewModel;
+    private CattleViewModel cattleViewModel;
     private final int CHOOSE_FILE = 1001;
 
     @Override
@@ -113,13 +104,10 @@ public class HomeActivity extends AppCompatActivity {
         if (item.getItemId() == R.id.action_import) {
             Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
             intent.setType("*/*");
-//                intent.addCategory("application/csv");
-//                startActivity(intent);
             startActivityForResult(intent, CHOOSE_FILE);
         }
         return super.onOptionsItemSelected(item);
     }
-
     @Override
     public boolean onSupportNavigateUp() {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_home);
@@ -141,7 +129,7 @@ public class HomeActivity extends AppCompatActivity {
                     CSVReader reader = new CSVReader(fileReader);
 
                     String[] line = reader.readNext();
-                    viewModel = new ViewModelProvider((ViewModelStoreOwner) binding.getRoot()).get(CattleViewModel.class);
+                    cattleViewModel = new ViewModelProvider(this).get(CattleViewModel.class);
                     while (line != null) {
                         line = reader.readNext();
                         // nextLine[] is an array of values from the line
@@ -152,7 +140,7 @@ public class HomeActivity extends AppCompatActivity {
                             return;
                         }
                         dd[3] = dd[3].replace("-", ".");
-                        viewModel.cattleAdd(new CattleModel(dd[2], dd[3], dd[5], dd[18]));
+                        cattleViewModel.cattleAdd(new CattleModel(dd[2], dd[3], dd[5], dd[18]));
                     }
                 } catch (Exception e) {
                     Log.e("DIPA", e.toString());

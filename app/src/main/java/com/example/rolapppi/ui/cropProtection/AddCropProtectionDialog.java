@@ -103,7 +103,7 @@ public class AddCropProtectionDialog extends AppCompatDialogFragment {
                 sb.append(min);
             }
 
-            treatmentTimeA.setText(temp + " " + sb);
+            treatmentTimeA.setText(sb + " " + temp);
         });
 
 
@@ -116,7 +116,7 @@ public class AddCropProtectionDialog extends AppCompatDialogFragment {
         doseA = view.findViewById(R.id.autoCompleteDose);
         reasonA = view.findViewById(R.id.autoCompleteReason);
 
-        SimpleDateFormat simpleFormat2 = new SimpleDateFormat("dd.MM.yyyy HH:mm");
+        SimpleDateFormat simpleFormat2 = new SimpleDateFormat("HH:mm dd.MM.yyyy");
         Date date = new Date();
         treatmentTimeA.setText(simpleFormat2.format(date));
 
@@ -145,16 +145,9 @@ public class AddCropProtectionDialog extends AppCompatDialogFragment {
         if (edit) {
             builder.setView(view)
                     .setTitle("Ewidencja edycja zabiegu");
-//            mothers_list = cattleViewModel.getLiveDatafromFireStore().getValue().stream()
-//                    .filter(e->e.getGender().equals(getString(R.string.female)))
-//                    .map(x->x.getAnimal_id()).collect(Collectors.toList());
         } else {
             builder.setView(view)
                     .setTitle("Ewidencja dodanie zabiegu");
-//            mothers_list = cattleViewModel.getLiveDatafromFireStore().getValue().stream()
-//                    .filter(e->e.getGender().equals(getString(R.string.female)))
-//                    .filter(y->!y.getCaliving().isEmpty())
-//                    .map(x->x.getAnimal_id()).collect(Collectors.toList());
         }
 
 

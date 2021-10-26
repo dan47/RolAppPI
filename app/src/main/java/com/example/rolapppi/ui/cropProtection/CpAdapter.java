@@ -62,9 +62,9 @@ public class CpAdapter extends  RecyclerView.Adapter<CpAdapter.MyHolder> impleme
     public void onBindViewHolder(@NonNull CpAdapter.MyHolder holder, int position) {
 
 
-        holder.cpId.setText(cropProtectionModelList.get(position).getId());
-        holder.treatmentTime.setText(cropProtectionModelList.get(position).getTreatmentTime());
-        holder.crop.setText(cropProtectionModelList.get(position).getDose());
+        holder.cpId.setText(cropProtectionModelList.get(position).getTreatmentTime());
+        holder.treatmentTime.setText(cropProtectionModelList.get(position).getCrop());
+        holder.crop.setText(cropProtectionModelList.get(position).getReason());
         setFadeAnimation(holder.itemView);
     }
 
@@ -106,7 +106,7 @@ public class CpAdapter extends  RecyclerView.Adapter<CpAdapter.MyHolder> impleme
             if (charSequence.toString().equals("Wszystko")) {
                 filteredList.addAll(cropProtectionModelListAll);
             } else {
-                filteredList = cropProtectionModelListAll.stream().filter(e->e.getTreatmentTime().substring(6,10).equals(charSequence)).collect(Collectors.toList());
+                filteredList = cropProtectionModelListAll.stream().filter(e->e.getTreatmentTime().substring(12,16).equals(charSequence)).collect(Collectors.toList());
             }
 
             FilterResults filterResults = new FilterResults();

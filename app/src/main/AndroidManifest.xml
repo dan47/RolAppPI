@@ -31,12 +31,6 @@
             android:label="@string/title_activity_home"
             android:theme="@style/Theme.RolAppPI.NoActionBar" />
         <activity
-            android:name="authorization.register.RegisterActivity"
-            android:exported="true" />
-        <activity
-            android:name="authorization.login.LoginActivity"
-            android:exported="true" />
-        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
