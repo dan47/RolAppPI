@@ -31,6 +31,15 @@
         android:name="com.example.rolapppi.ui.cattle.DetailsCattleFragment"
         android:label="Szczegóły zwierzęcia" />
     <fragment
+        android:id="@+id/nav_feed"
+        android:name="com.example.rolapppi.ui.feed.FeedFragment"
+        android:label="@string/menu_feed"
+        tools:layout="@layout/fragment_feed" >
+        <action
+            android:id="@+id/action_nav_feed_to_detailsFeedFragment"
+            app:destination="@id/detailsFeedFragment" />
+    </fragment>
+    <fragment
         android:id="@+id/nav_cropProtection"
         android:name="com.example.rolapppi.ui.cropProtection.CropProtectionFragment"
         android:label="@string/menu_cropProtection"
@@ -43,4 +52,9 @@
         android:id="@+id/detailsCropProtectionFragment"
         android:name="com.example.rolapppi.ui.cropProtection.DetailsCropProtectionFragment"
         android:label="DetailsCropProtectionFragment" />
+    <fragment
+        android:id="@+id/detailsFeedFragment"
+        android:name="com.example.rolapppi.ui.feed.DetailsFeedFragment"
+        android:label="fragment_details_feed"
+        tools:layout="@layout/fragment_details_feed" />
 </navigation>

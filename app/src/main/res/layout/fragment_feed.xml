@@ -4,48 +4,46 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.cropProtection.CropProtectionFragment">
+    tools:context=".ui.feed.FeedFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <Spinner
-            android:id="@+id/spinner"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:layout_marginBottom="20dp"
-            android:layout_weight="5"
-            android:minHeight="40dp"
-            android:textAlignment="center"
-            android:visibility="invisible" />
-        <Button
-            android:id="@+id/exportBtn"
-            android:layout_width="46dp"
-            android:layout_height="49dp"
-            android:layout_margin="8dp"
-            android:layout_toEndOf="@+id/searchView"
-            android:background="@drawable/pdf_export"
-            android:visibility="gone"/>
-    </LinearLayout>
+            android:orientation="horizontal">
+
+            <Spinner
+                android:id="@+id/spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:layout_marginBottom="20dp"
+                android:layout_weight="5"
+                android:minHeight="40dp"
+                android:textAlignment="center"
+                android:visibility="invisible" />
+            <Button
+                android:id="@+id/exportBtn"
+                android:layout_width="46dp"
+                android:layout_height="49dp"
+                android:layout_margin="8dp"
+                android:layout_toEndOf="@+id/searchView"
+                android:background="@drawable/pdf_export"
+                android:visibility="gone"/>
+        </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/cropProtectionRecyclerView"
+            android:id="@+id/feedRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
     </LinearLayout>
-
-
 
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -62,7 +60,7 @@
         app:srcCompat="@drawable/plus" />
 
     <ProgressBar
-        android:id="@+id/progressBarCropProtectionFragment"
+        android:id="@+id/progressBarFeedFragment"
         style="?android:attr/progressBarStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

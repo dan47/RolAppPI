@@ -81,10 +81,10 @@ public class CropProtectionFragment extends Fragment implements CpAdapter.OnMode
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        recyclerView = view.findViewById(R.id.cattleRecyclerView);
+        recyclerView = view.findViewById(R.id.cropProtectionRecyclerView);
         addBtn = view.findViewById(R.id.addBtn);
         exportBtn = view.findViewById(R.id.exportBtn);
-        progressBar = view.findViewById(R.id.progressBarCattleFragment);
+        progressBar = view.findViewById(R.id.progressBarCropProtectionFragment);
         spinner = view.findViewById(R.id.spinner);
 
         cpAdapter = new CpAdapter( this);
@@ -109,7 +109,7 @@ public class CropProtectionFragment extends Fragment implements CpAdapter.OnMode
                 new AlertDialog.Builder(view.getContext())
                         .setTitle("Eksport")
                         .setMessage("Czy chcesz eksportować ewidencje zabiegów ochrony roślin?")
-                        .setPositiveButton("Eksportuje", new DialogInterface.OnClickListener() {
+                        .setPositiveButton("Eksportuj", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 try {

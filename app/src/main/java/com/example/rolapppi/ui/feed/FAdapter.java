@@ -1,10 +1,8 @@
-package com.example.rolapppi.ui.cropProtection;
-
+package com.example.rolapppi.ui.feed;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
@@ -23,39 +21,38 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class CpAdapter extends  RecyclerView.Adapter<CpAdapter.MyHolder> implements Filterable{
-
-    List<CropProtectionModel> cropProtectionModelList;
-    List<CropProtectionModel> cropProtectionModelListAll;
-    private CpAdapter.OnModelListener mOnModelListener;
+public class FAdapter extends  RecyclerView.Adapter<FAdapter.MyHolder> implements Filterable {
+    List<FeedModel> feedModelList;
+    List<FeedModel> feedModelListAll;
+    private FAdapter.OnModelListener mOnModelListener;
     private final static int FADE_DURATION = 1000;
 
-    public void setCropProtectionModelData(List<CropProtectionModel> cropProtectionModels) {
-        this.cropProtectionModelList = new ArrayList<>();
-        this.cropProtectionModelListAll = new ArrayList<>();
-        this.cropProtectionModelList.addAll(cropProtectionModels);
-        this.cropProtectionModelListAll.addAll(cropProtectionModels);
+    public void setFeedModelData(List<FeedModel> feedModels) {
+        this.feedModelList = new ArrayList<>();
+        this.feedModelListAll = new ArrayList<>();
+        this.feedModelList.addAll(feedModels);
+        this.feedModelListAll.addAll(feedModels);
     }
 
-    public CpAdapter(CpAdapter.OnModelListener onModelListener) {
+    public FAdapter(FAdapter.OnModelListener onModelListener) {
         this.mOnModelListener = onModelListener;
     }
 
     @NonNull
     @Override
-    public CpAdapter.MyHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public FAdapter.MyHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.crop_protection_list_items, parent, false);
-        return new CpAdapter.MyHolder(view, mOnModelListener);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.feed_list_items, parent, false);
+        return new FAdapter.MyHolder(view, mOnModelListener);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull CpAdapter.MyHolder holder, int position) {
+    public void onBindViewHolder(@NonNull FAdapter.MyHolder holder, int position) {
 
 
-        holder.treatmentTime.setText(cropProtectionModelList.get(position).getTreatmentTime());
-        holder.crop.setText(cropProtectionModelList.get(position).getCrop());
-        holder.reason.setText(cropProtectionModelList.get(position).getReason());
+        holder.purchaseDate.setText(feedModelList.get(position).getPurchaseDate());
+        holder.nameFeed.setText(feedModelList.get(position).getNameFeed());
+        holder.count.setText(feedModelList.get(position).getCount());
         setFadeAnimation(holder.itemView);
     }
 
@@ -73,12 +70,12 @@ public class CpAdapter extends  RecyclerView.Adapter<CpAdapter.MyHolder> impleme
     @Override
     public int getItemCount() {
 
-        if (cropProtectionModelList == null) {
+        if (feedModelList == null) {
 
             return 0;
         } else {
 
-            return cropProtectionModelList.size();
+            return feedModelList.size();
         }
 
     }
@@ -93,11 +90,11 @@ public class CpAdapter extends  RecyclerView.Adapter<CpAdapter.MyHolder> impleme
         @Override
         protected FilterResults performFiltering(CharSequence charSequence) {
 
-            List<CropProtectionModel> filteredList = new ArrayList<>();
+            List<FeedModel> filteredList = new ArrayList<>();
             if (charSequence.toString().equals("Wszystko")) {
-                filteredList.addAll(cropProtectionModelListAll);
+                filteredList.addAll(feedModelListAll);
             } else {
-                filteredList = cropProtectionModelListAll.stream().filter(e->e.getTreatmentTime().substring(12,16).equals(charSequence)).collect(Collectors.toList());
+                filteredList = feedModelListAll.stream().filter(e->e.getPurchaseDate().substring(6,10).equals(charSequence)).collect(Collectors.toList());
             }
 
             FilterResults filterResults = new FilterResults();
@@ -111,8 +108,8 @@ public class CpAdapter extends  RecyclerView.Adapter<CpAdapter.MyHolder> impleme
         protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
 
             if (filterResults.values != null) {
-                cropProtectionModelList.clear();
-                cropProtectionModelList.addAll((Collection<? extends CropProtectionModel>) filterResults.values);
+                feedModelList.clear();
+                feedModelList.addAll((Collection<? extends FeedModel>) filterResults.values);
             }
 
             notifyDataSetChanged();
@@ -123,16 +120,16 @@ public class CpAdapter extends  RecyclerView.Adapter<CpAdapter.MyHolder> impleme
 
     public class MyHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        TextView treatmentTime, crop, reason;
+        TextView purchaseDate, nameFeed, count;
         RelativeLayout relativeLayoutCard;
-        CpAdapter.OnModelListener onModelListener;
+        FAdapter.OnModelListener onModelListener;
 
-        public MyHolder(@NonNull View itemView, CpAdapter.OnModelListener onModelListener) {
+        public MyHolder(@NonNull View itemView, FAdapter.OnModelListener onModelListener) {
             super(itemView);
 
-            treatmentTime = itemView.findViewById(R.id.treatmentTime);
-            crop = itemView.findViewById(R.id.crop);
-            reason = itemView.findViewById(R.id.reason);
+            purchaseDate = itemView.findViewById(R.id.purchaseDate);
+            nameFeed = itemView.findViewById(R.id.nameFeed);
+            count = itemView.findViewById(R.id.count);
             relativeLayoutCard = itemView.findViewById(R.id.relativeLayoutCard);
 
 

@@ -18,6 +18,11 @@
             android:title="@string/menu_cropProtection" />
 
         <item
+            android:id="@+id/nav_feed"
+            android:icon="@drawable/cow"
+            android:title="@string/menu_feed" />
+
+        <item
             android:id="@+id/nav_logout"
             android:icon="@drawable/logout"
             android:title="@string/menu_logout" />

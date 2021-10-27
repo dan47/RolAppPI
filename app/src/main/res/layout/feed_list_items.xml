@@ -15,7 +15,7 @@
         android:padding="16dp">
 
         <TextView
-            android:id="@+id/treatmentTime"
+            android:id="@+id/purchaseDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
@@ -25,10 +25,10 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/crop"
+            android:id="@+id/nameFeed"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/treatmentTime"
+            android:layout_below="@id/purchaseDate"
             android:layout_marginStart="10dp"
             android:layout_marginLeft="10dp"
             android:text="gender"
@@ -37,12 +37,12 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/reason"
+            android:id="@+id/count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/treatmentTime"
+            android:layout_below="@id/purchaseDate"
             android:layout_marginLeft="10dp"
-            android:layout_toRightOf="@+id/crop"
+            android:layout_toRightOf="@+id/nameFeed"
             android:text="birthday"
             android:textColor="#6B000000"
             android:textSize="20sp"

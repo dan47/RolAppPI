@@ -13,6 +13,7 @@
     <string name="menu_home">Home</string>
     <string name="menu_cattle">Bydło</string>
     <string name="menu_cropProtection">Ewidencja ochrony roślin</string>
+    <string name="menu_feed">Rejestr pasz</string>
     <string name="menu_logout">Wyloguj</string>
 
 

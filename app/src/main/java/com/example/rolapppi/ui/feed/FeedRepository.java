@@ -1,4 +1,4 @@
-package com.example.rolapppi.ui.cropProtection;
+package com.example.rolapppi.ui.feed;
 
 import android.util.Log;
 
@@ -19,15 +19,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class CropProtectionRepository {
+public class FeedRepository {
 
 
-    CropProtectionRepository.OnFireStoreDataAdded fireStoreDataAdded;
+    FeedRepository.OnFireStoreDataAdded fireStoreDataAdded;
 
     FirebaseFirestore firestore = FirebaseFirestore.getInstance();
-    Query cropProtectionRef = firestore.collection("user_data").document(FirebaseAuth.getInstance().getUid()).collection("cropProtection");
+    Query cropProtectionRef = firestore.collection("user_data").document(FirebaseAuth.getInstance().getUid()).collection("feed");
 
-    public CropProtectionRepository(CropProtectionRepository.OnFireStoreDataAdded fireStoreDataAdded) {
+    public FeedRepository(FeedRepository.OnFireStoreDataAdded fireStoreDataAdded) {
         this.fireStoreDataAdded = fireStoreDataAdded;
     }
 
@@ -39,7 +39,7 @@ public class CropProtectionRepository {
 
                 if (task.isSuccessful()) {
 
-                    fireStoreDataAdded.cropProtectionDataAdded(task.getResult().toObjects(CropProtectionModel.class));
+                    fireStoreDataAdded.feedDataAdded(task.getResult().toObjects(FeedModel.class));
 
                 } else {
 
@@ -60,41 +60,42 @@ public class CropProtectionRepository {
                     Log.e("Firestore error", error.getMessage());
                     return;
                 }
-                List<CropProtectionModel> tempCropProtectionModelList = new ArrayList<>();
+                List<FeedModel> tempFeedModelList = new ArrayList<>();
                 for(DocumentSnapshot dc : value.getDocuments()){
-                    tempCropProtectionModelList.add(dc.toObject(CropProtectionModel.class));
+                    tempFeedModelList.add(dc.toObject(FeedModel.class));
                 }
-                fireStoreDataAdded.cropProtectionDataAdded(tempCropProtectionModelList);
+                fireStoreDataAdded.feedDataAdded(tempFeedModelList);
             }
         });
     }
 
 
-    public void addCropProtection(CropProtectionModel cropProtectionModel) {
+    public void addFeed(FeedModel feedModel) {
         FirebaseFirestore.getInstance().collection("user_data").document(FirebaseAuth.getInstance().getUid())
-                .collection("cropProtection").document().set(cropProtectionModel);
+                .collection("feed").document().set(feedModel);
     }
 
-    public void deleteCropProtection(CropProtectionModel cropProtectionModel){
+    public void deleteFeed(FeedModel feedModel){
         FirebaseFirestore.getInstance().collection("user_data").document(FirebaseAuth.getInstance().getUid())
-                .collection("cropProtection").document(cropProtectionModel.getId()).delete();
+                .collection("feed").document(feedModel.getId()).delete();
     }
 
-    public void updateCropProtection(CropProtectionModel cropProtectionModel) {
+    public void updateFeed(FeedModel feedModel) {
         HashMap<String, Object> result = new HashMap<String, Object>();
-        result.put("area", cropProtectionModel.getArea());
-        result.put("crop", cropProtectionModel.getCrop());
-        result.put("dose", cropProtectionModel.getDose());
-        result.put("protectionProduct", cropProtectionModel.getProtectionProduct());
-        result.put("reason", cropProtectionModel.getReason());
-        result.put("treatmentTime", cropProtectionModel.getTreatmentTime());
+        result.put("purchaseDate", feedModel.getPurchaseDate());
+        result.put("seller", feedModel.getSeller());
+        result.put("producer", feedModel.getProducer());
+        result.put("nameFeed", feedModel.getNameFeed());
+        result.put("batch", feedModel.getBatch());
+        result.put("count", feedModel.getCount());
+        result.put("packageType", feedModel.getPackageType());
+        result.put("remarks", feedModel.getRemarks());
         FirebaseFirestore.getInstance().collection("user_data").document(FirebaseAuth.getInstance().getUid())
-                .collection("cropProtection").document(cropProtectionModel.getId()).update(result);
+                .collection("feed").document(feedModel.getId()).update(result);
     }
 
     public interface OnFireStoreDataAdded {
-        void cropProtectionDataAdded(List<CropProtectionModel> cropProtectionModels);
+        void feedDataAdded(List<FeedModel> feedModels);
         void OnError(Exception e);
     }
-
 }
