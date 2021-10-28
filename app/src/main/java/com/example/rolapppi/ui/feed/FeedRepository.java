@@ -89,7 +89,6 @@ public class FeedRepository {
         result.put("batch", feedModel.getBatch());
         result.put("count", feedModel.getCount());
         result.put("packageType", feedModel.getPackageType());
-        result.put("remarks", feedModel.getRemarks());
         FirebaseFirestore.getInstance().collection("user_data").document(FirebaseAuth.getInstance().getUid())
                 .collection("feed").document(feedModel.getId()).update(result);
     }

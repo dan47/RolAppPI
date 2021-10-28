@@ -9,18 +9,19 @@
             android:title="@string/menu_home" />
         <item
             android:id="@+id/nav_cattle"
-            android:icon="@drawable/cow"
+            android:icon="@drawable/cow2"
             android:title="@string/menu_cattle" />
 
         <item
             android:id="@+id/nav_cropProtection"
-            android:icon="@drawable/cow"
+            android:icon="@drawable/crop_protection"
             android:title="@string/menu_cropProtection" />
 
         <item
             android:id="@+id/nav_feed"
-            android:icon="@drawable/cow"
+            android:icon="@drawable/feed"
             android:title="@string/menu_feed" />
+
 
         <item
             android:id="@+id/nav_logout"

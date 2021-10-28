@@ -39,6 +39,10 @@ public class AuthenticationViewModel extends AndroidViewModel {
         repository.register(email, pass);
     }
 
+    public void delete() {
+        repository.delete();
+    }
+
     public void signIn(String email, String pass) {
         repository.login(email, pass);
     }

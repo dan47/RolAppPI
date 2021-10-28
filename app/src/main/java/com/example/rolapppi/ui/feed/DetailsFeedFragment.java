@@ -18,7 +18,7 @@ import com.example.rolapppi.ui.cropProtection.AddCropProtectionDialog;
 import com.example.rolapppi.ui.cropProtection.CropProtectionViewModel;
 
 public class DetailsFeedFragment extends Fragment {
-    TextView purchaseDate, seller, producer, nameFeed, batch, count, packageType, remarks;
+    TextView purchaseDate, seller, producer, nameFeed, batch, count, packageType;
     Button editBtn, deleteBtn;
 
 
@@ -44,7 +44,6 @@ public class DetailsFeedFragment extends Fragment {
         batch = view.findViewById(R.id.batch);
         count = view.findViewById(R.id.count);
         packageType = view.findViewById(R.id.packageType);
-        remarks = view.findViewById(R.id.remarks);
 
         editBtn = view.findViewById(R.id.editBtn);
         deleteBtn = view.findViewById(R.id.deleteBtn);
@@ -57,7 +56,6 @@ public class DetailsFeedFragment extends Fragment {
             batch.setText(feedModel.getBatch());
             count.setText(feedModel.getCount());
             packageType.setText(feedModel.getPackageType());
-            remarks.setText(feedModel.getRemarks());
         });
 
         editBtn.setOnClickListener(new View.OnClickListener() {

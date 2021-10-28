@@ -37,7 +37,7 @@ public class AddFeedDialog extends AppCompatDialogFragment {
     private Button submitBtnE;
     private Boolean edit;
     private TextView purchaseDate;
-    private AutoCompleteTextView seller, producer, nameFeed, batch, count, packageType, remarks;
+    private AutoCompleteTextView seller, producer, nameFeed, batch, count, packageType;
 
 
     @Override
@@ -82,7 +82,7 @@ public class AddFeedDialog extends AppCompatDialogFragment {
         batch = view.findViewById(R.id.autoCompleteBatch);
         count = view.findViewById(R.id.autoCompleteCount);
         packageType = view.findViewById(R.id.autoCompletePackageType);
-        remarks = view.findViewById(R.id.autoCompleteRemarks);
+
 
 
         Date date = new Date();
@@ -98,7 +98,7 @@ public class AddFeedDialog extends AppCompatDialogFragment {
             batch.setText(feedModel.getBatch());
             count.setText(feedModel.getCount());
             packageType.setText(feedModel.getPackageType());
-            remarks.setText(feedModel.getRemarks());
+
             purchaseDate.setText(feedModel.getPurchaseDate());
 
             edit = true;
@@ -113,7 +113,6 @@ public class AddFeedDialog extends AppCompatDialogFragment {
         List<String> batches = temp_models_list.stream().map(e -> e.getBatch()).distinct().collect(Collectors.toList());
         List<String> counts = temp_models_list.stream().map(e -> e.getCount()).distinct().collect(Collectors.toList());
         List<String> packagetypes = temp_models_list.stream().map(e -> e.getPackageType()).distinct().collect(Collectors.toList());
-        List<String> remarkss = temp_models_list.stream().map(e -> e.getRemarks()).distinct().collect(Collectors.toList());
 
         if (edit) {
             builder.setView(view)
@@ -130,7 +129,6 @@ public class AddFeedDialog extends AppCompatDialogFragment {
         batch.setAdapter(new ArrayAdapter(getContext(), android.R.layout.simple_dropdown_item_1line, batches));
         count.setAdapter(new ArrayAdapter(getContext(), android.R.layout.simple_dropdown_item_1line, counts));
         packageType.setAdapter(new ArrayAdapter(getContext(), android.R.layout.simple_dropdown_item_1line, packagetypes));
-        remarks.setAdapter(new ArrayAdapter(getContext(), android.R.layout.simple_dropdown_item_1line, remarkss));
 
 
         submitBtnE.setOnClickListener(new View.OnClickListener() {
@@ -144,7 +142,6 @@ public class AddFeedDialog extends AppCompatDialogFragment {
                 String batchString = batch.getText().toString();
                 String countString = count.getText().toString();
                 String packageTypeString = packageType.getText().toString();
-                String remarksString = remarks.getText().toString();
 
 
                 if (TextUtils.isEmpty(sellerString)) {
@@ -174,10 +171,10 @@ public class AddFeedDialog extends AppCompatDialogFragment {
 
 
                 if (edit) {
-                    FeedModel model = new FeedModel(feedModel.getId(), purchaseDateString, sellerString, producerString, nameFeedString, batchString, countString,packageTypeString,remarksString);
+                    FeedModel model = new FeedModel(feedModel.getId(), purchaseDateString, sellerString, producerString, nameFeedString, batchString, countString,packageTypeString);
                     feedViewModel.feedEdit(model);
                 } else {
-                    FeedModel model = new FeedModel(purchaseDateString, sellerString, producerString, nameFeedString, batchString, countString,packageTypeString,remarksString);
+                    FeedModel model = new FeedModel(purchaseDateString, sellerString, producerString, nameFeedString, batchString, countString,packageTypeString);
                     feedViewModel.feedAdd(model);
                 }
                 dismiss();

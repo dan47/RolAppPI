@@ -57,12 +57,12 @@ import java.util.stream.Collectors;
 public class CropProtectionFragment extends Fragment implements CpAdapter.OnModelListener{
 
 
-    RecyclerView recyclerView;
-    CpAdapter cpAdapter;
-    CropProtectionViewModel viewModel;
-    FloatingActionButton addBtn;
-    Button exportBtn;
-    ProgressBar progressBar;
+    private RecyclerView recyclerView;
+    private CpAdapter cpAdapter;
+    private CropProtectionViewModel viewModel;
+    private FloatingActionButton addBtn;
+    private Button exportBtn;
+    private ProgressBar progressBar;
     private Spinner spinner;
     private NavController navController;
 

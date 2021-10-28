@@ -13,9 +13,8 @@ public class FeedModel {
     private String batch;
     private String count;
     private String packageType;
-    private String remarks;
 
-    public FeedModel(String id, String purchaseDate, String seller, String producer, String nameFeed, String batch, String count, String packageType, String remarks) {
+    public FeedModel(String id, String purchaseDate, String seller, String producer, String nameFeed, String batch, String count, String packageType) {
         this.id = id;
         this.purchaseDate = purchaseDate;
         this.seller = seller;
@@ -24,10 +23,9 @@ public class FeedModel {
         this.batch = batch;
         this.count = count;
         this.packageType = packageType;
-        this.remarks = remarks;
     }
 
-    public FeedModel(String purchaseDate, String seller, String producer, String nameFeed, String batch, String count, String packageType, String remarks) {
+    public FeedModel(String purchaseDate, String seller, String producer, String nameFeed, String batch, String count, String packageType) {
         this.purchaseDate = purchaseDate;
         this.seller = seller;
         this.producer = producer;
@@ -35,7 +33,6 @@ public class FeedModel {
         this.batch = batch;
         this.count = count;
         this.packageType = packageType;
-        this.remarks = remarks;
     }
 
     public FeedModel() {
@@ -105,11 +102,4 @@ public class FeedModel {
         this.packageType = packageType;
     }
 
-    public String getRemarks() {
-        return remarks;
-    }
-
-    public void setRemarks(String remarks) {
-        this.remarks = remarks;
-    }
 }

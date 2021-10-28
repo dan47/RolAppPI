@@ -101,6 +101,11 @@ public class HomeActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        if (item.getItemId()==R.id.action_settings){
+            Navigation.findNavController(this, R.id.nav_host_fragment_content_home).navigate(R.id.settingsFragment);
+        }
+
         if (item.getItemId() == R.id.action_import) {
             Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
             intent.setType("*/*");

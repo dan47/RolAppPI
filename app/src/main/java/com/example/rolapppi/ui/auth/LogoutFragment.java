@@ -20,7 +20,6 @@ import com.example.rolapppi.R;
 public class LogoutFragment extends Fragment {
 
     private AuthenticationViewModel viewModel;
-    private NavController navController;
 
 
     @Override

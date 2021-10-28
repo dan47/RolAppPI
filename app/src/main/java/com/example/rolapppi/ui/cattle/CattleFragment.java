@@ -35,15 +35,15 @@ import java.util.List;
 
 public class CattleFragment extends Fragment implements CAdapter.OnModelListener{
 
-    RecyclerView recyclerView;
-    SearchView searchView;
-    CAdapter cAdapter;
-    CattleViewModel viewModel;
-    Button filterBtn;
-    FloatingActionButton addBtn;
-    ProgressBar progressBar;
-    Animation fadein;
-    Animation fadeout;
+    private RecyclerView recyclerView;
+    private SearchView searchView;
+    private CAdapter cAdapter;
+    private CattleViewModel viewModel;
+    private Button filterBtn;
+    private FloatingActionButton addBtn;
+    private ProgressBar progressBar;
+    private Animation fadein;
+    private Animation fadeout;
     private NavController navController;
 
     public CattleFragment() {

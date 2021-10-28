@@ -65,12 +65,12 @@ import java.util.stream.Collectors;
 
 public class FeedFragment extends Fragment implements FAdapter.OnModelListener {
 
-    RecyclerView recyclerView;
-    FAdapter fAdapter;
-    FeedViewModel viewModel;
-    FloatingActionButton addBtn;
-    Button exportBtn;
-    ProgressBar progressBar;
+    private RecyclerView recyclerView;
+    private FAdapter fAdapter;
+    private FeedViewModel viewModel;
+    private FloatingActionButton addBtn;
+    private Button exportBtn;
+    private ProgressBar progressBar;
     private Spinner spinner;
     private NavController navController;
 
@@ -258,8 +258,8 @@ public class FeedFragment extends Fragment implements FAdapter.OnModelListener {
             pdfPTable.addCell(cell);
 
             pdfPTable.addCell("");
-            cell.setPhrase(new Paragraph(e.getRemarks(), normalFont));
-            pdfPTable.addCell(cell);
+            pdfPTable.addCell("");
+
         });
         pdfPTable.setHeaderRows(1);
 

@@ -49,6 +49,7 @@ dependencies {
     implementation 'me.dm7.barcodescanner:zxing:1.9.13'
     implementation 'com.opencsv:opencsv:5.5.2'
     implementation 'com.itextpdf:itextg:5.5.10'
+    implementation 'androidx.preference:preference:1.1.1'
 
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'

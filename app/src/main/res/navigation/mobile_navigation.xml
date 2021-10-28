@@ -51,10 +51,15 @@
     <fragment
         android:id="@+id/detailsCropProtectionFragment"
         android:name="com.example.rolapppi.ui.cropProtection.DetailsCropProtectionFragment"
-        android:label="DetailsCropProtectionFragment" />
+        android:label="Szczegóły zabiegu" />
     <fragment
         android:id="@+id/detailsFeedFragment"
         android:name="com.example.rolapppi.ui.feed.DetailsFeedFragment"
-        android:label="fragment_details_feed"
+        android:label="Szczegóły paszy"
         tools:layout="@layout/fragment_details_feed" />
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.example.rolapppi.ui.auth.SettingsFragment"
+        android:label="Ustawienia"
+        tools:layout="@layout/fragment_settings" />
 </navigation>
