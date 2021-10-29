@@ -6,9 +6,6 @@ import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AlphaAnimation;
-import android.view.animation.Animation;
-import android.view.animation.ScaleAnimation;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.RelativeLayout;
@@ -49,7 +46,7 @@ public class CAdapter extends RecyclerView.Adapter<CAdapter.MyHolder> implements
     @Override
     public MyHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.cattle_list_items, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_items_cattle, parent, false);
         return new MyHolder(view, mOnModelListener);
     }
 

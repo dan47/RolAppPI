@@ -142,11 +142,9 @@ public class CropProtectionFragment extends Fragment implements CpAdapter.OnMode
                 cpAdapter.notifyDataSetChanged();
                 progressBar.setVisibility(View.GONE);
                 if(years.size()!=1){
-                    spinner.setVisibility(View.VISIBLE);
-                    exportBtn.setVisibility(View.VISIBLE);
+                    exportBtn.setClickable(true);
                 }else{
-                    spinner.setVisibility(View.INVISIBLE);
-                    exportBtn.setVisibility(View.GONE);
+                    exportBtn.setClickable(false);
                 }
                 spinner.setAdapter(new ArrayAdapter(getContext(), android.R.layout.simple_dropdown_item_1line, years));
 //                recyclerView.setAnimation(fadein);

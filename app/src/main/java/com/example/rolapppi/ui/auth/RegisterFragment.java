@@ -33,14 +33,14 @@ public class RegisterFragment extends Fragment {
     private NavController navController;
 
     @Override
-    public void onCreate(@Nullable  Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        viewModel = new ViewModelProvider(this , ViewModelProvider.AndroidViewModelFactory
+        viewModel = new ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory
                 .getInstance(getActivity().getApplication())).get(AuthenticationViewModel.class);
         viewModel.getUserData().observe(this, new Observer<FirebaseUser>() {
             @Override
             public void onChanged(FirebaseUser firebaseUser) {
-                if (firebaseUser != null){
+                if (firebaseUser != null) {
                     navController.navigate(R.id.action_registerFragment_to_loginFragment);
                 }
             }
@@ -78,9 +78,16 @@ public class RegisterFragment extends Fragment {
             public void onClick(View v) {
                 String email = emailView.getText().toString();
                 String pass = passwordView.getText().toString();
+                String confPass = confirmPassword.getText().toString();
 
-                if (!email.isEmpty() && !pass.isEmpty()){
-                    viewModel.register(email , pass);
+                if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                    emailView.setError("Nieprawidłowy email");
+                } else if (pass.length() < 6) {
+                    passwordView.setError("Hasło za krótkie");
+                } else if (!confPass.equals(pass)) {
+                    confirmPassword.setError("Hasła są różne");
+                } else {
+                    viewModel.register(email, pass);
                 }
             }
         });

@@ -45,7 +45,7 @@ public class CpAdapter extends  RecyclerView.Adapter<CpAdapter.MyHolder> impleme
     @Override
     public CpAdapter.MyHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.crop_protection_list_items, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_items_crop_protection, parent, false);
         return new CpAdapter.MyHolder(view, mOnModelListener);
     }
 

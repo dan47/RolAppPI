@@ -42,7 +42,7 @@ public class FAdapter extends  RecyclerView.Adapter<FAdapter.MyHolder> implement
     @Override
     public FAdapter.MyHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.feed_list_items, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_items_feed, parent, false);
         return new FAdapter.MyHolder(view, mOnModelListener);
     }
 

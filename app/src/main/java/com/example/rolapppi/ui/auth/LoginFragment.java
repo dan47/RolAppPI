@@ -94,7 +94,11 @@ public class LoginFragment extends Fragment {
                 String email = emailView.getText().toString();
                 String pass = passwordView.getText().toString();
 
-                if (!email.isEmpty() && !pass.isEmpty()) {
+                if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                    emailView.setError("Nieprawidłowy email");
+                } else if (pass.length() < 6) {
+                    passwordView.setError("Hasło za krótkie");
+                }else{
                     viewModel.signIn(email, pass);
                 }
             }

@@ -24,16 +24,14 @@
             android:layout_marginBottom="20dp"
             android:layout_weight="5"
             android:minHeight="40dp"
-            android:textAlignment="center"
-            android:visibility="invisible" />
+            android:textAlignment="center" />
         <Button
             android:id="@+id/exportBtn"
             android:layout_width="46dp"
             android:layout_height="49dp"
             android:layout_margin="8dp"
             android:layout_toEndOf="@+id/searchView"
-            android:background="@drawable/pdf_export"
-            android:visibility="gone"/>
+            android:background="@drawable/pdf_export" />
     </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView

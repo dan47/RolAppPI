@@ -1,6 +1,7 @@
 package com.example.rolapppi.ui.auth;
 
 import android.app.Application;
+import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -39,9 +40,13 @@ public class AuthenticationViewModel extends AndroidViewModel {
         repository.register(email, pass);
     }
 
-    public void delete() {
-        repository.delete();
+    public void delete(String password) {
+        repository.delete(password);
     }
+
+    public void changeEmail(String password, String newEmail){ repository.changeEmail(password, newEmail);}
+
+    public void changePassword(String oldPassword, String newPassword) { repository.changePassword(oldPassword, newPassword); }
 
     public void signIn(String email, String pass) {
         repository.login(email, pass);
