@@ -17,8 +17,6 @@
         app:errorIconDrawable="@null"
         app:errorTextAppearance="@style/ErrorTextAppearance"
         app:hintTextColor="@color/purple_700"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/emailTextInputLayout"
         app:passwordToggleEnabled="true">
 
     <com.google.android.material.textfield.TextInputEditText
