@@ -19,6 +19,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseUser;
 
 
@@ -26,7 +28,8 @@ import com.example.rolapppi.R;
 
 
 public class RegisterFragment extends Fragment {
-    private EditText emailView, passwordView, confirmPassword;
+    private TextInputEditText emailView, passwordView, confirmPassword;
+    private TextInputLayout emailTextInputLayout, passwordTextInputLayout, confirmPasswordTextInputLayout;
     private TextView alreadyHaveAccount;
     private Button registerButton;
     private AuthenticationViewModel viewModel;
@@ -61,6 +64,9 @@ public class RegisterFragment extends Fragment {
         emailView = view.findViewById(R.id.inputEmail);
         passwordView = view.findViewById(R.id.inputPassword);
         confirmPassword = view.findViewById(R.id.inputConfirmPassword);
+        emailTextInputLayout = view.findViewById(R.id.emailTextInputLayout);
+        passwordTextInputLayout = view.findViewById(R.id.passwordTextInputLayout);
+        confirmPasswordTextInputLayout = view.findViewById(R.id.confirmPasswordTextInputLayout);
         alreadyHaveAccount = view.findViewById(R.id.alreadyHaveAccount);
         registerButton = view.findViewById(R.id.btnRegister);
 
@@ -81,11 +87,11 @@ public class RegisterFragment extends Fragment {
                 String confPass = confirmPassword.getText().toString();
 
                 if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-                    emailView.setError("Nieprawidłowy email");
+                    emailTextInputLayout.setError("Nieprawidłowy email");
                 } else if (pass.length() < 6) {
-                    passwordView.setError("Hasło za krótkie");
+                    passwordTextInputLayout.setError("Hasło za krótkie");
                 } else if (!confPass.equals(pass)) {
-                    confirmPassword.setError("Hasła są różne");
+                    confirmPasswordTextInputLayout.setError("Hasła są różne");
                 } else {
                     viewModel.register(email, pass);
                 }

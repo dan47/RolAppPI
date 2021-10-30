@@ -55,4 +55,6 @@ public class AuthenticationViewModel extends AndroidViewModel {
     public void logOut() {
         repository.logOut();
     }
+
+    public void resetPassword(String email) { repository.resetPassword(email); }
 }

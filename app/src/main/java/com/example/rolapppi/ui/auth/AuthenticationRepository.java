@@ -254,4 +254,24 @@ public class AuthenticationRepository {
         firebaseAuth.signOut();
         userLoggedMutableLiveData.postValue(true);
     }
+
+    public void resetPassword(String email) {
+        CheckInternet checkInternet = new CheckInternet();
+        if (checkInternet.isConnected(application)) {
+
+
+            firebaseAuth.sendPasswordResetEmail(email).addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+
+                    if (task.isSuccessful()) {
+                        Toast.makeText(application, "Sprawdź swoją pocztę", Toast.LENGTH_SHORT).show();
+
+                    } else
+                        Toast.makeText(application, "Nieprawidłowe dane", Toast.LENGTH_SHORT).show();
+                }
+            });
+        } else
+            Toast.makeText(application, "Brak połączenia z internetem", Toast.LENGTH_SHORT).show();
+    }
 }

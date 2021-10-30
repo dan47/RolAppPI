@@ -6,43 +6,57 @@
     android:layout_margin="16dp"
     android:orientation="vertical">
 
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/passwordTextInputLayout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:textColorHint="@color/purple_700"
+        app:boxStrokeColor="@color/purple_700"
+        app:errorIconDrawable="@null"
+        app:errorTextAppearance="@style/ErrorTextAppearance"
+        app:hintTextColor="@color/purple_700"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/emailTextInputLayout"
+        app:passwordToggleEnabled="true">
 
-
-    <EditText
-        android:id="@+id/editTextPassword"
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/InputPassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="48dp"
-        android:layout_marginEnd="24dp"
-        android:drawableLeft="@drawable/ic_baseline_password_gray"
-        android:drawablePadding="10dp"
-        android:background="@drawable/input_bg2"
         android:paddingLeft="20dp"
-        android:paddingTop="13dp"
+        android:paddingTop="20dp"
         android:paddingRight="20dp"
-        android:paddingBottom="13dp"
+        android:paddingBottom="20dp"
         android:inputType="textPassword"
-        android:hint="Wpisz swoje hasło"/>
+        android:hint="Wpisz hasło"/>
+    </com.google.android.material.textfield.TextInputLayout>
 
-    <EditText
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/emailTextInputLayout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:textColorHint="@color/purple_700"
+        app:boxStrokeColor="@color/purple_700"
+        app:errorIconDrawable="@null"
+        app:errorTextAppearance="@style/ErrorTextAppearance"
+        app:hintTextColor="@color/purple_700">
+
+    <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/editTextNewEmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="13dp"
-        android:layout_marginBottom="48dp"
-        android:layout_marginEnd="24dp"
-        android:drawableLeft="@drawable/ic_baseline_email_gray"
-        android:drawablePadding="10dp"
-        android:background="@drawable/input_bg2"
         android:paddingLeft="20dp"
-        android:paddingTop="13dp"
+        android:paddingTop="20dp"
         android:paddingRight="20dp"
-        android:paddingBottom="13dp"
+        android:paddingBottom="20dp"
         android:inputType="textEmailAddress"
         android:hint="Wpisz nowy email"/>
+    </com.google.android.material.textfield.TextInputLayout>
 
 </LinearLayout>

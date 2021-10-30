@@ -2,7 +2,6 @@ package com.example.rolapppi.ui.auth;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -10,10 +9,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.Navigation;
 
-import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,13 +17,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.example.rolapppi.MainActivity;
 import com.example.rolapppi.R;
-import com.example.rolapppi.ui.feed.FeedViewModel;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseUser;
-import com.itextpdf.text.DocumentException;
-
-import java.io.IOException;
 
 
 public class SettingsFragment extends Fragment {
@@ -74,8 +67,13 @@ public class SettingsFragment extends Fragment {
             public void onClick(View view) {
                 LayoutInflater inflater = getActivity().getLayoutInflater();
                 View dialogView = inflater.inflate(R.layout.dialog_editemail, null);
-                EditText password = dialogView.findViewById(R.id.editTextPassword);
-                EditText newEmail = dialogView.findViewById(R.id.editTextNewEmail);
+
+                TextInputEditText password = dialogView.findViewById(R.id.InputPassword);
+                TextInputEditText newEmail = dialogView.findViewById(R.id.editTextNewEmail);
+
+                TextInputLayout passwordTextInputLayout = dialogView.findViewById(R.id.passwordTextInputLayout);
+                TextInputLayout emailTextInputLayout = dialogView.findViewById(R.id.emailTextInputLayout);
+
                 AlertDialog alertDialog = new AlertDialog.Builder(view.getContext())
                         .setTitle("Zmiana e-maila")
                         .setView(dialogView)
@@ -96,9 +94,10 @@ public class SettingsFragment extends Fragment {
                                 String newEmailString = newEmail.getText().toString();
 
                                 if (passwordString.length() < 6) {
-                                    password.setError("Hasło za krótkie");
+                                    passwordTextInputLayout.setError("Hasło za krótkie");
                                 } else if (!android.util.Patterns.EMAIL_ADDRESS.matcher(newEmailString).matches()) {
-                                    newEmail.setError("Nieprawidłowy email");
+                                    emailTextInputLayout.setError("Nieprawidłowy e-mail");
+                                    passwordTextInputLayout.setErrorEnabled(false);
                                 } else {
                                     authenticationViewModel.changeEmail(passwordString, newEmailString);
                                     alertDialog.dismiss();
@@ -116,9 +115,15 @@ public class SettingsFragment extends Fragment {
             public void onClick(View view) {
                 LayoutInflater inflater = getActivity().getLayoutInflater();
                 View dialogView = inflater.inflate(R.layout.dialog_editpassword, null);
-                EditText oldPassword = dialogView.findViewById(R.id.editTextOldPassword);
-                EditText newPassword = dialogView.findViewById(R.id.editTextNewPassword);
-                EditText confrimPassword = dialogView.findViewById(R.id.editTextConfirmPassword);
+
+                TextInputEditText oldPassword = dialogView.findViewById(R.id.editTextOldPassword);
+                TextInputEditText newPassword = dialogView.findViewById(R.id.editTextNewPassword);
+                TextInputEditText confrimPassword = dialogView.findViewById(R.id.editTextConfirmPassword);
+
+                TextInputLayout oldPasswordTextInputLayout = dialogView.findViewById(R.id.oldPasswordTextInputLayout);
+                TextInputLayout newPasswordTextInputLayout = dialogView.findViewById(R.id.newPasswordTextInputLayout);
+                TextInputLayout confirmPasswordTextInputLayout = dialogView.findViewById(R.id.confirmPasswordTextInputLayout);
+
                 AlertDialog alertDialog = new AlertDialog.Builder(view.getContext())
                         .setTitle("Zmiana hasła")
                         .setView(dialogView)
@@ -140,13 +145,15 @@ public class SettingsFragment extends Fragment {
                                 String confrimPasswordString = confrimPassword.getText().toString();
 
                                 if (oldPasswordString.length() < 6) {
-                                    oldPassword.setError("Hasło za ktrótkie");
+                                    oldPasswordTextInputLayout.setError("Hasło za ktrótkie");
                                 } else if (newPasswordString.equals(oldPasswordString)) {
-                                    newPassword.setError("Nowe hasło musi różnić od poprzedniego");
+                                    newPasswordTextInputLayout.setError("Nowe hasło musi różnić od poprzedniego");
+                                    oldPasswordTextInputLayout.setErrorEnabled(false);
                                 } else if (newPasswordString.length() < 6) {
-                                    newPassword.setError("Hasło za ktrótkie");
+                                    newPasswordTextInputLayout.setError("Hasło za ktrótkie");
                                 } else if (!confrimPasswordString.equals(newPasswordString)) {
-                                    confrimPassword.setError("Hasła nie pasują do siebie ");
+                                    confirmPasswordTextInputLayout.setError("Hasła nie pasują do siebie ");
+                                    newPasswordTextInputLayout.setErrorEnabled(false);
                                 } else {
                                     authenticationViewModel.changePassword(oldPasswordString, newPasswordString);
                                     alertDialog.dismiss();
@@ -162,10 +169,10 @@ public class SettingsFragment extends Fragment {
         deleteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 LayoutInflater inflater = getActivity().getLayoutInflater();
                 View dialogView = inflater.inflate(R.layout.dialog_deleteuser, null);
-                EditText password = dialogView.findViewById(R.id.editTextPassword);
+                TextInputEditText password = dialogView.findViewById(R.id.InputPassword);
+                TextInputLayout passwordTextInputLayout = dialogView.findViewById(R.id.passwordTextInputLayout);
                 AlertDialog alertDialog = new AlertDialog.Builder(view.getContext())
                         .setTitle("Usunięcie konta")
                         .setView(dialogView)
@@ -184,7 +191,7 @@ public class SettingsFragment extends Fragment {
                                 String oldPasswordString = password.getText().toString();
 
                                 if (oldPasswordString.length() < 6) {
-                                    password.setError("Hasło za ktrótkie");
+                                    passwordTextInputLayout.setError("Hasło za krótkie");
                                 } else {
                                     authenticationViewModel.delete(oldPasswordString);
                                     alertDialog.dismiss();
@@ -194,8 +201,6 @@ public class SettingsFragment extends Fragment {
                     }
                 });
                 alertDialog.show();
-
-
 
 
             }

@@ -11,7 +11,9 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#0C778577" />
+
+        />
+
 
     <ScrollView
         android:layout_width="match_parent"
@@ -39,50 +41,72 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <EditText
-                android:id="@+id/inputEmail"
-                android:layout_width="0dp"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/emailTextInputLayout"
+                style="@style/Widget.MyApp.TextInputLayout"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
                 android:layout_marginTop="48dp"
                 android:layout_marginEnd="24dp"
-                android:background="@drawable/input_bg"
-                android:ems="10"
-                android:drawableLeft="@drawable/ic_baseline_email_24"
-                android:drawablePadding="10dp"
-                android:hint="Email"
-                android:inputType="textEmailAddress"
-                android:paddingLeft="20dp"
-                android:paddingTop="13dp"
-                android:paddingRight="20dp"
-                android:paddingBottom="13dp"
-                android:textColor="@color/white"
                 android:textColorHint="@color/white"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.497"
+                app:errorIconDrawable="@null"
+                app:errorTextAppearance="@style/ErrorTextAppearance"
+                app:hintTextColor="@color/white"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView" />
+                app:layout_constraintTop_toBottomOf="@+id/textView">
 
-            <EditText
-                android:id="@+id/inputPassword"
-                android:layout_width="0dp"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/inputEmail"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:drawableStart="@drawable/ic_baseline_email_24"
+                    android:drawablePadding="10dp"
+                    android:ems="10"
+                    android:hint="Email"
+                    android:textColorLink="@color/white"
+                    android:inputType="textEmailAddress"
+                    android:paddingLeft="20dp"
+                    android:paddingTop="13dp"
+                    android:paddingRight="20dp"
+                    android:paddingBottom="13dp"
+                    android:textColor="@color/white" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/passwordTextInputLayout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
                 android:layout_marginTop="16dp"
-                android:background="@drawable/input_bg"
-                android:ems="10"
-                android:drawableLeft="@drawable/ic_baseline_password_24"
-                android:drawablePadding="10dp"
-                android:hint="Hasło"
-                android:inputType="textPassword"
-                android:paddingLeft="20dp"
-                android:paddingTop="13dp"
-                android:paddingRight="20dp"
-                android:paddingBottom="13dp"
-                android:textColor="@color/white"
+                android:layout_marginEnd="24dp"
                 android:textColorHint="@color/white"
-                app:layout_constraintEnd_toEndOf="@+id/inputEmail"
-                app:layout_constraintStart_toStartOf="@+id/inputEmail"
-                app:layout_constraintTop_toBottomOf="@+id/inputEmail" />
+                app:boxStrokeColor="@color/white"
+                app:errorIconDrawable="@null"
+                app:errorTextAppearance="@style/ErrorTextAppearance"
+                app:hintTextColor="@color/white"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/emailTextInputLayout"
+                app:passwordToggleEnabled="true"
+                app:passwordToggleTint="@color/white">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/inputPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:drawableStart="@drawable/ic_baseline_password_24"
+                    android:drawablePadding="10dp"
+                    android:ems="10"
+                    android:hint="Hasło"
+                    android:inputType="textPassword"
+                    android:paddingLeft="20dp"
+                    android:paddingTop="13dp"
+                    android:paddingRight="20dp"
+                    android:paddingBottom="13dp"
+                    android:textColor="@color/white" />
+            </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
                 android:id="@+id/forgotPassword"
@@ -92,8 +116,8 @@
                 android:text="Zapomniałeś hasła?"
                 android:textColor="@color/white"
                 android:textSize="20sp"
-                app:layout_constraintEnd_toEndOf="@+id/inputPassword"
-                app:layout_constraintTop_toBottomOf="@+id/inputPassword" />
+                app:layout_constraintEnd_toEndOf="@+id/passwordTextInputLayout"
+                app:layout_constraintTop_toBottomOf="@+id/passwordTextInputLayout" />
 
             <Button
                 android:id="@+id/btnLogin"
@@ -103,9 +127,8 @@
                 android:background="@drawable/input_bg"
                 android:text="Zaloguj"
                 android:textColor="@color/white"
-
                 app:layout_constraintEnd_toEndOf="@+id/forgotPassword"
-                app:layout_constraintStart_toStartOf="@+id/inputPassword"
+                app:layout_constraintStart_toStartOf="@+id/passwordTextInputLayout"
                 app:layout_constraintTop_toBottomOf="@+id/forgotPassword" />
 
             <TextView
@@ -123,9 +146,9 @@
             <ProgressBar
                 android:id="@+id/progressBarLogin"
                 style="?android:attr/progressBarStyle"
-                android:visibility="gone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

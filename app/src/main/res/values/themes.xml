@@ -2,21 +2,24 @@
     <!-- Base application theme. -->
     <style name="Theme.RolAppPI" parent="Theme.MaterialComponents.Light">
         <!-- Primary brand color. -->
+        <item name="windowNoTitle">true</item>
         <item name="colorPrimary">@color/purple_500</item>
         <item name="colorPrimaryVariant">@color/purple_700</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
-        <!--        <item name="colorSecondary">@color/teal_200</item>-->
-        <!--        <item name="colorSecondaryVariant">@color/teal_700</item>-->
+        <item name="colorSecondary">@color/teal_200</item>
+        <item name="colorSecondaryVariant">@color/teal_700</item>
         <item name="colorOnSecondary">@color/white</item>
-<!--        <item name="android:itemBackground">#3B000000</item>-->
-
+        <!--        <item name="android:itemBackground">#3B000000</item>-->
+        <item name="textInputStyle">@style/Widget.MyApp.TextInputLayout</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
-<!--        <item name="preferenceTheme">@style/preference</item>-->
-<!--        <item name="preferenceCategoryStyle">@style/CategoryStyle</item>-->
+        <!--        <item name="preferenceTheme">@style/preference</item>-->
+        <!--        <item name="preferenceCategoryStyle">@style/CategoryStyle</item>-->
         <!-- Customize your theme here. -->
     </style>
+
+
 
     <style name="Theme.RolAppPI.NoActionBar">
         <item name="windowActionBar">false</item>
@@ -27,14 +30,40 @@
         <item name="background">@color/white</item>
     </style>
 
-<!--    <style name="preference" parent="Theme.AppCompat">-->
-<!--        <item name="preferenceCategoryStyle">@style/CategoryStyle</item>-->
-<!--    </style>-->
+
+    <style name="ErrorTextAppearance" parent="TextAppearance.AppCompat">
+        <item name="android:textColor">#FFEB3B</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="backgroundColor">@color/white</item>
+    </style>
+
+    <style name="HelperTextAppearance" parent="TextAppearance.AppCompat">
+        <item name="android:textColor">@android:color/holo_green_dark</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold|italic</item>
+    </style>
 
 
-<!--    <style name="CategoryStyle" parent="Preference.Category">-->
-<!--        <item name="android:textColor">@color/purple_200</item>-->
-<!--    </style>-->
+    <style name="Widget.MyApp.TextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="android:colorFocusedHighlight">@color/white</item>
+        <item name="android:textColorHint">@color/purple_200</item>
+        <item name="color">@color/white</item>
+        <item name="boxStrokeColor">@color/white</item>
+        <item name="boxStrokeWidth">2dp</item>
+        <item name="boxStrokeWidthFocused">3dp</item>
+    </style>
+
+
+
+    <!--    <style name="preference" parent="Theme.AppCompat">-->
+    <!--        <item name="preferenceCategoryStyle">@style/CategoryStyle</item>-->
+    <!--    </style>-->
+
+
+    <!--    <style name="CategoryStyle" parent="Preference.Category">-->
+    <!--        <item name="android:textColor">@color/purple_200</item>-->
+    <!--    </style>-->
 
     <style name="Theme.RolAppPI.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
