@@ -1,4 +1,4 @@
-package com.example.rolapppi.ui.feed;
+package com.example.rolapppi.ui.feedProduced;
 
 import android.util.Log;
 
@@ -19,15 +19,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class FeedRepository {
+public class FeedProducedRepository {
 
-
-    FeedRepository.OnFireStoreDataAdded fireStoreDataAdded;
-
+    FeedProducedRepository.OnFireStoreDataAdded fireStoreDataAdded;
     FirebaseFirestore firestore = FirebaseFirestore.getInstance();
-    Query feedRef = firestore.collection("user_data").document(FirebaseAuth.getInstance().getUid()).collection("feed");
+    Query feedRef = firestore.collection("user_data").document(FirebaseAuth.getInstance().getUid()).collection("feedProduced");
 
-    public FeedRepository(FeedRepository.OnFireStoreDataAdded fireStoreDataAdded) {
+    public FeedProducedRepository(FeedProducedRepository.OnFireStoreDataAdded fireStoreDataAdded) {
         this.fireStoreDataAdded = fireStoreDataAdded;
     }
 
@@ -39,7 +37,7 @@ public class FeedRepository {
 
                 if (task.isSuccessful()) {
 
-                    fireStoreDataAdded.feedDataAdded(task.getResult().toObjects(FeedModel.class));
+                    fireStoreDataAdded.feedProducedDataAdded(task.getResult().toObjects(FeedProducedModel.class));
 
                 } else {
 
@@ -60,41 +58,41 @@ public class FeedRepository {
                     Log.e("Firestore error", error.getMessage());
                     return;
                 }
-                List<FeedModel> tempFeedModelList = new ArrayList<>();
+                List<FeedProducedModel> tempFeedProducedModelList = new ArrayList<>();
                 for(DocumentSnapshot dc : value.getDocuments()){
-                    tempFeedModelList.add(dc.toObject(FeedModel.class));
+                    tempFeedProducedModelList.add(dc.toObject(FeedProducedModel.class));
                 }
-                fireStoreDataAdded.feedDataAdded(tempFeedModelList);
+                fireStoreDataAdded.feedProducedDataAdded(tempFeedProducedModelList);
             }
         });
     }
 
 
-    public void addFeed(FeedModel feedModel) {
+    public void addFeed(FeedProducedModel feedProducedModel) {
         FirebaseFirestore.getInstance().collection("user_data").document(FirebaseAuth.getInstance().getUid())
-                .collection("feed").document().set(feedModel);
+                .collection("feedProduced").document().set(feedProducedModel);
     }
 
-    public void deleteFeed(FeedModel feedModel){
+    public void deleteFeed(FeedProducedModel feedProducedModel){
         FirebaseFirestore.getInstance().collection("user_data").document(FirebaseAuth.getInstance().getUid())
-                .collection("feed").document(feedModel.getId()).delete();
+                .collection("feedProduced").document(feedProducedModel.getId()).delete();
     }
 
-    public void updateFeed(FeedModel feedModel) {
+    public void updateFeed(FeedProducedModel feedProducedModel) {
         HashMap<String, Object> result = new HashMap<String, Object>();
-        result.put("purchaseDate", feedModel.getPurchaseDate());
-        result.put("seller", feedModel.getSeller());
-        result.put("producer", feedModel.getProducer());
-        result.put("nameFeed", feedModel.getNameFeed());
-        result.put("batch", feedModel.getBatch());
-        result.put("count", feedModel.getCount());
-        result.put("packageType", feedModel.getPackageType());
+        result.put("nameFeed", feedProducedModel.getNameFeed());
+        result.put("origin", feedProducedModel.getOrigin());
+        result.put("count", feedProducedModel.getCount());
+        result.put("weight", feedProducedModel.getWeight());
+        result.put("destination", feedProducedModel.getDestination());
+        result.put("cattleType", feedProducedModel.getCattleType());
+        result.put("acquisition", feedProducedModel.getAcquisition());
         FirebaseFirestore.getInstance().collection("user_data").document(FirebaseAuth.getInstance().getUid())
-                .collection("feed").document(feedModel.getId()).update(result);
+                .collection("feedProduced").document(feedProducedModel.getId()).update(result);
     }
 
     public interface OnFireStoreDataAdded {
-        void feedDataAdded(List<FeedModel> feedModels);
+        void feedProducedDataAdded(List<FeedProducedModel> feedProducedModels);
         void OnError(Exception e);
     }
 }

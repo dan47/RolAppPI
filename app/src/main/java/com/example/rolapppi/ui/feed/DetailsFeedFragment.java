@@ -14,13 +14,12 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.rolapppi.R;
-import com.example.rolapppi.ui.cropProtection.AddCropProtectionDialog;
-import com.example.rolapppi.ui.cropProtection.CropProtectionViewModel;
 
 public class DetailsFeedFragment extends Fragment {
+
+
     TextView purchaseDate, seller, producer, nameFeed, batch, count, packageType;
     Button editBtn, deleteBtn;
-
 
     public DetailsFeedFragment() {
         // Required empty public constructor

@@ -1,5 +1,6 @@
 package com.example.rolapppi.ui.home;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,19 +14,26 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.rolapppi.R;
-import com.example.rolapppi.databinding.FragmentHomeBinding;
 import com.example.rolapppi.ui.cattle.CattleModel;
 import com.example.rolapppi.ui.cattle.CattleViewModel;
+import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.formatter.PercentFormatter;
+import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class HomeFragment extends Fragment {
 
     private CattleViewModel viewModel;
     private TextView countCattle, countGender, countCalving;
-
+    private PieChart cattlePieChart,calvingPieChart;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -36,6 +44,23 @@ public class HomeFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_home, container, false);
     }
 
+    private void setupPieChart(PieChart pieChart, String name){
+        pieChart.setDrawHoleEnabled(true);
+        pieChart.setUsePercentValues(true);
+        pieChart.setEntryLabelTextSize(12);
+        pieChart.setEntryLabelColor(Color.BLACK);
+        pieChart.setCenterText(name);
+        pieChart.setCenterTextSize(24);
+        pieChart.getDescription().setEnabled(false);
+
+        Legend legend = pieChart.getLegend();
+        legend.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
+        legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
+        legend.setOrientation(Legend.LegendOrientation.VERTICAL);
+        legend.setDrawInside(false);
+        legend.setEnabled(true);
+    }
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -44,19 +69,74 @@ public class HomeFragment extends Fragment {
         countCattle = view.findViewById(R.id.countCattle);
         countGender = view.findViewById(R.id.countGender);
         countCalving = view.findViewById(R.id.countCalving);
-
+        cattlePieChart = view.findViewById(R.id.cattlePieChart);
+        calvingPieChart = view.findViewById(R.id.calvingPieChart);
+        setupPieChart(cattlePieChart, "Bydło");
+        setupPieChart(calvingPieChart, "Zacielone");
         viewModel = new ViewModelProvider(requireActivity()).get(CattleViewModel.class);
 
         viewModel.getLiveDatafromFireStore().observe(getViewLifecycleOwner(), new Observer<List<CattleModel>>() {
             @Override
             public void onChanged(List<CattleModel> cattleModels) {
+
                 countCattle.setText(Integer.toString(cattleModels.size()));
+
                 List<CattleModel> countG = new ArrayList<>();
+
                 cattleModels.stream().filter(e-> e.getGender().equals("Samica")).forEach(e-> countG.add(e));
-                countGender.setText(Integer.toString(countG.size())+"/"+Integer.toString(cattleModels.size()-countG.size()));
+                int female = countG.size();
+                int male = cattleModels.size()-countG.size();
+                countGender.setText(Integer.toString(female)+"/"+Integer.toString(male));
+
+
                 countG.clear();
                 cattleModels.stream().filter(e-> !e.getCaliving().isEmpty()).forEach(e-> countG.add(e));
-                countCalving.setText(Integer.toString(countG.size()));
+                int calving = countG.size();
+                countCalving.setText(Integer.toString(calving));
+
+
+                ArrayList<Integer> colors = new ArrayList<>();
+                for (int color : ColorTemplate.MATERIAL_COLORS){
+                    colors.add(color);
+                }
+                for (int color : ColorTemplate.VORDIPLOM_COLORS){
+                    colors.add(color);
+                }
+
+                List<PieEntry> cattleEntries = new ArrayList<>();
+                cattleEntries.add(new PieEntry(male,"Samce"));
+                cattleEntries.add(new PieEntry(female,"Samice"));
+
+                PieDataSet pieDataSet = new PieDataSet(cattleEntries,"Legenda");
+                pieDataSet.setColors(colors);
+
+                PieData data = new PieData(pieDataSet);
+                data.setDrawValues(true);
+                data.setValueFormatter(new PercentFormatter(cattlePieChart));
+                data.setValueTextSize(12f);
+                data.setValueTextColor(Color.BLACK);
+
+                cattlePieChart.setData(data);
+                cattlePieChart.invalidate();
+
+                List<PieEntry> calvingEntries = new ArrayList<>();
+                calvingEntries.add(new PieEntry(female-calving,"Niezacielone"));
+                calvingEntries.add(new PieEntry(calving,"Zacielone"));
+
+                PieDataSet calvingpieDataSet = new PieDataSet(calvingEntries,"Legenda");
+                calvingpieDataSet.setColors(colors);
+
+                PieData calvingData = new PieData(calvingpieDataSet);
+                calvingData.setDrawValues(true);
+                calvingData.setValueFormatter(new PercentFormatter(calvingPieChart));
+                calvingData.setValueTextSize(12f);
+                calvingData.setValueTextColor(Color.BLACK);
+
+                calvingPieChart.setData(calvingData);
+                calvingPieChart.invalidate();
+
+
+
 //                cattleModels.sort((d1, d2) -> LocalDate.parse(d1.getBirthday(), formatter).compareTo(LocalDate.parse(d2.getBirthday(), formatter)));
 //                myAdapter.setCattleModelData(cattleModels);
 //                myAdapter.notifyDataSetChanged();

@@ -2,9 +2,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:layout_margin="16dp"
     android:orientation="vertical">
+
 
     <ScrollView
         android:layout_width="match_parent"
@@ -17,36 +18,35 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
                 android:padding="8dp">
 
                 <TextView
-                    android:id="@+id/treatmentTime"
+                    android:id="@+id/acquisitionDate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="8dp"
-                    android:layout_toRightOf="@+id/treatmentBtn"
+                    android:layout_toRightOf="@+id/acquisitionDateBtn"
                     android:inputType="text"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/treatmentTimeText"
+                    app:layout_constraintStart_toEndOf="@+id/acquisitionDateText"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintVertical_bias="0.476" />
 
                 <TextView
-                    android:id="@+id/treatmentTimeText"
+                    android:id="@+id/acquisitionDateText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
-                    android:layout_toRightOf="@+id/treatmentBtn"
-                    android:hint="Czas zabiegu:"
-                    android:inputType="text"
+                    android:layout_toRightOf="@+id/acquisitionDateBtn"
+                    android:hint="Data nabycia:"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/treatmentBtn"
+                    app:layout_constraintStart_toEndOf="@+id/acquisitionDateBtn"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <Button
-                    android:id="@+id/treatmentBtn"
+                    android:id="@+id/acquisitionDateBtn"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_marginStart="8dp"
@@ -66,12 +66,12 @@
                 android:windowSoftInputMode="stateHidden|adjustResize">
 
                 <AutoCompleteTextView
-                    android:id="@+id/autoCompleteCrop"
+                    android:id="@+id/autoCompleteNameFeed"
                     android:inputType="textCapSentences"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
-                    android:hint="Uprawa" />
+                    android:hint="Nazwa paszy" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -81,26 +81,12 @@
                 android:windowSoftInputMode="stateHidden|adjustResize">
 
                 <AutoCompleteTextView
-                    android:id="@+id/autoCompleteArea"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:hint="Powierzchnia (ha)" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:windowSoftInputMode="stateHidden|adjustResize">
-
-                <AutoCompleteTextView
-                    android:id="@+id/autoCompleteProtectionProduct"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:id="@+id/autoCompleteOrigin"
                     android:inputType="textCapSentences"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
-                    android:hint="Pełna nazwa środka ochrony roślin" />
+                    android:hint="Pochodzenie paszy (własne/zakup)" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -110,11 +96,12 @@
                 android:windowSoftInputMode="stateHidden|adjustResize">
 
                 <AutoCompleteTextView
-                    android:id="@+id/autoCompleteDose"
+                    android:id="@+id/autoCompleteCount"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:inputType="number"
                     android:layout_marginBottom="8dp"
-                    android:hint="Dawka zastosowanego środka (l/ha)" />
+                    android:hint="Ilość paszy" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -124,13 +111,28 @@
                 android:windowSoftInputMode="stateHidden|adjustResize">
 
                 <AutoCompleteTextView
-                    android:id="@+id/autoCompleteReason"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:id="@+id/autoCompleteDestination"
                     android:inputType="textCapSentences"
-                    android:layout_marginBottom="32dp"
-                    android:hint="Przczyny zabiegu" />
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:hint="Przeznaczenie" />
             </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:windowSoftInputMode="stateHidden|adjustResize">
+
+                <AutoCompleteTextView
+                    android:id="@+id/autoCompletedCattleType"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:hint="Kategoria zwierząt" />
+            </com.google.android.material.textfield.TextInputLayout>
+
 
             <Button
                 android:id="@+id/submitBtn"

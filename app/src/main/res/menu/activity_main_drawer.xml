@@ -22,6 +22,11 @@
             android:icon="@drawable/feed"
             android:title="@string/menu_feed" />
 
+        <item
+            android:id="@+id/nav_feedProduced"
+            android:icon="@drawable/feed2"
+            android:title="@string/menu_feedProduced" />
+
 
         <item
             android:id="@+id/nav_logout"

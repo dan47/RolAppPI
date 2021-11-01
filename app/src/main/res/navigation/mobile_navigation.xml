@@ -40,6 +40,15 @@
             app:destination="@id/detailsFeedFragment" />
     </fragment>
     <fragment
+        android:id="@+id/nav_feedProduced"
+        android:name="com.example.rolapppi.ui.feedProduced.FeedProducedFragment"
+        android:label="@string/menu_feedProduced"
+        tools:layout="@layout/fragment_feed_produced" >
+        <action
+            android:id="@+id/action_nav_feedProduced_to_detailsFeedProducedFragment"
+            app:destination="@id/detailsFeedProducedFragment" />
+    </fragment>
+    <fragment
         android:id="@+id/nav_cropProtection"
         android:name="com.example.rolapppi.ui.cropProtection.CropProtectionFragment"
         android:label="@string/menu_cropProtection"
@@ -62,4 +71,9 @@
         android:name="com.example.rolapppi.ui.auth.SettingsFragment"
         android:label="Ustawienia"
         tools:layout="@layout/fragment_settings" />
+    <fragment
+        android:id="@+id/detailsFeedProducedFragment"
+        android:name="com.example.rolapppi.ui.feedProduced.DetailsFeedProducedFragment"
+        android:label="Szczegółu zbioru"
+        tools:layout="@layout/fragment_details_feed_produced" />
 </navigation>

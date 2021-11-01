@@ -17,12 +17,8 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.rolapppi.R;
-import com.example.rolapppi.ui.cropProtection.CropProtectionModel;
-import com.example.rolapppi.ui.cropProtection.CropProtectionViewModel;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
-import com.google.android.material.timepicker.MaterialTimePicker;
-import com.google.android.material.timepicker.TimeFormat;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -82,7 +78,6 @@ public class AddFeedDialog extends AppCompatDialogFragment {
         batch = view.findViewById(R.id.autoCompleteBatch);
         count = view.findViewById(R.id.autoCompleteCount);
         packageType = view.findViewById(R.id.autoCompletePackageType);
-
 
 
         Date date = new Date();
@@ -171,10 +166,10 @@ public class AddFeedDialog extends AppCompatDialogFragment {
 
 
                 if (edit) {
-                    FeedModel model = new FeedModel(feedModel.getId(), purchaseDateString, sellerString, producerString, nameFeedString, batchString, countString,packageTypeString);
+                    FeedModel model = new FeedModel(feedModel.getId(), purchaseDateString, sellerString, producerString, nameFeedString, batchString, countString, packageTypeString);
                     feedViewModel.feedEdit(model);
                 } else {
-                    FeedModel model = new FeedModel(purchaseDateString, sellerString, producerString, nameFeedString, batchString, countString,packageTypeString);
+                    FeedModel model = new FeedModel(purchaseDateString, sellerString, producerString, nameFeedString, batchString, countString, packageTypeString);
                     feedViewModel.feedAdd(model);
                 }
                 dismiss();

@@ -3,6 +3,7 @@ package com.example.rolapppi.ui.auth;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 
@@ -24,6 +25,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 
+import com.example.rolapppi.HomeActivity;
+import com.example.rolapppi.MainActivity;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseUser;
@@ -52,7 +55,9 @@ public class LoginFragment extends Fragment {
             public void onChanged(FirebaseUser firebaseUser) {
                 if (firebaseUser != null) {
                     progressBar.setVisibility(View.GONE);
-                    navController.navigate(R.id.action_loginFragment_to_homeActivity);
+                    Intent intent = new Intent(getActivity(), HomeActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
                 }
             }
         });

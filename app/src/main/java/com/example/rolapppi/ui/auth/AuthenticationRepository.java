@@ -141,6 +141,14 @@ public class AuthenticationRepository {
                                             }
                                         }
                                     });
+                                    firestore.collection("user_data/" + uid + "/feedProduced").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                            for (QueryDocumentSnapshot snapshot : task.getResult()) {
+                                                firestore.collection("user_data/" + uid + "/feedProduced").document(snapshot.getId()).delete();
+                                            }
+                                        }
+                                    });
                                     firestore.collection("user_data").document(uid).delete();
                                 }
                                 if (task.isSuccessful()) {

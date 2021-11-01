@@ -68,6 +68,7 @@
 
                 <AutoCompleteTextView
                     android:id="@+id/autoCompleteSeller"
+                    android:inputType="textCapSentences"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
@@ -82,6 +83,7 @@
 
                 <AutoCompleteTextView
                     android:id="@+id/autoCompleteProducer"
+                    android:inputType="textCapSentences"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
@@ -96,6 +98,7 @@
 
                 <AutoCompleteTextView
                     android:id="@+id/autoCompleteNameFeed"
+                    android:inputType="textCapSentences"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
@@ -112,6 +115,7 @@
                     android:id="@+id/autoCompleteBatch"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:inputType="number"
                     android:layout_marginBottom="8dp"
                     android:hint="Numer partii" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -126,6 +130,7 @@
                     android:id="@+id/autoCompleteCount"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:inputType="number"
                     android:layout_marginBottom="8dp"
                     android:hint="Ilość paszy" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -138,6 +143,7 @@
 
                 <AutoCompleteTextView
                     android:id="@+id/autoCompletePackageType"
+                    android:inputType="textCapSentences"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
