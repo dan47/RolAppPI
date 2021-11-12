@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.RelativeLayout;
@@ -28,12 +29,15 @@ public class CAdapter extends RecyclerView.Adapter<CAdapter.MyHolder> implements
 
     List<CattleModel> cattleModelList;
     List<CattleModel> cattleModelListAll;
+    List<CattleModel> cattleModelSelected;
+    boolean mAreCheckboxesVisible = false;
     private OnModelListener mOnModelListener;
     private final static int FADE_DURATION = 1000;
 
     public void setCattleModelData(List<CattleModel> cattleModelData) {
         this.cattleModelList = new ArrayList<>();
         this.cattleModelListAll = new ArrayList<>();
+        this.cattleModelSelected = new ArrayList<>();
         this.cattleModelList.addAll(cattleModelData);
         this.cattleModelListAll.addAll(cattleModelData);
     }
@@ -57,6 +61,8 @@ public class CAdapter extends RecyclerView.Adapter<CAdapter.MyHolder> implements
         String gender = cattleModelList.get(position).getGender();
         holder.animal_id.setText(cattleModelList.get(position).getAnimal_id());
         holder.birthday.setText(cattleModelList.get(position).getBirthday());
+        holder.checkBox.setVisibility(mAreCheckboxesVisible ? View.VISIBLE : View.GONE);
+        holder.checkBox.setChecked(mAreCheckboxesVisible ? holder.checkBox.isChecked() : false);
         holder.gender.setText(gender);
 
 
@@ -167,9 +173,10 @@ public class CAdapter extends RecyclerView.Adapter<CAdapter.MyHolder> implements
     };
 
     //    class MyHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-    public class MyHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class MyHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
 
         TextView animal_id, birthday, gender;
+        CheckBox checkBox;
         RelativeLayout relativeLayoutCard;
         OnModelListener onModelListener;
 
@@ -180,19 +187,39 @@ public class CAdapter extends RecyclerView.Adapter<CAdapter.MyHolder> implements
             birthday = itemView.findViewById(R.id.birthday);
             gender = itemView.findViewById(R.id.gender);
             relativeLayoutCard = itemView.findViewById(R.id.relativeLayoutCard);
+            checkBox = itemView.findViewById(R.id.checkBox);
 
             this.onModelListener = onModelListener;
 //            button.setOnClickListener(this);
             itemView.setOnClickListener(this);
+            itemView.setOnLongClickListener(this);
+            checkBox.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(checkBox.isChecked()){
+                        cattleModelSelected.add(cattleModelList.get(getAdapterPosition()));
+                    }else{
+                        cattleModelSelected.remove(cattleModelList.get(getAdapterPosition()));
+                    }
+                }
+            });
         }
 
         @Override
         public void onClick(View view) {
             onModelListener.onModelClick(getAdapterPosition());
         }
+
+        @Override
+        public boolean onLongClick(View view) {
+            mAreCheckboxesVisible = !mAreCheckboxesVisible;
+            notifyDataSetChanged();
+            return true;
+        }
     }
 
     public interface OnModelListener {
         void onModelClick(int position);
+        boolean onModelLongClick(int position);
     }
 }

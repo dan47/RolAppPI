@@ -31,6 +31,7 @@
         <entry key="..\:/Users/Daniel/AndroidStudioProjects/RolAppPI/app/src/main/res/layout/crop_protection_list_items.xml" value="0.20572916666666666" />
         <entry key="..\:/Users/Daniel/AndroidStudioProjects/RolAppPI/app/src/main/res/layout/custom_dialog.xml" value="0.19791666666666666" />
         <entry key="..\:/Users/Daniel/AndroidStudioProjects/RolAppPI/app/src/main/res/layout/dialog_add_crop_protection.xml" value="0.22" />
+        <entry key="..\:/Users/Daniel/AndroidStudioProjects/RolAppPI/app/src/main/res/layout/dialog_add_custom_cattle.xml" value="0.13020833333333334" />
         <entry key="..\:/Users/Daniel/AndroidStudioProjects/RolAppPI/app/src/main/res/layout/dialog_add_feed_produced.xml" value="0.33" />
         <entry key="..\:/Users/Daniel/AndroidStudioProjects/RolAppPI/app/src/main/res/layout/dialog_addcattle.xml" value="0.33" />
         <entry key="..\:/Users/Daniel/AndroidStudioProjects/RolAppPI/app/src/main/res/layout/dialog_addfeed.xml" value="0.21686746987951808" />
@@ -43,12 +44,14 @@
         <entry key="..\:/Users/Daniel/AndroidStudioProjects/RolAppPI/app/src/main/res/layout/fragment_add_crop_protection_dialog.xml" value="0.20572916666666666" />
         <entry key="..\:/Users/Daniel/AndroidStudioProjects/RolAppPI/app/src/main/res/layout/fragment_cattle.xml" value="0.33" />
         <entry key="..\:/Users/Daniel/AndroidStudioProjects/RolAppPI/app/src/main/res/layout/fragment_cattle_created_list.xml" value="0.20572916666666666" />
+        <entry key="..\:/Users/Daniel/AndroidStudioProjects/RolAppPI/app/src/main/res/layout/fragment_cattle_custom_list.xml" value="0.30117753623188404" />
         <entry key="..\:/Users/Daniel/AndroidStudioProjects/RolAppPI/app/src/main/res/layout/fragment_crop_protection.xml" value="0.20572916666666666" />
+        <entry key="..\:/Users/Daniel/AndroidStudioProjects/RolAppPI/app/src/main/res/layout/fragment_custom_cattle.xml" value="0.22" />
         <entry key="..\:/Users/Daniel/AndroidStudioProjects/RolAppPI/app/src/main/res/layout/fragment_details_cattle.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Daniel/AndroidStudioProjects/RolAppPI/app/src/main/res/layout/fragment_details_crop_protection.xml" value="0.33" />
         <entry key="..\:/Users/Daniel/AndroidStudioProjects/RolAppPI/app/src/main/res/layout/fragment_details_feed.xml" value="0.1" />
         <entry key="..\:/Users/Daniel/AndroidStudioProjects/RolAppPI/app/src/main/res/layout/fragment_details_feed_produced.xml" value="0.33" />
-        <entry key="..\:/Users/Daniel/AndroidStudioProjects/RolAppPI/app/src/main/res/layout/fragment_feed.xml" value="0.1" />
+        <entry key="..\:/Users/Daniel/AndroidStudioProjects/RolAppPI/app/src/main/res/layout/fragment_feed.xml" value="0.33" />
         <entry key="..\:/Users/Daniel/AndroidStudioProjects/RolAppPI/app/src/main/res/layout/fragment_feed_produced.xml" value="0.32472826086956524" />
         <entry key="..\:/Users/Daniel/AndroidStudioProjects/RolAppPI/app/src/main/res/layout/fragment_gallery.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Daniel/AndroidStudioProjects/RolAppPI/app/src/main/res/layout/fragment_home.xml" value="0.25" />

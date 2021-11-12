@@ -27,6 +27,7 @@ import android.widget.TextView;
 
 import com.example.rolapppi.HomeActivity;
 import com.example.rolapppi.MainActivity;
+import com.example.rolapppi.ui.cattle.CattleViewModel;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseUser;
@@ -48,8 +49,7 @@ public class LoginFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        viewModel = new ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory
-                .getInstance(getActivity().getApplication())).get(AuthenticationViewModel.class);
+        viewModel = new ViewModelProvider(requireActivity()).get(AuthenticationViewModel.class);
         viewModel.getUserData().observe(this, new Observer<FirebaseUser>() {
             @Override
             public void onChanged(FirebaseUser firebaseUser) {

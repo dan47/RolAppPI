@@ -17,27 +17,18 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-
-            <Button
-                android:id="@+id/customCattleBtn"
-                android:layout_width="46dp"
-                android:layout_height="49dp"
-                android:layout_margin="8dp"
-                android:layout_toEndOf="@+id/searchView"
-                android:background="@drawable/ic_baseline_filter_list_24"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
-
-            <androidx.appcompat.widget.SearchView
-                android:id="@+id/searchView"
-                android:layout_width="@+id/filterBtn"
+            <Spinner
+                android:id="@+id/spinner"
+                android:layout_width="@id/filterBtn"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                android:background="@drawable/input_bg2"
+                android:layout_marginBottom="20dp"
+                android:layout_weight="5"
+                android:minHeight="40dp"
+                android:textAlignment="center"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/filterBtn"
-                app:layout_constraintStart_toEndOf="@+id/customCattleBtn"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <Button
@@ -45,7 +36,7 @@
                 android:layout_width="46dp"
                 android:layout_height="49dp"
                 android:layout_margin="8dp"
-                android:layout_toEndOf="@+id/searchView"
+                android:layout_toEndOf="@+id/spinner"
                 android:background="@drawable/ic_baseline_filter_list_24"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -54,7 +45,7 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/cattleRecyclerView"
+            android:id="@+id/customCattleRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -67,7 +58,7 @@
 
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/addBtn"
+        android:id="@+id/deleteBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
@@ -80,7 +71,7 @@
         app:srcCompat="@drawable/plus" />
 
     <ProgressBar
-        android:id="@+id/progressBarCattleFragment"
+        android:id="@+id/progressBarCustomCattleFragment"
         style="?android:attr/progressBarStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

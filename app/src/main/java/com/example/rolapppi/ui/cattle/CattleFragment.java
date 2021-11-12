@@ -25,6 +25,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.rolapppi.R;
+import com.example.rolapppi.ui.cattle.customCattle.AddCustomDialog;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.time.LocalDate;
@@ -39,7 +40,7 @@ public class CattleFragment extends Fragment implements CAdapter.OnModelListener
     private SearchView searchView;
     private CAdapter cAdapter;
     private CattleViewModel viewModel;
-    private Button filterBtn;
+    private Button filterBtn, customCattleBtn;
     private FloatingActionButton addBtn;
     private ProgressBar progressBar;
     private Animation fadein;
@@ -73,10 +74,11 @@ public class CattleFragment extends Fragment implements CAdapter.OnModelListener
 //        fadeout.setInterpolator(new AccelerateInterpolator()); //and this
 //        fadeout.setStartOffset(1000);
 //        fadeout.setDuration(1500);
-//        fadein = AnimationUtils.loadAnimation(getContext(), R.anim.fade_in);
+//        fadein = AnimationUtils.loadAnimation(getContext(), R.anim.fade_in);z@
 //        fadeout= AnimationUtils.loadAnimation(getContext(), R.anim.fade_out);
         filterBtn = view.findViewById(R.id.filterBtn);
         addBtn = view.findViewById(R.id.addBtn);
+        customCattleBtn = view.findViewById(R.id.customCattleBtn);
         progressBar = view.findViewById(R.id.progressBarCattleFragment);
 
         cAdapter = new CAdapter(this);
@@ -89,10 +91,22 @@ public class CattleFragment extends Fragment implements CAdapter.OnModelListener
         addBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        AddCattleDialog exampleDialog = new AddCattleDialog();
-                        exampleDialog.show(getParentFragmentManager() , "example dialog");
+                        if(cAdapter.mAreCheckboxesVisible){
+                            AddCustomDialog exampleDialog = new AddCustomDialog(cAdapter.cattleModelSelected);
+                            exampleDialog.show(getParentFragmentManager() , "example dialog");
+                        }else{
+                            AddCattleDialog exampleDialog = new AddCattleDialog();
+                            exampleDialog.show(getParentFragmentManager() , "example dialog");
+                        }
                     }
                 });
+
+        customCattleBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                navController.navigate(R.id.action_nav_cattle_to_customCattleFragment);
+            }
+        });
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
         viewModel = new ViewModelProvider(requireActivity()).get(CattleViewModel.class);
@@ -169,5 +183,11 @@ public class CattleFragment extends Fragment implements CAdapter.OnModelListener
         searchView.setIconified(true);
         searchView.clearFocus();
         navController.navigate(R.id.action_nav_cattle_to_detailsCattleFragment);
+    }
+
+    @Override
+    public boolean onModelLongClick(int position) {
+
+        return true;
     }
 }

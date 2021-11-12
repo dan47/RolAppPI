@@ -19,6 +19,9 @@
         <action
             android:id="@+id/action_nav_cattle_to_detailsCattleFragment"
             app:destination="@id/detailsCattleFragment" />
+        <action
+            android:id="@+id/action_nav_cattle_to_customCattleFragment"
+            app:destination="@id/customCattleFragment" />
     </fragment>
 
     <fragment
@@ -76,4 +79,8 @@
         android:name="com.example.rolapppi.ui.feedProduced.DetailsFeedProducedFragment"
         android:label="Szczegółu zbioru"
         tools:layout="@layout/fragment_details_feed_produced" />
+    <fragment
+        android:id="@+id/customCattleFragment"
+        android:name="com.example.rolapppi.ui.cattle.customCattle.CustomCattleFragment"
+        android:label="CustomCattleFragment" />
 </navigation>
