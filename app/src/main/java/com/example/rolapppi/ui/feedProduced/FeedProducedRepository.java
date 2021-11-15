@@ -83,7 +83,6 @@ public class FeedProducedRepository {
         result.put("nameFeed", feedProducedModel.getNameFeed());
         result.put("origin", feedProducedModel.getOrigin());
         result.put("count", feedProducedModel.getCount());
-        result.put("weight", feedProducedModel.getWeight());
         result.put("destination", feedProducedModel.getDestination());
         result.put("cattleType", feedProducedModel.getCattleType());
         result.put("acquisition", feedProducedModel.getAcquisition());

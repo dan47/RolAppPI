@@ -182,7 +182,12 @@ public class AddCropProtectionDialog extends AppCompatDialogFragment {
                     reason.setError("Proszę wprowadzić przyczyny zastosowania środka");
                     return;
                 }
-
+                if(!areaString.contains("ha")){
+                    areaString = areaString + " ha";
+                }
+                if(!doseString.contains("l/ha")){
+                    doseString = doseString + " l/ha";
+                }
 
                 if (edit) {
                     CropProtectionModel model = new CropProtectionModel(cropProtectionModel.getId(), treatmentTimeString, cropString, areaString, protectionProductString, doseString, reasonString);

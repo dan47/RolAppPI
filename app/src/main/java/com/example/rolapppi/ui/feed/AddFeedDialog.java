@@ -11,9 +11,11 @@ import androidx.lifecycle.ViewModelProvider;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import com.example.rolapppi.R;
@@ -33,21 +35,24 @@ public class AddFeedDialog extends AppCompatDialogFragment {
     private Button submitBtnE;
     private Boolean edit;
     private TextView purchaseDate;
+    private Switch weightSwitch;
     private AutoCompleteTextView seller, producer, nameFeed, batch, count, packageType;
 
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+        super.onViewCreated(view, savedInstanceState);
+    }
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.dialog_addfeed, null);
-
         mPickDateButton = view.findViewById(R.id.purchaseDateBtn);
         MaterialDatePicker.Builder materialDateBuilder = MaterialDatePicker.Builder.datePicker();
         materialDateBuilder.setTitleText("Wybierz datę");
         SimpleDateFormat simpleFormat = new SimpleDateFormat("dd.MM.yyyy");
-
 
         final MaterialDatePicker materialDatePicker = materialDateBuilder.build();
         mPickDateButton.setOnClickListener(
@@ -78,6 +83,7 @@ public class AddFeedDialog extends AppCompatDialogFragment {
         batch = view.findViewById(R.id.autoCompleteBatch);
         count = view.findViewById(R.id.autoCompleteCount);
         packageType = view.findViewById(R.id.autoCompletePackageType);
+        weightSwitch = view.findViewById(R.id.switch1);
 
 
         Date date = new Date();
@@ -163,7 +169,12 @@ public class AddFeedDialog extends AppCompatDialogFragment {
                     packageType.setError("Proszę wprowadzić rodzaj opakowania");
                     return;
                 }
-
+                if(weightSwitch.isChecked())
+                {
+                    countString = countString + " t";
+                }else{
+                    countString = countString + " kg";
+                }
 
                 if (edit) {
                     FeedModel model = new FeedModel(feedModel.getId(), purchaseDateString, sellerString, producerString, nameFeedString, batchString, countString, packageTypeString);

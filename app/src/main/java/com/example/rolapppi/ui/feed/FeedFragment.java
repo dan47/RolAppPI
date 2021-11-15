@@ -19,6 +19,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -108,7 +109,8 @@ public class FeedFragment extends Fragment implements FAdapter.OnModelListener {
             @Override
             public void onClick(View v) {
                 AddFeedDialog exampleDialog = new AddFeedDialog();
-                exampleDialog.show(getParentFragmentManager(), "example dialog");
+                exampleDialog.show(getChildFragmentManager(), "example dialog");
+
             }
         });
 

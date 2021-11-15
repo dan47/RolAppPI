@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import com.example.rolapppi.R;
@@ -34,6 +35,7 @@ public class AddFeedProducedDialog extends AppCompatDialogFragment {
     private Button submitBtnE;
     private Boolean edit;
     private TextView acquisition;
+    private Switch weightSwitch;
     private AutoCompleteTextView nameFeed, origin, count, destination, cattleType;
 
 
@@ -78,6 +80,7 @@ public class AddFeedProducedDialog extends AppCompatDialogFragment {
         count = view.findViewById(R.id.autoCompleteCount);
         destination = view.findViewById(R.id.autoCompleteDestination);
         cattleType = view.findViewById(R.id.autoCompletedCattleType);
+        weightSwitch = view.findViewById(R.id.switch1);
 
 
         Date date = new Date();
@@ -154,13 +157,20 @@ public class AddFeedProducedDialog extends AppCompatDialogFragment {
                     cattleType.setError("Proszę wprowadzić rodzaj zwierząt");
                     return;
                 }
-                String weightString = String.valueOf(Integer.parseInt(countString) * 0.2) + " ton";
+
+                if(!weightSwitch.isChecked())
+                {
+
+                    countString = String.format("%.2f t", Double.parseDouble(countString) * 0.2);
+                }else{
+                    countString = countString + " t";
+                }
 
                 if (edit) {
-                    FeedProducedModel model = new FeedProducedModel(feedProducedModel.getId(), nameFeedString, originString, countString, weightString, destinationString, cattleTypeString, acquisitionString);
+                    FeedProducedModel model = new FeedProducedModel(feedProducedModel.getId(), nameFeedString, originString, countString, destinationString, cattleTypeString, acquisitionString);
                     feedProducedViewModel.feedProducedEdit(model);
                 } else {
-                    FeedProducedModel model = new FeedProducedModel(nameFeedString, originString, countString, weightString, destinationString, cattleTypeString, acquisitionString);
+                    FeedProducedModel model = new FeedProducedModel(nameFeedString, originString, countString, destinationString, cattleTypeString, acquisitionString);
                     feedProducedViewModel.feedProducedAdd(model);
                 }
                 dismiss();

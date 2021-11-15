@@ -12,9 +12,9 @@
 
     <string name="menu_home">Home</string>
     <string name="menu_cattle">Bydło</string>
-    <string name="menu_cropProtection">Ewidencja ochrony roślin</string>
-    <string name="menu_feed">Rejestr pasz</string>
-    <string name="menu_feedProduced">Zbiór pasz</string>
+    <string name="menu_cropProtection">Zabiegi ochrony roślin</string>
+    <string name="menu_feed">Pasze zakupione</string>
+    <string name="menu_feedProduced">Pasze wyprodukowane</string>
     <string name="menu_logout">Wyloguj</string>
 
 

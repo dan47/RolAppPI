@@ -52,7 +52,7 @@ public class DetailsFeedProducedFragment extends Fragment {
             acquisition.setText(feedProducedModel.getAcquisition());
             nameFeed.setText(feedProducedModel.getNameFeed());
             origin.setText(feedProducedModel.getOrigin());
-            count.setText(feedProducedModel.getCount()+" - "+feedProducedModel.getWeight());
+            count.setText(feedProducedModel.getCount());
             destination.setText(feedProducedModel.getDestination());
             cattleType.setText(feedProducedModel.getCattleType());
 

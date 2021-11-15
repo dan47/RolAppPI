@@ -9,27 +9,25 @@ public class FeedProducedModel {
     private String nameFeed;
     private String origin;
     private String count;
-    private String weight;
+
     private String destination;
     private String cattleType;
     private String acquisition;
 
-    public FeedProducedModel(String id, String nameFeed, String origin, String count, String weight, String destination, String cattleType, String acquisition) {
+    public FeedProducedModel(String id, String nameFeed, String origin, String count, String destination, String cattleType, String acquisition) {
         this.id = id;
         this.nameFeed = nameFeed;
         this.origin = origin;
         this.count = count;
-        this.weight = weight;
         this.destination = destination;
         this.cattleType = cattleType;
         this.acquisition = acquisition;
     }
 
-    public FeedProducedModel(String nameFeed, String origin, String count, String weight, String destination, String cattleType, String acquisition) {
+    public FeedProducedModel(String nameFeed, String origin, String count, String destination, String cattleType, String acquisition) {
         this.nameFeed = nameFeed;
         this.origin = origin;
         this.count = count;
-        this.weight = weight;
         this.destination = destination;
         this.cattleType = cattleType;
         this.acquisition = acquisition;
@@ -94,11 +92,5 @@ public class FeedProducedModel {
         this.destination = destination;
     }
 
-    public String getWeight() {
-        return weight;
-    }
 
-    public void setWeight(String weight) {
-        this.weight = weight;
-    }
 }

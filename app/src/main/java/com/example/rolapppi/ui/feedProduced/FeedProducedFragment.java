@@ -237,7 +237,7 @@ public class FeedProducedFragment extends Fragment implements FpAdapter.OnModelL
             cell.setPhrase(new Paragraph(e.getOrigin(), normalFont));
             pdfPTable.addCell(cell);
 
-            cell.setPhrase(new Paragraph(e.getWeight(), normalFont));
+            cell.setPhrase(new Paragraph(e.getCount(), normalFont));
             pdfPTable.addCell(cell);
 
             cell.setPhrase(new Paragraph(e.getDestination(), normalFont));
