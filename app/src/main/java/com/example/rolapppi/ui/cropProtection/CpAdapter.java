@@ -56,7 +56,7 @@ public class CpAdapter extends  RecyclerView.Adapter<CpAdapter.MyHolder> impleme
         holder.treatmentTime.setText(cropProtectionModelList.get(position).getTreatmentTime());
         holder.crop.setText(cropProtectionModelList.get(position).getCrop());
         holder.reason.setText(cropProtectionModelList.get(position).getReason());
-        setFadeAnimation(holder.itemView);
+//        setFadeAnimation(holder.itemView);
     }
 
     private void setFadeAnimation(View view) {

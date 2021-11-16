@@ -54,7 +54,7 @@ public class FpAdapter extends  RecyclerView.Adapter<FpAdapter.MyHolder> impleme
         holder.acquisition.setText(feedProducedModelList.get(position).getAcquisition());
         holder.nameFeed.setText(feedProducedModelList.get(position).getNameFeed());
         holder.count.setText(feedProducedModelList.get(position).getCount());
-        setFadeAnimation(holder.itemView);
+//        setFadeAnimation(holder.itemView);
     }
 
     private void setFadeAnimation(View view) {

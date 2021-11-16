@@ -92,7 +92,12 @@ public class AddFeedProducedDialog extends AppCompatDialogFragment {
             feedProducedModel = feedProducedViewModel.selected.getValue();
             nameFeed.setText(feedProducedModel.getNameFeed());
             origin.setText(feedProducedModel.getOrigin());
-            count.setText(feedProducedModel.getCount());
+            String feedCount = feedProducedModel.getCount();
+            if(feedCount.contains("t")) {
+                weightSwitch.setChecked(true);
+                feedCount = feedCount.substring(0, feedCount.length() - 2);
+            }
+            count.setText(feedCount);
             destination.setText(feedProducedModel.getDestination());
             cattleType.setText(feedProducedModel.getCattleType());
 
@@ -136,7 +141,6 @@ public class AddFeedProducedDialog extends AppCompatDialogFragment {
                 String cattleTypeString = cattleType.getText().toString();
 
 
-
                 if (TextUtils.isEmpty(nameFeedString)) {
                     nameFeed.setError("Proszę wprowadzić nazwę paszy");
                     return;
@@ -158,11 +162,15 @@ public class AddFeedProducedDialog extends AppCompatDialogFragment {
                     return;
                 }
 
-                if(!weightSwitch.isChecked())
-                {
+                if (!weightSwitch.isChecked()) {
 
-                    countString = String.format("%.2f t", Double.parseDouble(countString) * 0.2);
-                }else{
+                    if(nameFeedString.contains("kiszon")){
+                        countString = String.format("%.2f t", Double.parseDouble(countString) * 0.5);
+                    }else{
+                        countString = String.format("%.2f t", Double.parseDouble(countString) * 0.3);
+                    }
+
+                } else {
                     countString = countString + " t";
                 }
 

@@ -53,7 +53,7 @@ public class FAdapter extends  RecyclerView.Adapter<FAdapter.MyHolder> implement
         holder.purchaseDate.setText(feedModelList.get(position).getPurchaseDate());
         holder.nameFeed.setText(feedModelList.get(position).getNameFeed());
         holder.count.setText(feedModelList.get(position).getCount());
-        setFadeAnimation(holder.itemView);
+//        setFadeAnimation(holder.itemView);
     }
 
     private void setFadeAnimation(View view) {

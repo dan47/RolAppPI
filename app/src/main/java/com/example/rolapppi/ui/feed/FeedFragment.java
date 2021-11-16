@@ -2,10 +2,13 @@ package com.example.rolapppi.ui.feed;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -25,7 +28,9 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
+import android.widget.Toast;
 
+import com.example.rolapppi.BuildConfig;
 import com.example.rolapppi.R;
 import com.example.rolapppi.ui.cropProtection.AddCropProtectionDialog;
 import com.example.rolapppi.ui.cropProtection.CpAdapter;
@@ -268,6 +273,21 @@ public class FeedFragment extends Fragment implements FAdapter.OnModelListener {
 
 
         Log.e("DIPA", exportBtn.toString());
+
+        if (file.exists()) //Checking if the file exists or not
+        {
+
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            Uri data = FileProvider.getUriForFile(getContext(), BuildConfig.APPLICATION_ID + ".provider", file);
+            intent.setDataAndType(data, "application/pdf");
+            intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            startActivity(intent);
+        } else {
+
+            Toast.makeText(getActivity(), "Plik nie istnieje! ", Toast.LENGTH_SHORT).show();
+
+        }
     }
 
 

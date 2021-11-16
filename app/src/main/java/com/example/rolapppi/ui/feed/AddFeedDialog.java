@@ -97,7 +97,15 @@ public class AddFeedDialog extends AppCompatDialogFragment {
             producer.setText(feedModel.getProducer());
             nameFeed.setText(feedModel.getNameFeed());
             batch.setText(feedModel.getBatch());
-            count.setText(feedModel.getCount());
+            String feedCount = feedModel.getCount();
+            if(feedCount.contains("t")){
+                weightSwitch.setChecked(true);
+                feedCount = feedCount.substring(0, feedCount.length()-2);
+            }else{
+                weightSwitch.setChecked(false);
+                feedCount = feedCount.substring(0, feedCount.length()-3);
+            }
+            count.setText(feedCount);
             packageType.setText(feedModel.getPackageType());
 
             purchaseDate.setText(feedModel.getPurchaseDate());
