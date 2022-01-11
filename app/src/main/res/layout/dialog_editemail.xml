@@ -29,6 +29,7 @@
         android:paddingRight="20dp"
         android:paddingBottom="20dp"
         android:inputType="textPassword"
+        android:imeOptions="actionDone"
         android:hint="Wpisz hasło"/>
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -54,6 +55,7 @@
         android:paddingRight="20dp"
         android:paddingBottom="20dp"
         android:inputType="textEmailAddress"
+        android:imeOptions="actionDone"
         android:hint="Wpisz nowy email"/>
     </com.google.android.material.textfield.TextInputLayout>
 
