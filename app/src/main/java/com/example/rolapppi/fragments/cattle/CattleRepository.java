@@ -60,6 +60,10 @@ public class CattleRepository {
         firestore.collection("user_data").document(FirebaseAuth.getInstance().getUid())
                 .collection("cattle").document(cattleMotherId).update("caliving", "", "previousCaliving", caliving);
     }
+    public void deleteCalving(String cattleMotherId) {
+        firestore.collection("user_data").document(FirebaseAuth.getInstance().getUid())
+                .collection("cattle").document(cattleMotherId).update("caliving", "" );
+    }
 
     public interface OnFireStoreDataAdded {
 

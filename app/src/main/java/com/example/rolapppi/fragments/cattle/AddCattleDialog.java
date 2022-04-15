@@ -3,7 +3,6 @@ package com.example.rolapppi.fragments.cattle;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -180,7 +179,6 @@ public class AddCattleDialog extends AppCompatDialogFragment {
                         cattleViewModel.cattleUpdateMother(mother_id, birthday);
                     }
                 }
-
 
 
                 dismiss();

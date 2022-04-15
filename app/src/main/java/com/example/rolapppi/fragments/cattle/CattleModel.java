@@ -10,7 +10,6 @@ public class CattleModel {
     private String gender, mother_id;
 
     private String caliving;
-
     private String previousCaliving;
 
     public CattleModel(String animal_id, String birthday, String gender, String mother_id) {

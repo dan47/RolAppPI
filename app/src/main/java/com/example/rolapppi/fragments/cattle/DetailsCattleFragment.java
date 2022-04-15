@@ -32,8 +32,8 @@ public class DetailsCattleFragment extends Fragment {
 
     TextView animal_id, birthday, gender, mother_id, calving;
     LinearLayout calvingLayout;
-    Button editBtn, deleteBtn, calvingBtn;
-    String previousCaliving;
+    Button editBtn, deleteBtn, calvingBtn, calvingDeleteBtn;
+    String previousCalving;
 
     public DetailsCattleFragment() {
 
@@ -62,35 +62,41 @@ public class DetailsCattleFragment extends Fragment {
         editBtn = view.findViewById(R.id.editBtn);
         deleteBtn = view.findViewById(R.id.deleteBtn);
         calvingBtn = view.findViewById(R.id.calvingBtn);
+        calvingDeleteBtn = view.findViewById(R.id.calvingDeleteBtn);
 
 
-        //zmieniam observe na get - dla pozostałych modółów później
+        //zmieniam observe na get - dla pozostałych modółów później //odmieniłem bo nie aktualizuje - bym musial wysylac info z alertdialog do fragmentu
         CattleModel cattleModel = cattleViewModel.getSelected().getValue();
-        animal_id.setText(cattleModel.getAnimal_id());
-        birthday.setText(cattleModel.getBirthday());
-        gender.setText(cattleModel.getGender());
-        mother_id.setText(cattleModel.getMother_id());
+        cattleViewModel.getSelected().observe(getViewLifecycleOwner(), cattleModelT -> {
+            animal_id.setText(cattleModelT.getAnimal_id());
+            birthday.setText(cattleModelT.getBirthday());
+            gender.setText(cattleModelT.getGender());
+            mother_id.setText(cattleModelT.getMother_id());
+            if (cattleModelT.getGender().equals(getString(R.string.female))) {
+                String calvingT = cattleModelT.getCaliving();
+                calvingDeleteBtn.setVisibility(View.GONE);
+                if (calvingT.isEmpty()) {
+                    calving.setText(getString(R.string.no_calivng));
+                } else {
+                    calving.setText(calvingT);
+                    calvingDeleteBtn.setVisibility(View.VISIBLE);
+                }
+                calvingLayout.setVisibility(View.VISIBLE);
+                calvingBtn.setVisibility(View.VISIBLE);
 
-        previousCaliving = cattleModel.getPreviousCaliving();
+            } else {
+
+                calvingLayout.setVisibility(View.GONE);
+                calvingBtn.setVisibility(View.GONE);
+            }
+        });
+
+
+        previousCalving = cattleModel.getPreviousCaliving();
 
         //Sprawdzam czy pole istnieje poniewaz baza nie jest zaaktualizowana - nie wszystkie cattle posiadają pole previousCaliving
-        if (previousCaliving == null) {
-            previousCaliving = "";
-        }
-
-
-        if (cattleModel.getGender().equals(getString(R.string.female))) {
-            String calvingT = cattleModel.getCaliving();
-            if (calvingT.isEmpty()) {
-                calving.setText(getString(R.string.no_calivng));
-            } else {
-                calving.setText(calvingT);
-            }
-            calvingLayout.setVisibility(View.VISIBLE);
-            calvingBtn.setVisibility(View.VISIBLE);
-        } else {
-            calvingLayout.setVisibility(View.GONE);
-            calvingBtn.setVisibility(View.GONE);
+        if (previousCalving == null) {
+            previousCalving = "";
         }
 
 
@@ -118,8 +124,8 @@ public class DetailsCattleFragment extends Fragment {
                         long months = ChronoUnit.MONTHS.between(dateBirthTemp, dateCalvingTemp);
                         long weeks = 8;
 
-                        if (!previousCaliving.equals("")) {
-                            LocalDate datePreviousCalvingTemp = LocalDate.parse(previousCaliving, formatter);
+                        if (!previousCalving.equals("")) {
+                            LocalDate datePreviousCalvingTemp = LocalDate.parse(previousCalving, formatter);
                             weeks = ChronoUnit.WEEKS.between(datePreviousCalvingTemp, dateCalvingTemp);
                         }
 
@@ -127,11 +133,12 @@ public class DetailsCattleFragment extends Fragment {
 
                             new AlertDialog.Builder(view.getContext())
                                     .setTitle("Czy jesteś pewny?")
-                                    .setMessage("Jeszcze nie mineło 6 tygodni od ostatniego wycielenia! Ostatnie wycielenie: " + previousCaliving)
+                                    .setMessage("Jeszcze nie mineło 6 tygodni od ostatniego wycielenia! Ostatnie wycielenie: " + previousCalving)
                                     .setPositiveButton("Tak", new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialogInterface, int i) {
                                             calving.setText(simpleFormat.format(date));
+                                            calvingDeleteBtn.setVisibility(View.VISIBLE);
                                             cattleViewModel.addCalving(cattleViewModel.getSelected().getValue(), simpleFormat.format(date));
                                         }
                                     })
@@ -149,6 +156,7 @@ public class DetailsCattleFragment extends Fragment {
                                         @Override
                                         public void onClick(DialogInterface dialogInterface, int i) {
                                             calving.setText(simpleFormat.format(date));
+                                            calvingDeleteBtn.setVisibility(View.VISIBLE);
                                             cattleViewModel.addCalving(cattleViewModel.getSelected().getValue(), simpleFormat.format(date));
                                         }
                                     })
@@ -161,6 +169,7 @@ public class DetailsCattleFragment extends Fragment {
                                     .show();
                         } else {
                             calving.setText(simpleFormat.format(date));
+                            calvingDeleteBtn.setVisibility(View.VISIBLE);
                             cattleViewModel.addCalving(cattleViewModel.getSelected().getValue(), simpleFormat.format(date));
                         }
                     }
@@ -168,6 +177,29 @@ public class DetailsCattleFragment extends Fragment {
 
                 });
 
+        calvingDeleteBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new AlertDialog.Builder(view.getContext())
+                        .setTitle("Czy jesteś pewny?")
+                        .setMessage("Operacja usunięcia zacielenia ")
+                        .setPositiveButton("Tak", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                cattleViewModel.deleteCalving(cattleModel.getAnimal_id());
+                                calving.setText(getString(R.string.no_calivng));
+                                calvingDeleteBtn.setVisibility(View.GONE);
+                            }
+                        })
+                        .setNegativeButton("Nie", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+
+                            }
+                        })
+                        .show();
+            }
+        });
 
         editBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -180,8 +212,24 @@ public class DetailsCattleFragment extends Fragment {
         deleteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                cattleViewModel.cattleDelete(cattleViewModel.getSelected().getValue());
-                getActivity().onBackPressed();
+                new AlertDialog.Builder(view.getContext())
+                        .setTitle("Czy jesteś pewny?")
+                        .setMessage("Usunięcie zwierzęcia")
+                        .setPositiveButton("Tak", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                cattleViewModel.cattleDelete(cattleViewModel.getSelected().getValue());
+                                getActivity().onBackPressed();
+                            }
+                        })
+                        .setNegativeButton("Nie", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+
+                            }
+                        })
+                        .show();
+
             }
         });
     }
