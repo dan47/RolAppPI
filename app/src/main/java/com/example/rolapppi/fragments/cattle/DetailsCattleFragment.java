@@ -1,6 +1,8 @@
 package com.example.rolapppi.fragments.cattle;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -20,6 +22,10 @@ import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 
 public class DetailsCattleFragment extends Fragment {
@@ -93,9 +99,38 @@ public class DetailsCattleFragment extends Fragment {
                     @Override
                     public void onPositiveButtonClick(Object selection) {
                         SimpleDateFormat simpleFormat = new SimpleDateFormat("dd.MM.yyyy");
-                        Date date = new Date((Long) selection);
-                        calving.setText(simpleFormat.format(date));
-                        cattleViewModel.addCalving(cattleViewModel.getSelected().getValue(), simpleFormat.format(date));
+                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+                        Date date = new Date((long) selection);
+
+                        LocalDate dateCalvingTemp = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                        LocalDate dateBirthTemp = LocalDate.parse(birthday.getText(),formatter);
+                        long months = ChronoUnit.MONTHS.between(dateBirthTemp, dateCalvingTemp);
+                        if(months<15){
+
+                            AlertDialog alertDialog = new AlertDialog.Builder(view.getContext())
+
+                                    .setTitle("Czy jesteś pewny?")
+                                    .setMessage("Zwierzę ma mniej niż 15 miesięcy! Urodzone: " + birthday.getText())
+
+                                    .setPositiveButton("Tak", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                            calving.setText(simpleFormat.format(date));
+                                            cattleViewModel.addCalving(cattleViewModel.getSelected().getValue(), simpleFormat.format(date));
+                                        }
+                                    })
+
+                                    .setNegativeButton("Nie", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
+
+                                        }
+                                    })
+                                    .show();
+
+                        }else{
+                            calving.setText(simpleFormat.format(date));
+                            cattleViewModel.addCalving(cattleViewModel.getSelected().getValue(), simpleFormat.format(date));}
                     }
                 });
 
