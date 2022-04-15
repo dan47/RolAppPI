@@ -3,6 +3,7 @@ package com.example.rolapppi.fragments.cattle;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -107,20 +108,21 @@ public class AddCattleDialog extends AppCompatDialogFragment {
                     .setTitle("Bydło edycja zwierzęcia");
             mothers_list = cattleViewModel.getLiveDatafromFireStore().getValue().stream()
                     .filter(e->e.getGender().equals(getString(R.string.female)))
-                    .map(x->x.getAnimal_id()).collect(Collectors.toList());
+                    .map(x->x.getAnimal_id())
+                    .collect(Collectors.toList());
         }else{
             builder.setView(view)
                     .setTitle("Bydło dodanie zwierzęcia");
             mothers_list = cattleViewModel.getLiveDatafromFireStore().getValue().stream()
                     .filter(e->e.getGender().equals(getString(R.string.female)))
                     .filter(y->!y.getCaliving().isEmpty())
-                    .map(x->x.getAnimal_id()).collect(Collectors.toList());
+                    .map(x->x.getAnimal_id())
+                    .collect(Collectors.toList());
         }
 
 
         arrayAdapter = new ArrayAdapter(getContext(), android.R.layout.simple_dropdown_item_1line, mothers_list);
         mother_idChoose.setAdapter(arrayAdapter);
-
 
         scanBtnE.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -175,9 +177,12 @@ public class AddCattleDialog extends AppCompatDialogFragment {
                     CattleModel model = new CattleModel(animal_id, birthday, gender, mother_id);
                     cattleViewModel.cattleAdd(model);
                     if(mothers_list.contains(mother_id)){
-                        cattleViewModel.cattleUpdateMother(mother_id);
+                        cattleViewModel.cattleUpdateMother(mother_id, birthday);
                     }
                 }
+
+
+
                 dismiss();
 
             }

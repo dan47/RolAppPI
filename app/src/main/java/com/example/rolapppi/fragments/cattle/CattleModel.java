@@ -11,15 +11,19 @@ public class CattleModel {
 
     private String caliving;
 
+    private String previousCaliving;
+
     public CattleModel(String animal_id, String birthday, String gender, String mother_id) {
         this.animal_id = animal_id;
         this.birthday = birthday;
         this.gender = gender;
         this.mother_id = mother_id;
         this.caliving = "";
+        this.previousCaliving = "";
     }
 
-    public CattleModel(){ }
+    public CattleModel() {
+    }
 
     public CattleModel(String animal_id, String birthday, String gender, String mother_id, String caliving) {
         this.animal_id = animal_id;
@@ -27,6 +31,7 @@ public class CattleModel {
         this.gender = gender;
         this.mother_id = mother_id;
         this.caliving = caliving;
+        this.previousCaliving = "";
     }
 
     public String getAnimal_id() {
@@ -66,4 +71,8 @@ public class CattleModel {
     public void setCaliving(String caliving) {
         this.caliving = caliving;
     }
+
+    public String getPreviousCaliving() { return previousCaliving; }
+
+    public void setPreviousCaliving(String previousCaliving) { this.previousCaliving = previousCaliving; }
 }

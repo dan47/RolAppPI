@@ -56,9 +56,9 @@ public class CattleRepository {
                 .collection("cattle").document(cattleModel.getAnimal_id()).delete();
     }
 
-    public void updateCattleMother(String cattleMotherId) {
+    public void updateCattleMother(String cattleMotherId, String caliving) {
         firestore.collection("user_data").document(FirebaseAuth.getInstance().getUid())
-                .collection("cattle").document(cattleMotherId).update("caliving", "");
+                .collection("cattle").document(cattleMotherId).update("caliving", "", "previousCaliving", caliving);
     }
 
     public interface OnFireStoreDataAdded {

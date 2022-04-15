@@ -37,12 +37,18 @@ public class CattleViewModel extends ViewModel implements CattleRepository.OnFir
         cattleModel.setCaliving(calving);
         firebaseRepo.addCattle(cattleModel);
     }
+    public void addPreviousCalving(CattleModel cattleModel) {
+        cattleModel.setPreviousCaliving(cattleModel.getCaliving());
+        firebaseRepo.addCattle(cattleModel);
+    }
+
 
     public void cattleDelete(CattleModel cattleModel) {
         firebaseRepo.deleteCattle(cattleModel);
     }
 
-    public void cattleUpdateMother(String cattleMotherId){ firebaseRepo.updateCattleMother(cattleMotherId);}
+    public void cattleUpdateMother(String cattleMotherId, String previousCaliving){ firebaseRepo.updateCattleMother(cattleMotherId,
+            previousCaliving);}
 
     public void setSelected(CattleModel cattleModel) {
         selected.setValue(cattleModel);
