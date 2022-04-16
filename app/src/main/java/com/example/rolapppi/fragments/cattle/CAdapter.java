@@ -56,12 +56,13 @@ public class CAdapter extends RecyclerView.Adapter<CAdapter.MyHolder> implements
         holder.animal_id.setText(cattleModelList.get(position).getAnimal_id());
         holder.birthday.setText(cattleModelList.get(position).getBirthday());
         holder.gender.setText(gender);
+        String calving = cattleModelList.get(position).getCaliving();
+
 
         if (gender.equals("Samica")) {
-
-            String calving = cattleModelList.get(position).getCaliving();
             if (!calving.isEmpty()) {
-
+                holder.calving.setVisibility(View.VISIBLE);
+                holder.calving.setText(calving);
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
                 LocalDate localDate = java.time.LocalDate.parse(calving, formatter);
                 long duration = DAYS.between(localDate, LocalDate.now());
@@ -76,13 +77,17 @@ public class CAdapter extends RecyclerView.Adapter<CAdapter.MyHolder> implements
                 holder.relativeLayoutCard.setBackgroundColor(Color.WHITE);
             }
         } else {
+
             holder.relativeLayoutCard.setBackgroundColor(Color.WHITE);
         } //change color card
+        if (calving.isEmpty()) {
+            holder.calving.setVisibility(View.GONE);
+        }
     }
 
     public class MyHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        TextView animal_id, birthday, gender;
+        TextView animal_id, birthday, gender, calving;
         RelativeLayout relativeLayoutCard;
         OnModelListener onModelListener;
 
@@ -92,6 +97,7 @@ public class CAdapter extends RecyclerView.Adapter<CAdapter.MyHolder> implements
             animal_id = itemView.findViewById(R.id.animal_id);
             birthday = itemView.findViewById(R.id.birthday);
             gender = itemView.findViewById(R.id.gender);
+            calving = itemView.findViewById(R.id.calving);
             relativeLayoutCard = itemView.findViewById(R.id.relativeLayoutCard);
 
             this.onModelListener = onModelListener;
@@ -144,6 +150,16 @@ public class CAdapter extends RecyclerView.Adapter<CAdapter.MyHolder> implements
                             filteredList.add(item);
                             filteredList.sort((a, b) -> Long.compare(duration(a.getCaliving()), duration(b.getCaliving())));
                             Collections.reverse(filteredList);
+                        }
+                    }
+                } else if (charSequence.equals("Zasuszenie")) {
+                    for (CattleModel item : cattleModelListAll) {
+                        if (!item.getCaliving().isEmpty()) {
+                            if(duration(item.getCaliving())>235){
+                                filteredList.add(item);
+                                filteredList.sort((a, b) -> Long.compare(duration(a.getCaliving()), duration(b.getCaliving())));
+                                Collections.reverse(filteredList);
+                            }
                         }
                     }
                 } else {

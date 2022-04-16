@@ -33,7 +33,7 @@ public class DetailsCattleFragment extends Fragment {
     TextView animal_id, birthday, gender, mother_id, calving;
     LinearLayout calvingLayout;
     Button editBtn, deleteBtn, calvingBtn, calvingDeleteBtn;
-    String previousCalving;
+    String previousCalving, dateBirth;
 
     public DetailsCattleFragment() {
 
@@ -66,12 +66,16 @@ public class DetailsCattleFragment extends Fragment {
 
 
         //zmieniam observe na get - dla pozostałych modółów później //odmieniłem bo nie aktualizuje - bym musial wysylac info z alertdialog do fragmentu
-        CattleModel cattleModel = cattleViewModel.getSelected().getValue();
+        CattleModel cattleModel = cattleViewModel.getSelected().getValue(); //prawdopodobbnie niepotrzebne
+
         cattleViewModel.getSelected().observe(getViewLifecycleOwner(), cattleModelT -> {
             animal_id.setText(cattleModelT.getAnimal_id());
             birthday.setText(cattleModelT.getBirthday());
             gender.setText(cattleModelT.getGender());
             mother_id.setText(cattleModelT.getMother_id());
+
+            dateBirth=cattleModelT.getBirthday();
+
             if (cattleModelT.getGender().equals(getString(R.string.female))) {
                 String calvingT = cattleModelT.getCaliving();
                 calvingDeleteBtn.setVisibility(View.GONE);
@@ -120,7 +124,7 @@ public class DetailsCattleFragment extends Fragment {
                         Date date = new Date((long) selection);
 
                         LocalDate dateCalvingTemp = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-                        LocalDate dateBirthTemp = LocalDate.parse(cattleModel.getBirthday(), formatter);
+                        LocalDate dateBirthTemp = LocalDate.parse(dateBirth, formatter);
                         long months = ChronoUnit.MONTHS.between(dateBirthTemp, dateCalvingTemp);
                         long weeks = 8;
 
@@ -187,6 +191,7 @@ public class DetailsCattleFragment extends Fragment {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 cattleViewModel.deleteCalving(cattleModel.getAnimal_id());
+                                cattleViewModel.selected.getValue().setCaliving(""); //Pozbyć się, zajmuje pewnie za dużo - wymyślić lepsze zabezpieczenie/ podczas usuwania calving nie zmienia sie w edycji (selected), przez co po edycji powraca stary calving
                                 calving.setText(getString(R.string.no_calivng));
                                 calvingDeleteBtn.setVisibility(View.GONE);
                             }

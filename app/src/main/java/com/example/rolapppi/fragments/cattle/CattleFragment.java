@@ -31,7 +31,7 @@ import java.util.Arrays;
 import java.util.List;
 
 
-public class CattleFragment extends Fragment implements CAdapter.OnModelListener{
+public class CattleFragment extends Fragment implements CAdapter.OnModelListener {
 
     private RecyclerView recyclerView;
     private SearchView searchView;
@@ -41,6 +41,7 @@ public class CattleFragment extends Fragment implements CAdapter.OnModelListener
     private FloatingActionButton addBtn;
     private ProgressBar progressBar;
     private NavController navController;
+    int checkFiltr = -1;
 
     public CattleFragment() {
         // Required empty public constructor
@@ -69,25 +70,36 @@ public class CattleFragment extends Fragment implements CAdapter.OnModelListener
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(cAdapter);
 
+        String[] choicesArray = new String[]{"Samica", "Samiec", "Zacielenie", "Zasuszenie"};
+
 
         navController = Navigation.findNavController(view);
         addBtn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        AddCattleDialog exampleDialog = new AddCattleDialog();
-                        exampleDialog.show(getParentFragmentManager() , "example dialog");
-                    }
-                });
+            @Override
+            public void onClick(View v) {
+                AddCattleDialog exampleDialog = new AddCattleDialog();
+                exampleDialog.show(getParentFragmentManager(), "example dialog");
+            }
+        });
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
         viewModel = new ViewModelProvider(requireActivity()).get(CattleViewModel.class);
         viewModel.selected.setValue(null);
+//        cAdapter.getFilter().filter(choicesArray[checkFiltr]);
+//        cAdapter.setCattleModelData( viewModel.getLiveDatafromFireStore().getValue());
 
         viewModel.getLiveDatafromFireStore().observe(getViewLifecycleOwner(), new Observer<List<CattleModel>>() {
             @Override
             public void onChanged(List<CattleModel> cattleModels) {
                 cattleModels.sort((d1, d2) -> LocalDate.parse(d1.getBirthday(), formatter).compareTo(LocalDate.parse(d2.getBirthday(), formatter)));
                 cAdapter.setCattleModelData(cattleModels);
+                String dd = searchView.getQuery().toString();
+                if (!dd.isEmpty()) {
+                    cAdapter.getFilter().filter(dd);
+                }
+                if (checkFiltr != -1) {
+                    cAdapter.getFilter().filter(choicesArray[checkFiltr]);
+                }
                 cAdapter.notifyDataSetChanged();
                 progressBar.setVisibility(View.GONE);
             }
@@ -109,24 +121,27 @@ public class CattleFragment extends Fragment implements CAdapter.OnModelListener
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                cAdapter.getFilter().filter(newText);
+                if (!newText.isEmpty()) {
+                    checkFiltr = -1;
+                } cAdapter.getFilter().filter(newText);
                 return true;
+
             }
         });
 
         filterBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AlertDialog.Builder builder =  new AlertDialog.Builder(getContext());
-
-                String[] choicesArray =  new String[]{"Samica", "Samiec", "Zacielenie"};
-
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                searchView.setQuery("", false);
+                searchView.setIconified(true);
                 List<String> choicesList = Arrays.asList(choicesArray);
                 builder.setTitle("Filtr")
-                        .setSingleChoiceItems(choicesArray, -1, new DialogInterface.OnClickListener() {
+                        .setSingleChoiceItems(choicesArray, checkFiltr, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 String currentItem = choicesList.get(i);
+                                checkFiltr = i;
                                 cAdapter.getFilter().filter(currentItem);
                                 dialogInterface.dismiss();
                             }
@@ -134,6 +149,7 @@ public class CattleFragment extends Fragment implements CAdapter.OnModelListener
                 builder.setNegativeButton("Anuluj", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
+                        checkFiltr = -1;
                         cAdapter.getFilter().filter("");
                         dialogInterface.dismiss();
                     }
@@ -148,8 +164,8 @@ public class CattleFragment extends Fragment implements CAdapter.OnModelListener
     @Override
     public void onModelClick(int position) {
         viewModel.setSelected(cAdapter.cattleModelList.get(position));
-        searchView.setQuery("", false);
-        searchView.setIconified(true);
+//        searchView.setQuery("", false);
+//        searchView.setIconified(true);
         searchView.clearFocus();
         navController.navigate(R.id.action_nav_cattle_to_detailsCattleFragment);
     }

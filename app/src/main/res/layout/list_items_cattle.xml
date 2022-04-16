@@ -48,6 +48,18 @@
             android:textSize="20sp"
             android:textStyle="bold" />
 
+        <TextView
+            android:id="@+id/calving"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/birthday"
+            android:layout_marginStart="10dp"
+            android:layout_toEndOf="@+id/gender"
+            android:text=""
+            android:textColor="#6B000000"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
 
     </RelativeLayout>
 

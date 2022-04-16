@@ -1,5 +1,7 @@
 package com.example.rolapppi.fragments.home;
 
+import static java.time.temporal.ChronoUnit.DAYS;
+
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -24,13 +26,15 @@ import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
 public class HomeFragment extends Fragment {
 
     private CattleViewModel viewModel;
-    private TextView countCattle, countGender, countCalving;
+    private TextView countCattle, countGender, countCalving, countDryness;
     private PieChart cattlePieChart,calvingPieChart;
 
     public HomeFragment() {
@@ -68,6 +72,7 @@ public class HomeFragment extends Fragment {
         countCattle = view.findViewById(R.id.countCattle);
         countGender = view.findViewById(R.id.countGender);
         countCalving = view.findViewById(R.id.countCalving);
+        countDryness = view.findViewById(R.id.countDryness);
         cattlePieChart = view.findViewById(R.id.cattlePieChart);
         calvingPieChart = view.findViewById(R.id.calvingPieChart);
         setupPieChart(cattlePieChart, "Bydło");
@@ -96,8 +101,9 @@ public class HomeFragment extends Fragment {
                 cattleModels.stream().filter(e-> !e.getCaliving().isEmpty()).forEach(e-> countG.add(e));
                 int calving = countG.size();
                 countCalving.setText(Integer.toString(calving));
-
-
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+                int dryness = (int) countG.stream().filter(e->DAYS.between( java.time.LocalDate.parse(e.getCaliving(), formatter), LocalDate.now())>235).count();
+                countDryness.setText((Integer.toString(dryness)));
 //                AlarmManager am = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
 //                int i = 0;
 //
