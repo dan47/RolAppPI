@@ -88,6 +88,15 @@ public class CattleFragment extends Fragment implements CAdapter.OnModelListener
 //        cAdapter.getFilter().filter(choicesArray[checkFiltr]);
 //        cAdapter.setCattleModelData( viewModel.getLiveDatafromFireStore().getValue());
 
+
+        try {
+            String filtr = getArguments().getString("filtr");
+            getArguments().clear();
+            checkFiltr = Integer.valueOf(filtr);
+        } catch (Exception e) {
+
+        }
+
         viewModel.getLiveDatafromFireStore().observe(getViewLifecycleOwner(), new Observer<List<CattleModel>>() {
             @Override
             public void onChanged(List<CattleModel> cattleModels) {
@@ -123,7 +132,8 @@ public class CattleFragment extends Fragment implements CAdapter.OnModelListener
             public boolean onQueryTextChange(String newText) {
                 if (!newText.isEmpty()) {
                     checkFiltr = -1;
-                } cAdapter.getFilter().filter(newText);
+                }
+                cAdapter.getFilter().filter(newText);
                 return true;
 
             }
@@ -133,8 +143,10 @@ public class CattleFragment extends Fragment implements CAdapter.OnModelListener
             @Override
             public void onClick(View view) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                searchView.setQuery("", false);
+
                 searchView.setIconified(true);
+                searchView.setIconified(true);
+
                 List<String> choicesList = Arrays.asList(choicesArray);
                 builder.setTitle("Filtr")
                         .setSingleChoiceItems(choicesArray, checkFiltr, new DialogInterface.OnClickListener() {
