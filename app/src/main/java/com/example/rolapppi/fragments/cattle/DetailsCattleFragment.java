@@ -21,6 +21,8 @@ import com.example.rolapppi.R;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
 
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -64,9 +66,8 @@ public class DetailsCattleFragment extends Fragment {
         calvingBtn = view.findViewById(R.id.calvingBtn);
         calvingDeleteBtn = view.findViewById(R.id.calvingDeleteBtn);
 
-
         //zmieniam observe na get - dla pozostałych modółów później //odmieniłem bo nie aktualizuje - bym musial wysylac info z alertdialog do fragmentu
-        CattleModel cattleModel = cattleViewModel.getSelected().getValue(); //prawdopodobbnie niepotrzebne
+        CattleModel cattleModel = cattleViewModel.getSelected().getValue(); //prawdopodobbnie niepotrzebn
 
         cattleViewModel.getSelected().observe(getViewLifecycleOwner(), cattleModelT -> {
             animal_id.setText(cattleModelT.getAnimal_id());
@@ -74,7 +75,8 @@ public class DetailsCattleFragment extends Fragment {
             gender.setText(cattleModelT.getGender());
             mother_id.setText(cattleModelT.getMother_id());
 
-            dateBirth=cattleModelT.getBirthday();
+            dateBirth = cattleModelT.getBirthday();
+
 
             if (cattleModelT.getGender().equals(getString(R.string.female))) {
                 String calvingT = cattleModelT.getCaliving();
@@ -104,10 +106,26 @@ public class DetailsCattleFragment extends Fragment {
         }
 
 
+
+
         MaterialDatePicker.Builder materialDateBuilder = MaterialDatePicker.Builder.datePicker();
         materialDateBuilder.setTitleText("Wybierz datę zacielenia");
+        materialDateBuilder.setSelection(MaterialDatePicker.todayInUtcMilliseconds());
+
+        //Ustawiam od razu zaznaczony kalendarz na dniu zacielenia
+        // (bez ustawienia godziny, automatycznie ustawia 00, a gdy taką datę ustawie w materialDateBuilder (long), to daje dzień wcześniejszy)
+        if(!cattleModel.getCaliving().isEmpty()){
+            Date date1= new Date();
+            try {
+                date1 = new SimpleDateFormat("dd.MM.yyyy/HH").parse(cattleModel.getCaliving()+"/12");
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            materialDateBuilder.setSelection(date1.getTime());
+        }
 
         final MaterialDatePicker materialDatePicker = materialDateBuilder.build();
+
         calvingBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

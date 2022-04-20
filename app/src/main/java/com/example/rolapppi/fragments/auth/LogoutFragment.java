@@ -1,5 +1,7 @@
 package com.example.rolapppi.fragments.auth;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -47,7 +49,22 @@ public class LogoutFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        viewModel.logOut();
+
+        new AlertDialog.Builder(view.getContext())
+                .setTitle("Czy chcesz się wylogować?")
+                .setPositiveButton("Tak", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        viewModel.logOut();
+                    }
+                })
+                .setNegativeButton("Nie", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        getActivity().onBackPressed();
+                    }
+                }).show();
+
 //        navController = Navigation.findNavController(view);
 //        signOutBtn = view.findViewById(R.id.signOutBtn);
 //

@@ -9,58 +9,70 @@
     >
 
     <RelativeLayout
-        android:layout_width="match_parent"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/relativeLayoutCard"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/animal_id"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/relativeLayoutCard"
-        android:padding="16dp">
+        android:layout_marginLeft="10dp"
+        android:text="id"
+        android:textColor="@color/black"
+        android:textSize="25sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/gender"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/animal_id"
+        android:layout_marginStart="10dp"
+        android:layout_marginLeft="10dp"
+        android:text="gender"
+        android:textColor="#6B000000"
+        android:textSize="20sp"
+        android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/animal_id"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:text="id"
-            android:textColor="@color/black"
-            android:textSize="25sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/gender"
+            android:id="@+id/textBirthCalving"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/animal_id"
-            android:layout_marginStart="10dp"
             android:layout_marginLeft="10dp"
-            android:text="gender"
+            android:layout_toRightOf="@+id/gender"
+            android:text="Ur."
             android:textColor="#6B000000"
             android:textSize="20sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"/>
 
         <TextView
             android:id="@+id/birthday"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/animal_id"
-            android:layout_marginLeft="10dp"
-            android:layout_toRightOf="@+id/gender"
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@+id/textBirthCalving"
             android:text="birthday"
             android:textColor="#6B000000"
             android:textSize="20sp"
             android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/calving"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/birthday"
-            android:layout_marginStart="10dp"
-            android:layout_toEndOf="@+id/gender"
-            android:text=""
-            android:textColor="#6B000000"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+    <TextView
+        android:id="@+id/calving"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/animal_id"
+        android:layout_marginStart="5dp"
+        android:layout_toRightOf="@+id/birthday"
+        android:text=""
+        android:textColor="#6B000000"
+        android:textSize="20sp"
+        android:textStyle="bold" />
 
 
-    </RelativeLayout>
+</RelativeLayout>
 
 </androidx.cardview.widget.CardView>

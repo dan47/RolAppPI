@@ -62,7 +62,9 @@ public class CAdapter extends RecyclerView.Adapter<CAdapter.MyHolder> implements
         if (gender.equals("Samica")) {
             if (!calving.isEmpty()) {
                 holder.calving.setVisibility(View.VISIBLE);
+                holder.birthday.setVisibility(View.GONE);
                 holder.calving.setText(calving);
+                holder.textBC.setText("Za.");
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
                 LocalDate localDate = java.time.LocalDate.parse(calving, formatter);
                 long duration = DAYS.between(localDate, LocalDate.now());
@@ -82,12 +84,14 @@ public class CAdapter extends RecyclerView.Adapter<CAdapter.MyHolder> implements
         } //change color card
         if (calving.isEmpty()) {
             holder.calving.setVisibility(View.GONE);
+            holder.birthday.setVisibility(View.VISIBLE);
+            holder.textBC.setText("Ur.");
         }
     }
 
     public class MyHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        TextView animal_id, birthday, gender, calving;
+        TextView animal_id, birthday, gender, calving, textBC;
         RelativeLayout relativeLayoutCard;
         OnModelListener onModelListener;
 
@@ -98,6 +102,7 @@ public class CAdapter extends RecyclerView.Adapter<CAdapter.MyHolder> implements
             birthday = itemView.findViewById(R.id.birthday);
             gender = itemView.findViewById(R.id.gender);
             calving = itemView.findViewById(R.id.calving);
+            textBC = itemView.findViewById(R.id.textBirthCalving);
             relativeLayoutCard = itemView.findViewById(R.id.relativeLayoutCard);
 
             this.onModelListener = onModelListener;
