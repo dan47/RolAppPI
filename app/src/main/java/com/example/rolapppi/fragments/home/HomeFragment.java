@@ -111,7 +111,7 @@ public class HomeFragment extends Fragment {
 
 
                 countG.clear();
-                cattleModels.stream().filter(e -> !e.getCaliving().isEmpty()).forEach(e -> countG.add(e));
+                cattleModels.stream().filter(e -> !e.getCaliving().isEmpty()&&e.getGender().equals("Samica")).forEach(e -> countG.add(e));
                 int calving = countG.size();
                 countCalving.setText(Integer.toString(calving));
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
