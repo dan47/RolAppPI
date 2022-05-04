@@ -33,10 +33,10 @@ import java.util.Date;
 
 public class DetailsCattleFragment extends Fragment {
 
-    TextView animal_id, birthday, gender, mother_id, calving;
-    LinearLayout calvingLayout;
+    TextView animal_id, birthday, gender, mother_id, calving, previousCalving;
+    LinearLayout calvingLayout, previousCalvingLayout;
     Button editBtn, deleteBtn, calvingBtn, calvingDeleteBtn;
-    String previousCalving, dateBirth;
+    String previousCalvingString, dateBirth;
 
     public DetailsCattleFragment() {
 
@@ -60,7 +60,9 @@ public class DetailsCattleFragment extends Fragment {
         gender = view.findViewById(R.id.gender);
         mother_id = view.findViewById(R.id.mother_id);
         calving = view.findViewById(R.id.calving);
+        previousCalving = view.findViewById(R.id.previousCalving);
         calvingLayout = view.findViewById(R.id.calvingLayout);
+        previousCalvingLayout = view.findViewById(R.id.previousCalvingLayout);
 
         editBtn = view.findViewById(R.id.editBtn);
         deleteBtn = view.findViewById(R.id.deleteBtn);
@@ -78,33 +80,43 @@ public class DetailsCattleFragment extends Fragment {
 
             dateBirth = cattleModelT.getBirthday();
 
+            previousCalvingString = cattleModel.getPreviousCaliving();
+
+            //Sprawdzam czy pole istnieje poniewaz baza nie jest zaaktualizowana - nie wszystkie cattle posiadają pole previousCaliving
+            if (previousCalvingString == null) {
+                previousCalvingString = "";
+            }
+
 
             if (cattleModelT.getGender().equals(getString(R.string.female))) {
                 String calvingT = cattleModelT.getCaliving();
                 calvingDeleteBtn.setVisibility(View.GONE);
                 if (calvingT.isEmpty()) {
                     calving.setText(getString(R.string.no_calivng));
+
                 } else {
                     calving.setText(calvingT);
+                    previousCalving.setText(calvingT);
                     calvingDeleteBtn.setVisibility(View.VISIBLE);
                 }
+
+                if (!previousCalvingString.isEmpty()) {
+                    previousCalving.setText(previousCalvingString);
+                } else {
+                    previousCalving.setText(getString(R.string.no_calivng));
+                }
+
                 calvingLayout.setVisibility(View.VISIBLE);
+                previousCalvingLayout.setVisibility(View.VISIBLE);
                 calvingBtn.setVisibility(View.VISIBLE);
 
             } else {
 
                 calvingLayout.setVisibility(View.GONE);
+                previousCalvingLayout.setVisibility(View.GONE);
                 calvingBtn.setVisibility(View.GONE);
             }
         });
-
-
-        previousCalving = cattleModel.getPreviousCaliving();
-
-        //Sprawdzam czy pole istnieje poniewaz baza nie jest zaaktualizowana - nie wszystkie cattle posiadają pole previousCaliving
-        if (previousCalving == null) {
-            previousCalving = "";
-        }
 
 
         calvingBtn.setOnClickListener(new View.OnClickListener() {
@@ -112,7 +124,7 @@ public class DetailsCattleFragment extends Fragment {
             public void onClick(View view) {
                 MaterialDatePicker.Builder materialDateBuilder = MaterialDatePicker.Builder.datePicker();
                 materialDateBuilder.setTitleText("Wybierz datę zacielenia");
-                if (previousCalving.equals("") && calving.getText().toString().equals("Brak")) {
+                if (previousCalvingString.equals("") && calving.getText().toString().equals("Brak")) {
                     new AlertDialog.Builder(view.getContext())
                             .setTitle("Czy chcesz?")
                             .setMessage("Ustawić datę 9 miesięcy w tył? ")
@@ -145,6 +157,7 @@ public class DetailsCattleFragment extends Fragment {
                             }).show();
                 } else {
                     Date dateCalving = new Date();
+                    materialDateBuilder.setSelection(dateCalving.getTime());
                     //Ustawiam od razu zaznaczony kalendarz na dniu zacielenia
                     // (bez ustawienia godziny, automatycznie ustawia 00, a gdy taką datę ustawie w materialDateBuilder (long), to daje dzień wcześniejszy)
                     if (!cattleModel.getCaliving().isEmpty()) {
@@ -180,8 +193,8 @@ public class DetailsCattleFragment extends Fragment {
                                 long months = ChronoUnit.MONTHS.between(dateBirthTemp, dateCalvingTemp);
                                 long weeks = 8;
 
-                                if (!previousCalving.equals("")) {
-                                    LocalDate datePreviousCalvingTemp = LocalDate.parse(previousCalving, formatter);
+                                if (!previousCalvingString.equals("")) {
+                                    LocalDate datePreviousCalvingTemp = LocalDate.parse(previousCalvingString, formatter);
                                     weeks = ChronoUnit.WEEKS.between(datePreviousCalvingTemp, dateCalvingTemp);
                                 }
 
@@ -189,7 +202,7 @@ public class DetailsCattleFragment extends Fragment {
 
                                     new AlertDialog.Builder(view.getContext())
                                             .setTitle("Czy jesteś pewny?")
-                                            .setMessage("Jeszcze nie mineło 6 tygodni od ostatniego wycielenia! Ostatnie wycielenie: " + previousCalving)
+                                            .setMessage("Jeszcze nie mineło 6 tygodni od ostatniego wycielenia! Ostatnie wycielenie: " + previousCalvingString)
                                             .setPositiveButton("Tak", new DialogInterface.OnClickListener() {
                                                 @Override
                                                 public void onClick(DialogInterface dialogInterface, int i) {

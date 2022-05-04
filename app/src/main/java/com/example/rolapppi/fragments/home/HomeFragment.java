@@ -38,7 +38,8 @@ import java.util.List;
 public class HomeFragment extends Fragment {
 
     private CattleViewModel viewModel;
-    private TextView countCattle, countGender, countCalving, countDryness, text_countDryness;
+    private TextView countCattle, countGender, countCalving, countDryness, text_countCattle,
+            text_countGenderMale, text_countGenderFemale, text_countCaliving, text_countDryness;
     private PieChart cattlePieChart, calvingPieChart;
     private NavController navController;
 
@@ -78,6 +79,11 @@ public class HomeFragment extends Fragment {
         countGender = view.findViewById(R.id.countGender);
         countCalving = view.findViewById(R.id.countCalving);
         countDryness = view.findViewById(R.id.countDryness);
+
+        text_countCattle = view.findViewById(R.id.text_countCattle);
+        text_countGenderFemale = view.findViewById(R.id.text_countGenderFemale);
+        text_countGenderMale = view.findViewById(R.id.text_countGenderMale);
+        text_countCaliving = view.findViewById(R.id.text_countCaliving);
         text_countDryness = view.findViewById(R.id.text_countDryness);
 
         cattlePieChart = view.findViewById(R.id.cattlePieChart);
@@ -86,6 +92,36 @@ public class HomeFragment extends Fragment {
         setupPieChart(calvingPieChart, "Zacielone");
         viewModel = new ViewModelProvider(requireActivity()).get(CattleViewModel.class);
 
+        text_countCattle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                navController.navigate(R.id.nav_cattle);
+            }
+        });
+        text_countGenderFemale.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Bundle bundle = new Bundle();
+                bundle.putString("filtr", "0");
+                navController.navigate(R.id.nav_cattle, bundle);
+            }
+        });
+        text_countGenderMale.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Bundle bundle = new Bundle();
+                bundle.putString("filtr", "1");
+                navController.navigate(R.id.nav_cattle, bundle);
+            }
+        });
+        text_countCaliving.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Bundle bundle = new Bundle();
+                bundle.putString("filtr", "2");
+                navController.navigate(R.id.nav_cattle, bundle);
+            }
+        });
         text_countDryness.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -111,7 +147,7 @@ public class HomeFragment extends Fragment {
 
 
                 countG.clear();
-                cattleModels.stream().filter(e -> !e.getCaliving().isEmpty()&&e.getGender().equals("Samica")).forEach(e -> countG.add(e));
+                cattleModels.stream().filter(e -> !e.getCaliving().isEmpty() && e.getGender().equals("Samica")).forEach(e -> countG.add(e));
                 int calving = countG.size();
                 countCalving.setText(Integer.toString(calving));
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");

@@ -19,7 +19,8 @@
 
 
     <string name="count_cattle">Ilość bydła:</string>
-    <string name="count_gender">Ilość samice/samce:</string>
+    <string name="count_gender_female">Ilość samice</string>
+    <string name="count_gender_male">/samce:</string>
     <string name="count_caliving">Ilość zacielonych:</string>
     <string name="count_dryness">Ilość zasuszonych:</string>
     <string name="stats">Statystyki</string>

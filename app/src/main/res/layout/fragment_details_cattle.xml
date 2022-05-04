@@ -16,7 +16,7 @@
             android:layout_height="wrap_content"
             android:text="PL123456789012"
             android:textColor="@color/black"
-            android:textSize="30sp"
+            android:textSize="29sp"
             android:textStyle="bold" />
 
         <LinearLayout
@@ -102,6 +102,31 @@
 
             <TextView
                 android:id="@+id/calving"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Data wycielenia"
+                android:textColor="#6B000000"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/previousCalvingLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/previousCalvingTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="8dp"
+                android:text="Ostatnie zaciel.:"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/previousCalving"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Data wycielenia"
