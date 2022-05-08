@@ -25,6 +25,9 @@
     <string name="count_dryness">Ilość zasuszonych:</string>
     <string name="stats">Statystyki</string>
 
+    <string name="female_male">%1$d/%2$d</string>
+
+
     <string name="female">Samica</string>
     <string name="male">Samiec</string>
     <string name="no_calivng">Brak</string>

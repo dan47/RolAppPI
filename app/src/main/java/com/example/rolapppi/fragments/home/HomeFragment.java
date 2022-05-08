@@ -2,7 +2,6 @@ package com.example.rolapppi.fragments.home;
 
 import static java.time.temporal.ChronoUnit.DAYS;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -13,13 +12,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import com.example.rolapppi.R;
-import com.example.rolapppi.fragments.cattle.CattleFragment;
 import com.example.rolapppi.fragments.cattle.CattleModel;
 import com.example.rolapppi.fragments.cattle.CattleViewModel;
 import com.github.mikephil.charting.charts.PieChart;
@@ -37,9 +34,9 @@ import java.util.List;
 
 public class HomeFragment extends Fragment {
 
-    private CattleViewModel viewModel;
-    private TextView countCattle, countGender, countCalving, countDryness, text_countCattle,
-            text_countGenderMale, text_countGenderFemale, text_countCaliving, text_countDryness;
+    CattleViewModel viewModel;
+    TextView text_countCattle, text_countGenderMale, text_countGenderFemale, text_countCaliving, text_countDryness;
+    private TextView countCattle, countGender, countCalving, countDryness;
     private PieChart cattlePieChart, calvingPieChart;
     private NavController navController;
 
@@ -92,67 +89,48 @@ public class HomeFragment extends Fragment {
         setupPieChart(calvingPieChart, "Zacielone");
         viewModel = new ViewModelProvider(requireActivity()).get(CattleViewModel.class);
 
-        text_countCattle.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                navController.navigate(R.id.nav_cattle);
-            }
+        text_countCattle.setOnClickListener(view1 -> navController.navigate(R.id.nav_cattle));
+        text_countGenderFemale.setOnClickListener(view1 -> {
+            Bundle bundle = new Bundle();
+            bundle.putString("filtr", "0");
+            navController.navigate(R.id.nav_cattle, bundle);
         });
-        text_countGenderFemale.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Bundle bundle = new Bundle();
-                bundle.putString("filtr", "0");
-                navController.navigate(R.id.nav_cattle, bundle);
-            }
+        text_countGenderMale.setOnClickListener(view1 -> {
+            Bundle bundle = new Bundle();
+            bundle.putString("filtr", "1");
+            navController.navigate(R.id.nav_cattle, bundle);
         });
-        text_countGenderMale.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Bundle bundle = new Bundle();
-                bundle.putString("filtr", "1");
-                navController.navigate(R.id.nav_cattle, bundle);
-            }
+        text_countCaliving.setOnClickListener(view1 -> {
+            Bundle bundle = new Bundle();
+            bundle.putString("filtr", "2");
+            navController.navigate(R.id.nav_cattle, bundle);
         });
-        text_countCaliving.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Bundle bundle = new Bundle();
-                bundle.putString("filtr", "2");
-                navController.navigate(R.id.nav_cattle, bundle);
-            }
-        });
-        text_countDryness.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Bundle bundle = new Bundle();
-                bundle.putString("filtr", "3");
-                navController.navigate(R.id.nav_cattle, bundle);
-            }
+        text_countDryness.setOnClickListener(view1 -> {
+            Bundle bundle = new Bundle();
+            bundle.putString("filtr", "3");
+            navController.navigate(R.id.nav_cattle, bundle);
         });
 
 
-        viewModel.getLiveDatafromFireStore().observe(getViewLifecycleOwner(), new Observer<List<CattleModel>>() {
-            @Override
-            public void onChanged(List<CattleModel> cattleModels) {
+        viewModel.getLiveDatafromFireStore().observe(getViewLifecycleOwner(), cattleModels -> {
 
-                countCattle.setText(Integer.toString(cattleModels.size()));
+            countCattle.setText(String.format("%s",cattleModels.size()));
 
-                List<CattleModel> countG = new ArrayList<>();
+            List<CattleModel> countG = new ArrayList<>();
 
-                cattleModels.stream().filter(e -> e.getGender().equals("Samica")).forEach(e -> countG.add(e));
-                int female = countG.size();
-                int male = cattleModels.size() - countG.size();
-                countGender.setText(Integer.toString(female) + "/" + Integer.toString(male));
+            cattleModels.stream().filter(e -> e.getGender().equals("Samica")).forEach(countG::add);
+            int female = countG.size();
+            int male = cattleModels.size() - countG.size();
+            countGender.setText(getString(R.string.female_male,female,male));
 
 
-                countG.clear();
-                cattleModels.stream().filter(e -> !e.getCaliving().isEmpty() && e.getGender().equals("Samica")).forEach(e -> countG.add(e));
-                int calving = countG.size();
-                countCalving.setText(Integer.toString(calving));
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
-                int dryness = (int) countG.stream().filter(e -> DAYS.between(java.time.LocalDate.parse(e.getCaliving(), formatter), LocalDate.now()) > 235).count();
-                countDryness.setText((Integer.toString(dryness)));
+            countG.clear();
+            cattleModels.stream().filter(e -> !e.getCaliving().isEmpty() && e.getGender().equals("Samica")).forEach(countG::add);
+            int calving = countG.size();
+            countCalving.setText(String.format("%s",calving));
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+            int dryness = (int) countG.stream().filter(e -> DAYS.between(LocalDate.parse(e.getCaliving(), formatter), LocalDate.now()) > 235).count();
+            countDryness.setText((Integer.toString(dryness)));
 //                AlarmManager am = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
 //                int i = 0;
 //
@@ -182,45 +160,45 @@ public class HomeFragment extends Fragment {
 //                Toast.makeText(getContext(), "Alarm set "+item.getAnimal_id()+ " " + requestCode + " " + nowy, Toast.LENGTH_SHORT).show();
 //                }
 
-                ArrayList<Integer> colors = new ArrayList<>();
-                for (int color : ColorTemplate.MATERIAL_COLORS) {
-                    colors.add(color);
-                }
-                for (int color : ColorTemplate.VORDIPLOM_COLORS) {
-                    colors.add(color);
-                }
+            ArrayList<Integer> colors = new ArrayList<>();
+            for (int color : ColorTemplate.MATERIAL_COLORS) {
+                colors.add(color);
+            }
+            for (int color : ColorTemplate.VORDIPLOM_COLORS) {
+                colors.add(color);
+            }
 
-                List<PieEntry> cattleEntries = new ArrayList<>();
-                cattleEntries.add(new PieEntry(male, "Samce"));
-                cattleEntries.add(new PieEntry(female, "Samice"));
+            List<PieEntry> cattleEntries = new ArrayList<>();
+            cattleEntries.add(new PieEntry(male, "Samce"));
+            cattleEntries.add(new PieEntry(female, "Samice"));
 
-                PieDataSet pieDataSet = new PieDataSet(cattleEntries, "Legenda");
-                pieDataSet.setColors(colors);
+            PieDataSet pieDataSet = new PieDataSet(cattleEntries, "Legenda");
+            pieDataSet.setColors(colors);
 
-                PieData data = new PieData(pieDataSet);
-                data.setDrawValues(true);
-                data.setValueFormatter(new PercentFormatter(cattlePieChart));
-                data.setValueTextSize(12f);
-                data.setValueTextColor(Color.BLACK);
+            PieData data = new PieData(pieDataSet);
+            data.setDrawValues(true);
+            data.setValueFormatter(new PercentFormatter(cattlePieChart));
+            data.setValueTextSize(12f);
+            data.setValueTextColor(Color.BLACK);
 
-                cattlePieChart.setData(data);
-                cattlePieChart.invalidate();
+            cattlePieChart.setData(data);
+            cattlePieChart.invalidate();
 
-                List<PieEntry> calvingEntries = new ArrayList<>();
-                calvingEntries.add(new PieEntry(female - calving, "Niezacielone"));
-                calvingEntries.add(new PieEntry(calving, "Zacielone"));
+            List<PieEntry> calvingEntries = new ArrayList<>();
+            calvingEntries.add(new PieEntry(female - calving, "Niezacielone"));
+            calvingEntries.add(new PieEntry(calving, "Zacielone"));
 
-                PieDataSet calvingpieDataSet = new PieDataSet(calvingEntries, "Legenda");
-                calvingpieDataSet.setColors(colors);
+            PieDataSet calvingpieDataSet = new PieDataSet(calvingEntries, "Legenda");
+            calvingpieDataSet.setColors(colors);
 
-                PieData calvingData = new PieData(calvingpieDataSet);
-                calvingData.setDrawValues(true);
-                calvingData.setValueFormatter(new PercentFormatter(calvingPieChart));
-                calvingData.setValueTextSize(12f);
-                calvingData.setValueTextColor(Color.BLACK);
+            PieData calvingData = new PieData(calvingpieDataSet);
+            calvingData.setDrawValues(true);
+            calvingData.setValueFormatter(new PercentFormatter(calvingPieChart));
+            calvingData.setValueTextSize(12f);
+            calvingData.setValueTextColor(Color.BLACK);
 
-                calvingPieChart.setData(calvingData);
-                calvingPieChart.invalidate();
+            calvingPieChart.setData(calvingData);
+            calvingPieChart.invalidate();
 
 
 //                cattleModels.sort((d1, d2) -> LocalDate.parse(d1.getBirthday(), formatter).compareTo(LocalDate.parse(d2.getBirthday(), formatter)));
@@ -229,7 +207,6 @@ public class HomeFragment extends Fragment {
 //                progressBar.setVisibility(View.GONE);
 //                recyclerView.setAnimation(fadein);
 //                progressBar.setAnimation(fadeout);
-            }
         });
     }
 
