@@ -26,7 +26,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public class HAdapter extends RecyclerView.Adapter<HAdapter.MyHolder> {
+public class HAdapterSecond extends RecyclerView.Adapter<HAdapterSecond.MyHolder> {
 
     List<CattleModel> cattleModelList;
     private OnModelListener mOnModelListener;
@@ -35,7 +35,7 @@ public class HAdapter extends RecyclerView.Adapter<HAdapter.MyHolder> {
         this.cattleModelList = new ArrayList<>();
         this.cattleModelList.addAll(cattleModelData);
     }
-    public HAdapter(OnModelListener onModelListener) {
+    public HAdapterSecond(OnModelListener onModelListener) {
         this.mOnModelListener = onModelListener;
     }
 
@@ -51,19 +51,11 @@ public class HAdapter extends RecyclerView.Adapter<HAdapter.MyHolder> {
     public void onBindViewHolder(@NonNull MyHolder holder, int position) {
 
         holder.animal_id.setText(cattleModelList.get(position).getAnimal_id());
-
-
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
-                LocalDate localDate = java.time.LocalDate.parse(cattleModelList.get(position).getCaliving(), formatter);
-                long duration = DAYS.between(localDate, LocalDate.now());
-                int result = (int) (236 - duration);
-
-        holder.time_dryness.setText(Integer.toString(result));
     }
 
     public class MyHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        TextView animal_id, time_dryness;
+        TextView animal_id;
         RelativeLayout relativeLayoutCard;
         OnModelListener onModelListener;
 
@@ -71,7 +63,6 @@ public class HAdapter extends RecyclerView.Adapter<HAdapter.MyHolder> {
             super(itemView);
 
             animal_id = itemView.findViewById(R.id.animal_id);
-            time_dryness = itemView.findViewById(R.id.time_dryness);
             relativeLayoutCard = itemView.findViewById(R.id.relativeLayoutCard);
 
             this.onModelListener = onModelListener;
@@ -80,7 +71,7 @@ public class HAdapter extends RecyclerView.Adapter<HAdapter.MyHolder> {
 
         @Override
         public void onClick(View view) {
-            onModelListener.onModelClick(getAdapterPosition());
+            onModelListener.onModelClickSecond(getAdapterPosition());
         }
     }
 
@@ -97,15 +88,7 @@ public class HAdapter extends RecyclerView.Adapter<HAdapter.MyHolder> {
 
     }
 
-
-    private long duration(String calving) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
-        LocalDate localDate = java.time.LocalDate.parse(calving, formatter);
-        long duration = DAYS.between(localDate, LocalDate.now());
-        return duration;
-    }
-
     public interface OnModelListener {
-        void onModelClick(int position);
+        void onModelClickSecond(int position);
     }
 }

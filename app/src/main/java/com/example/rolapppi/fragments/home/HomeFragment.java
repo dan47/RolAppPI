@@ -19,7 +19,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.rolapppi.R;
-import com.example.rolapppi.fragments.cattle.CAdapter;
 import com.example.rolapppi.fragments.cattle.CattleModel;
 import com.example.rolapppi.fragments.cattle.CattleViewModel;
 import com.github.mikephil.charting.charts.PieChart;
@@ -36,15 +35,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class HomeFragment extends Fragment implements HAdapter.OnModelListener {
+public class HomeFragment extends Fragment implements HAdapter.OnModelListener, HAdapterSecond.OnModelListener {
 
     CattleViewModel viewModel;
-    TextView text_countCattle, text_countGenderMale, text_countGenderFemale, text_countCaliving, text_countDryness, drynessTextResult;
+    TextView text_countCattle, text_countGenderMale, text_countGenderFemale, text_countCaliving, text_countDryness, drynessTextResult, drynessRecently;
     private TextView countCattle, countGender, countCalving, countDryness;
     private PieChart cattlePieChart, calvingPieChart;
     private NavController navController;
-    private RecyclerView recyclerView;
+    private RecyclerView cattleDrynessRecyclerView, cattleDrynessRecentlyRecyclerView;
     private HAdapter hAdapter;
+    private HAdapterSecond hAdapterSecond;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -78,12 +78,20 @@ public class HomeFragment extends Fragment implements HAdapter.OnModelListener {
         super.onViewCreated(view, savedInstanceState);
 
         navController = Navigation.findNavController(view);
-        recyclerView = view.findViewById(R.id.cattleDrynessRecyclerView);
+        cattleDrynessRecyclerView = view.findViewById(R.id.cattleDrynessRecyclerView);
+        cattleDrynessRecentlyRecyclerView = view.findViewById(R.id.cattleDrynessRecentlyRecyclerView);
         drynessTextResult = view.findViewById(R.id.drynessTextResult);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setHasFixedSize(true);
+        drynessRecently = view.findViewById(R.id.drynessRecently);
+
+        cattleDrynessRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        cattleDrynessRecyclerView.setHasFixedSize(true);
+        cattleDrynessRecentlyRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        cattleDrynessRecentlyRecyclerView.setHasFixedSize(true);
+
         hAdapter = new HAdapter(this);
-        recyclerView.setAdapter(hAdapter);
+        hAdapterSecond = new HAdapterSecond(this);
+        cattleDrynessRecyclerView.setAdapter(hAdapter);
+        cattleDrynessRecentlyRecyclerView.setAdapter(hAdapterSecond);
 
         countCattle = view.findViewById(R.id.countCattle);
         countGender = view.findViewById(R.id.countGender);
@@ -130,6 +138,7 @@ public class HomeFragment extends Fragment implements HAdapter.OnModelListener {
             countCattle.setText(String.format("%s", cattleModels.size()));
 
             List<CattleModel> countG = new ArrayList<>();
+            List<CattleModel> countG2 = new ArrayList<>();
 
             cattleModels.stream().filter(e -> e.getGender().equals("Samica")).forEach(countG::add);
             int female = countG.size();
@@ -146,7 +155,8 @@ public class HomeFragment extends Fragment implements HAdapter.OnModelListener {
 
             int dryness = (int) countG.stream().filter(e -> DAYS.between(LocalDate.parse(e.getCaliving(), formatter), LocalDate.now()) > 235).count();
             countDryness.setText((Integer.toString(dryness)));
-            countG = countG.stream().filter(e -> DAYS.between(LocalDate.parse(e.getCaliving(), formatter), LocalDate.now()) > 185).filter(e -> DAYS.between(LocalDate.parse(e.getCaliving(), formatter), LocalDate.now()) < 235).collect(Collectors.toList());
+            countG2 = countG.stream().filter(e -> DAYS.between(LocalDate.parse(e.getCaliving(), formatter), LocalDate.now()) > 235).filter(e -> DAYS.between(LocalDate.parse(e.getCaliving(), formatter), LocalDate.now()) < 243).collect(Collectors.toList());
+            countG = countG.stream().filter(e -> DAYS.between(LocalDate.parse(e.getCaliving(), formatter), LocalDate.now()) > 185).filter(e -> DAYS.between(LocalDate.parse(e.getCaliving(), formatter), LocalDate.now()) < 236).collect(Collectors.toList());
             hAdapter.setCattleModelData(countG);
             hAdapter.notifyDataSetChanged();
 
@@ -154,6 +164,14 @@ public class HomeFragment extends Fragment implements HAdapter.OnModelListener {
                 drynessTextResult.setVisibility(View.VISIBLE);
             }else{
                 drynessTextResult.setVisibility(View.GONE);
+            }
+            hAdapterSecond.setCattleModelData(countG2);
+            hAdapterSecond.notifyDataSetChanged();
+
+            if (countG2.size() != 0) {
+                drynessRecently.setVisibility(View.VISIBLE);
+            }else{
+                drynessRecently.setVisibility(View.GONE);
             }
 //                AlarmManager am = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
 //                int i = 0;
@@ -237,8 +255,11 @@ public class HomeFragment extends Fragment implements HAdapter.OnModelListener {
     @Override
     public void onModelClick(int position) {
         viewModel.setSelected(hAdapter.cattleModelList.get(position));
-//        searchView.setQuery("", false);
-//        searchView.setIconified(true);
+        navController.navigate(R.id.action_nav_home_to_detailsCattleFragment);
+    }
+    @Override
+    public void onModelClickSecond(int position) {
+        viewModel.setSelected(hAdapterSecond.cattleModelList.get(position));
         navController.navigate(R.id.action_nav_home_to_detailsCattleFragment);
     }
 }

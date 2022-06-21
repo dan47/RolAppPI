@@ -171,6 +171,7 @@
             android:text="Krowy do zasuszenia wkrótce"
             app:layout_constraintTop_toBottomOf="@+id/text_countDryness"
             />
+
         <TextView
             android:id="@+id/drynessText2"
             android:layout_width="match_parent"
@@ -204,13 +205,33 @@
             android:layout_marginTop="16dp"
             app:layout_constraintTop_toBottomOf="@+id/drynessTextResult"/>
 
+        <TextView
+            android:id="@+id/drynessRecently"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:textAlignment="center"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_marginTop="16dp"
+            android:text="Krowy niedawno zasuszone"
+            app:layout_constraintTop_toBottomOf="@+id/cattleDrynessRecyclerView"
+            />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/cattleDrynessRecentlyRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:layout_constraintTop_toBottomOf="@+id/drynessRecently"/>
+
         <com.github.mikephil.charting.charts.PieChart
             android:id="@+id/cattlePieChart"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:minHeight="300dp"
-            app:layout_constraintTop_toBottomOf="@+id/cattleDrynessRecyclerView"
+            app:layout_constraintTop_toBottomOf="@+id/cattleDrynessRecentlyRecyclerView"
             tools:layout_editor_absoluteX="8dp" />
 
         <com.github.mikephil.charting.charts.PieChart
