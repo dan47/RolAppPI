@@ -128,32 +128,26 @@ public class DetailsCattleFragment extends Fragment {
                     new AlertDialog.Builder(view.getContext())
                             .setTitle("Czy chcesz?")
                             .setMessage("Ustawić datę 9 miesięcy w tył? ")
-                            .setPositiveButton("Tak", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    Date dateCalving = new Date();
+                            .setPositiveButton("Tak", (dialogInterface, i) -> {
+                                Date dateCalving = new Date();
 
-                                    LocalDateTime ldt = LocalDateTime.ofInstant(dateCalving.toInstant(), ZoneId.systemDefault());
-                                    dateCalving = Date.from(ldt.minusDays(275).atZone(ZoneId.systemDefault()).toInstant());
+                                LocalDateTime ldt = LocalDateTime.ofInstant(dateCalving.toInstant(), ZoneId.systemDefault());
+                                dateCalving = Date.from(ldt.minusDays(275).atZone(ZoneId.systemDefault()).toInstant());
 
-                                    materialDateBuilder.setSelection(dateCalving.getTime());
+                                materialDateBuilder.setSelection(dateCalving.getTime());
 
-                                    MaterialDatePicker materialDatePicker = materialDateBuilder.build();
-                                    materialDatePicker = createListener(materialDatePicker);
-                                    materialDatePicker.show(getParentFragmentManager(), "MATERIAL_DATE_PICKER");
-                                }
+                                MaterialDatePicker materialDatePicker = materialDateBuilder.build();
+                                materialDatePicker = createListener(materialDatePicker);
+                                materialDatePicker.show(getParentFragmentManager(), "MATERIAL_DATE_PICKER");
                             })
-                            .setNegativeButton("Nie", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    Date dateCalving = new Date();
+                            .setNegativeButton("Nie", (dialogInterface, i) -> {
+                                Date dateCalving = new Date();
 
-                                    materialDateBuilder.setSelection(dateCalving.getTime());
+                                materialDateBuilder.setSelection(dateCalving.getTime());
 
-                                    MaterialDatePicker materialDatePicker = materialDateBuilder.build();
-                                    materialDatePicker = createListener(materialDatePicker);
-                                    materialDatePicker.show(getParentFragmentManager(), "MATERIAL_DATE_PICKER");
-                                }
+                                MaterialDatePicker materialDatePicker = materialDateBuilder.build();
+                                materialDatePicker = createListener(materialDatePicker);
+                                materialDatePicker.show(getParentFragmentManager(), "MATERIAL_DATE_PICKER");
                             }).show();
                 } else {
                     Date dateCalving = new Date();
@@ -180,67 +174,54 @@ public class DetailsCattleFragment extends Fragment {
             private MaterialDatePicker createListener(MaterialDatePicker materialDatePicker) {
 
                 materialDatePicker.addOnPositiveButtonClickListener(
-                        new MaterialPickerOnPositiveButtonClickListener() {
-                            @SuppressLint("SetTextI18n")
-                            @Override
-                            public void onPositiveButtonClick(Object selection) {
-                                SimpleDateFormat simpleFormat = new SimpleDateFormat("dd.MM.yyyy");
-                                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
-                                Date date = new Date((long) selection);
+                        selection -> {
+                            SimpleDateFormat simpleFormat = new SimpleDateFormat("dd.MM.yyyy");
+                            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+                            Date date = new Date((long) selection);
 
-                                LocalDate dateCalvingTemp = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-                                LocalDate dateBirthTemp = LocalDate.parse(dateBirth, formatter);
-                                long months = ChronoUnit.MONTHS.between(dateBirthTemp, dateCalvingTemp);
-                                long weeks = 8;
+                            LocalDate dateCalvingTemp = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                            LocalDate dateBirthTemp = LocalDate.parse(dateBirth, formatter);
+                            long months = ChronoUnit.MONTHS.between(dateBirthTemp, dateCalvingTemp);
+                            long weeks = 8;
 
-                                if (!previousCalvingString.equals("")) {
-                                    LocalDate datePreviousCalvingTemp = LocalDate.parse(previousCalvingString, formatter);
-                                    weeks = ChronoUnit.WEEKS.between(datePreviousCalvingTemp, dateCalvingTemp);
-                                }
+                            if (!previousCalvingString.equals("")) {
+                                LocalDate datePreviousCalvingTemp = LocalDate.parse(previousCalvingString, formatter);
+                                weeks = ChronoUnit.WEEKS.between(datePreviousCalvingTemp, dateCalvingTemp);
+                            }
 
-                                if (weeks < 6) {
+                            if (weeks < 6) {
 
-                                    new AlertDialog.Builder(view.getContext())
-                                            .setTitle("Czy jesteś pewny?")
-                                            .setMessage("Jeszcze nie mineło 6 tygodni od ostatniego wycielenia! Ostatnie wycielenie: " + previousCalvingString)
-                                            .setPositiveButton("Tak", new DialogInterface.OnClickListener() {
-                                                @Override
-                                                public void onClick(DialogInterface dialogInterface, int i) {
-                                                    calving.setText(simpleFormat.format(date));
-                                                    calvingDeleteBtn.setVisibility(View.VISIBLE);
-                                                    cattleViewModel.addCalving(cattleViewModel.getSelected().getValue(), simpleFormat.format(date));
-                                                }
-                                            })
-                                            .setNegativeButton("Nie", new DialogInterface.OnClickListener() {
-                                                @Override
-                                                public void onClick(DialogInterface dialogInterface, int i) {
-                                                }
-                                            }).show();
-                                } else if (months < 15) {
+                                new AlertDialog.Builder(view.getContext())
+                                        .setTitle("Czy jesteś pewny?")
+                                        .setMessage("Jeszcze nie mineło 6 tygodni od ostatniego wycielenia! Ostatnie wycielenie: " + previousCalvingString)
+                                        .setPositiveButton("Tak", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialogInterface, int i) {
+                                                calving.setText(simpleFormat.format(date));
+                                                calvingDeleteBtn.setVisibility(View.VISIBLE);
+                                                cattleViewModel.addCalving(cattleViewModel.getSelected().getValue(), simpleFormat.format(date));
+                                            }
+                                        })
+                                        .setNegativeButton("Nie", (dialogInterface, i) -> {
+                                        }).show();
+                            } else if (months < 15) {
 
-                                    new AlertDialog.Builder(view.getContext())
-                                            .setTitle("Czy jesteś pewny?")
-                                            .setMessage("Zwierzę ma mniej niż 15 miesięcy! Urodzone: " + birthday.getText())
-                                            .setPositiveButton("Tak", new DialogInterface.OnClickListener() {
-                                                @Override
-                                                public void onClick(DialogInterface dialogInterface, int i) {
-                                                    calving.setText(simpleFormat.format(date));
-                                                    calvingDeleteBtn.setVisibility(View.VISIBLE);
-                                                    cattleViewModel.addCalving(cattleViewModel.getSelected().getValue(), simpleFormat.format(date));
-                                                }
-                                            })
-                                            .setNegativeButton("Nie", new DialogInterface.OnClickListener() {
-                                                @Override
-                                                public void onClick(DialogInterface dialogInterface, int i) {
+                                new AlertDialog.Builder(view.getContext())
+                                        .setTitle("Czy jesteś pewny?")
+                                        .setMessage("Zwierzę ma mniej niż 15 miesięcy! Urodzone: " + birthday.getText())
+                                        .setPositiveButton("Tak", (dialogInterface, i) -> {
+                                            calving.setText(simpleFormat.format(date));
+                                            calvingDeleteBtn.setVisibility(View.VISIBLE);
+                                            cattleViewModel.addCalving(cattleViewModel.getSelected().getValue(), simpleFormat.format(date));
+                                        })
+                                        .setNegativeButton("Nie", (dialogInterface, i) -> {
 
-                                                }
-                                            })
-                                            .show();
-                                } else {
-                                    calving.setText(simpleFormat.format(date));
-                                    calvingDeleteBtn.setVisibility(View.VISIBLE);
-                                    cattleViewModel.addCalving(cattleViewModel.getSelected().getValue(), simpleFormat.format(date));
-                                }
+                                        })
+                                        .show();
+                            } else {
+                                calving.setText(simpleFormat.format(date));
+                                calvingDeleteBtn.setVisibility(View.VISIBLE);
+                                cattleViewModel.addCalving(cattleViewModel.getSelected().getValue(), simpleFormat.format(date));
                             }
                         });
                 return materialDatePicker;
@@ -248,62 +229,36 @@ public class DetailsCattleFragment extends Fragment {
         });
 
 
-        calvingDeleteBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                new AlertDialog.Builder(view.getContext())
-                        .setTitle("Czy jesteś pewny?")
-                        .setMessage("Operacja usunięcia zacielenia ")
-                        .setPositiveButton("Tak", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                cattleViewModel.deleteCalving(cattleModel.getAnimal_id());
-                                cattleViewModel.selected.getValue().setCaliving(""); //Pozbyć się, zajmuje pewnie za dużo - wymyślić lepsze zabezpieczenie/ podczas usuwania calving nie zmienia sie w edycji (selected), przez co po edycji powraca stary calving
-                                calving.setText(getString(R.string.no_calivng));
-                                calvingDeleteBtn.setVisibility(View.GONE);
-                            }
-                        })
-                        .setNegativeButton("Nie", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
+        calvingDeleteBtn.setOnClickListener(v -> new AlertDialog.Builder(v.getContext())
+                .setTitle("Czy jesteś pewny?")
+                .setMessage("Operacja usunięcia zacielenia ")
+                .setPositiveButton("Tak", (dialogInterface, i) -> {
+                    cattleViewModel.deleteCalving(cattleModel.getAnimal_id());
+                    cattleViewModel.selected.getValue().setCaliving(""); //Pozbyć się, zajmuje pewnie za dużo - wymyślić lepsze zabezpieczenie/ podczas usuwania calving nie zmienia sie w edycji (selected), przez co po edycji powraca stary calving
+                    calving.setText(getString(R.string.no_calivng));
+                    calvingDeleteBtn.setVisibility(View.GONE);
+                })
+                .setNegativeButton("Nie", (dialogInterface, i) -> {
 
-                            }
-                        })
-                        .show();
-            }
+                })
+                .show());
+
+        editBtn.setOnClickListener(v -> {
+            AddCattleDialog exampleDialog = new AddCattleDialog();
+            exampleDialog.show(getParentFragmentManager(), "example dialog");
         });
 
-        editBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                AddCattleDialog exampleDialog = new AddCattleDialog();
-                exampleDialog.show(getParentFragmentManager(), "example dialog");
-            }
-        });
+        deleteBtn.setOnClickListener(v -> new AlertDialog.Builder(v.getContext())
+                .setTitle("Czy jesteś pewny?")
+                .setMessage("Usunięcie zwierzęcia")
+                .setPositiveButton("Tak", (dialogInterface, i) -> {
+                    cattleViewModel.cattleDelete(cattleViewModel.getSelected().getValue());
+                    getActivity().onBackPressed();
+                })
+                .setNegativeButton("Nie", (dialogInterface, i) -> {
 
-        deleteBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                new AlertDialog.Builder(view.getContext())
-                        .setTitle("Czy jesteś pewny?")
-                        .setMessage("Usunięcie zwierzęcia")
-                        .setPositiveButton("Tak", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                cattleViewModel.cattleDelete(cattleViewModel.getSelected().getValue());
-                                getActivity().onBackPressed();
-                            }
-                        })
-                        .setNegativeButton("Nie", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-
-                            }
-                        })
-                        .show();
-
-            }
-        });
+                })
+                .show());
     }
 
 

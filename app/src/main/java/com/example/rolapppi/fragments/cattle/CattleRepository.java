@@ -30,19 +30,16 @@ public class CattleRepository {
 
     public void loadData(){
 
-        cattleRef.addSnapshotListener(new EventListener<QuerySnapshot>() {
-            @Override
-            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-                if(error != null){
-                    Log.e("Firestore error", error.getMessage());
-                    return;
-                }
-                List<CattleModel> tempCattleModelList = new ArrayList<>();
-                for(DocumentSnapshot dc : value.getDocuments()){
-                    tempCattleModelList.add(dc.toObject(CattleModel.class));
-                }
-                fireStoreDataAdded.cattleDataAdded(tempCattleModelList);
+        cattleRef.addSnapshotListener((value, error) -> {
+            if(error != null){
+                Log.e("Firestore error", error.getMessage());
+                return;
             }
+            List<CattleModel> tempCattleModelList = new ArrayList<>();
+            for(DocumentSnapshot dc : value.getDocuments()){
+                tempCattleModelList.add(dc.toObject(CattleModel.class));
+            }
+            fireStoreDataAdded.cattleDataAdded(tempCattleModelList);
         });
     }
 

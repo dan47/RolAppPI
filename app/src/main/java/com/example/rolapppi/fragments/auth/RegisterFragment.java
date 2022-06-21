@@ -38,12 +38,9 @@ public class RegisterFragment extends Fragment {
         super.onCreate(savedInstanceState);
         viewModel = new ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory
                 .getInstance(getActivity().getApplication())).get(AuthenticationViewModel.class);
-        viewModel.getUserData().observe(this, new Observer<FirebaseUser>() {
-            @Override
-            public void onChanged(FirebaseUser firebaseUser) {
-                if (firebaseUser != null) {
-                    navController.navigate(R.id.action_registerFragment_to_loginFragment);
-                }
+        viewModel.getUserData().observe(this, firebaseUser -> {
+            if (firebaseUser != null) {
+                navController.navigate(R.id.action_registerFragment_to_loginFragment);
             }
         });
     }
@@ -70,29 +67,21 @@ public class RegisterFragment extends Fragment {
 
         navController = Navigation.findNavController(view);
 
-        alreadyHaveAccount.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                navController.navigate(R.id.action_registerFragment_to_loginFragment);
-            }
-        });
+        alreadyHaveAccount.setOnClickListener(v -> navController.navigate(R.id.action_registerFragment_to_loginFragment));
 
-        registerButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String email = emailView.getText().toString();
-                String pass = passwordView.getText().toString();
-                String confPass = confirmPassword.getText().toString();
+        registerButton.setOnClickListener(v -> {
+            String email = emailView.getText().toString();
+            String pass = passwordView.getText().toString();
+            String confPass = confirmPassword.getText().toString();
 
-                if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-                    emailTextInputLayout.setError("Nieprawidłowy email");
-                } else if (pass.length() < 6) {
-                    passwordTextInputLayout.setError("Hasło za krótkie");
-                } else if (!confPass.equals(pass)) {
-                    confirmPasswordTextInputLayout.setError("Hasła są różne");
-                } else {
-                    viewModel.register(email, pass);
-                }
+            if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                emailTextInputLayout.setError("Nieprawidłowy email");
+            } else if (pass.length() < 6) {
+                passwordTextInputLayout.setError("Hasło za krótkie");
+            } else if (!confPass.equals(pass)) {
+                confirmPasswordTextInputLayout.setError("Hasła są różne");
+            } else {
+                viewModel.register(email, pass);
             }
         });
     }

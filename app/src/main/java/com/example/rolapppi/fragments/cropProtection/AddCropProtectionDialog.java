@@ -1,6 +1,6 @@
 package com.example.rolapppi.fragments.cropProtection;
 
-import android.annotation.SuppressLint;
+
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.os.Bundle;
@@ -18,7 +18,6 @@ import android.widget.TextView;
 
 import com.example.rolapppi.R;
 import com.google.android.material.datepicker.MaterialDatePicker;
-import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
 import com.google.android.material.timepicker.MaterialTimePicker;
 import com.google.android.material.timepicker.TimeFormat;
 
@@ -30,13 +29,13 @@ import java.util.stream.Collectors;
 public class AddCropProtectionDialog extends AppCompatDialogFragment {
 
 
-    private Button mPickDateButton;
     private CropProtectionViewModel cropProtectionViewModel;
     private CropProtectionModel cropProtectionModel;
-    private Button submitBtnE;
     private Boolean edit;
     private TextView treatmentTime;
     private AutoCompleteTextView crop, area, protectionProduct, dose, reason;
+
+    Button submitBtnE, mPickDateButton;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -56,25 +55,15 @@ public class AddCropProtectionDialog extends AppCompatDialogFragment {
 
         final MaterialDatePicker materialDatePicker = materialDateBuilder.build();
         mPickDateButton.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
-                        materialDatePicker.show(getParentFragmentManager(), "MATERIAL_DATE_PICKER");
-                    }
-                });
+                v -> materialDatePicker.show(getParentFragmentManager(), "MATERIAL_DATE_PICKER"));
         materialDatePicker.addOnPositiveButtonClickListener(
-                new MaterialPickerOnPositiveButtonClickListener() {
-                    @SuppressLint("SetTextI18n")
-                    @Override
-                    public void onPositiveButtonClick(Object selection) {
-                        Date date = new Date((Long) selection);
+                selection -> {
+                    Date date = new Date((Long) selection);
 
 
-                        treatmentTime.setText(simpleFormat.format(date));
-                        materialTimePicker.show(getParentFragmentManager(), "fragment_tag");
+                    treatmentTime.setText(simpleFormat.format(date));
+                    materialTimePicker.show(getParentFragmentManager(), "fragment_tag");
 
-                    }
                 });
         materialTimePicker.addOnPositiveButtonClickListener(dialog -> {
             String temp = treatmentTime.getText().toString();
@@ -127,11 +116,11 @@ public class AddCropProtectionDialog extends AppCompatDialogFragment {
         }
 
         List<CropProtectionModel> temp_models_list = cropProtectionViewModel.getLiveDatafromFireStore().getValue();
-        List<String> crops = temp_models_list.stream().map(e->e.getCrop()).distinct().collect(Collectors.toList());
-        List<String> areas = temp_models_list.stream().map(e->e.getArea()).distinct().collect(Collectors.toList());
-        List<String> protectionProducts = temp_models_list.stream().map(e->e.getProtectionProduct()).distinct().collect(Collectors.toList());
-        List<String> doses = temp_models_list.stream().map(e->e.getDose()).distinct().collect(Collectors.toList());
-        List<String> reasons = temp_models_list.stream().map(e->e.getReason()).distinct().collect(Collectors.toList());
+        List<String> crops = temp_models_list.stream().map(CropProtectionModel::getCrop).distinct().collect(Collectors.toList());
+        List<String> areas = temp_models_list.stream().map(CropProtectionModel::getArea).distinct().collect(Collectors.toList());
+        List<String> protectionProducts = temp_models_list.stream().map(CropProtectionModel::getProtectionProduct).distinct().collect(Collectors.toList());
+        List<String> doses = temp_models_list.stream().map(CropProtectionModel::getDose).distinct().collect(Collectors.toList());
+        List<String> reasons = temp_models_list.stream().map(CropProtectionModel::getReason).distinct().collect(Collectors.toList());
 
         if (edit) {
             builder.setView(view)
@@ -150,55 +139,52 @@ public class AddCropProtectionDialog extends AppCompatDialogFragment {
         reason.setAdapter(new ArrayAdapter(getContext(), android.R.layout.simple_dropdown_item_1line, reasons));
 
 
-        submitBtnE.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        submitBtnE.setOnClickListener(v -> {
 
-                String treatmentTimeString = treatmentTime.getText().toString();
-                String cropString = crop.getText().toString();
-                String areaString = area.getText().toString();
-                String protectionProductString = protectionProduct.getText().toString();
-                String doseString = dose.getText().toString();
-                String reasonString = reason.getText().toString();
+            String treatmentTimeString = treatmentTime.getText().toString();
+            String cropString = crop.getText().toString();
+            String areaString = area.getText().toString();
+            String protectionProductString = protectionProduct.getText().toString();
+            String doseString = dose.getText().toString();
+            String reasonString = reason.getText().toString();
 
 
-                if (TextUtils.isEmpty(cropString)) {
-                    crop.setError("Proszę wprowadzić nazwę uprawy");
-                    return;
-                }
-                if (TextUtils.isEmpty(areaString)) {
-                    area.setError("Proszę wprowadzić powierzchnie w ha");
-                    return;
-                }
-                if (TextUtils.isEmpty(protectionProductString)) {
-                    protectionProduct.setError("Proszę wprowadzić nazwę produktu");
-                    return;
-                }
-                if (TextUtils.isEmpty(doseString)) {
-                    dose.setError("Proszę wprowadzić dawkę środkka (l/ha)");
-                    return;
-                }
-                if (TextUtils.isEmpty(reasonString)) {
-                    reason.setError("Proszę wprowadzić przyczyny zastosowania środka");
-                    return;
-                }
-                if(!areaString.contains("ha")){
-                    areaString = areaString + " ha";
-                }
-                if(!doseString.contains("l/ha")){
-                    doseString = doseString + " l/ha";
-                }
-
-                if (edit) {
-                    CropProtectionModel model = new CropProtectionModel(cropProtectionModel.getId(), treatmentTimeString, cropString, areaString, protectionProductString, doseString, reasonString);
-                    cropProtectionViewModel.cropProtectionEdit(model);
-                } else {
-                    CropProtectionModel model = new CropProtectionModel(treatmentTimeString, cropString, areaString, protectionProductString, doseString, reasonString);
-                    cropProtectionViewModel.cropProtectionAdd(model);
-                }
-                dismiss();
-
+            if (TextUtils.isEmpty(cropString)) {
+                crop.setError("Proszę wprowadzić nazwę uprawy");
+                return;
             }
+            if (TextUtils.isEmpty(areaString)) {
+                area.setError("Proszę wprowadzić powierzchnie w ha");
+                return;
+            }
+            if (TextUtils.isEmpty(protectionProductString)) {
+                protectionProduct.setError("Proszę wprowadzić nazwę produktu");
+                return;
+            }
+            if (TextUtils.isEmpty(doseString)) {
+                dose.setError("Proszę wprowadzić dawkę środkka (l/ha)");
+                return;
+            }
+            if (TextUtils.isEmpty(reasonString)) {
+                reason.setError("Proszę wprowadzić przyczyny zastosowania środka");
+                return;
+            }
+            if(!areaString.contains("ha")){
+                areaString = areaString + " ha";
+            }
+            if(!doseString.contains("l/ha")){
+                doseString = doseString + " l/ha";
+            }
+
+            if (edit) {
+                CropProtectionModel model = new CropProtectionModel(cropProtectionModel.getId(), treatmentTimeString, cropString, areaString, protectionProductString, doseString, reasonString);
+                cropProtectionViewModel.cropProtectionEdit(model);
+            } else {
+                CropProtectionModel model = new CropProtectionModel(treatmentTimeString, cropString, areaString, protectionProductString, doseString, reasonString);
+                cropProtectionViewModel.cropProtectionAdd(model);
+            }
+            dismiss();
+
         });
 
         return builder.create();

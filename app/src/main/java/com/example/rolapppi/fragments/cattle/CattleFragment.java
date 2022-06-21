@@ -28,6 +28,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 
 
@@ -41,7 +42,7 @@ public class CattleFragment extends Fragment implements CAdapter.OnModelListener
     private FloatingActionButton addBtn;
     private ProgressBar progressBar;
     private NavController navController;
-    int checkFiltr = -1;
+    int checkFiltr = 4;
 
     public CattleFragment() {
         // Required empty public constructor
@@ -70,16 +71,13 @@ public class CattleFragment extends Fragment implements CAdapter.OnModelListener
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(cAdapter);
 
-        String[] choicesArray = new String[]{"Samica", "Samiec", "Zacielenie", "Zasuszenie"};
+        String[] choicesArray = new String[]{"Samica", "Samiec", "Zacielenie", "Zasuszenie", "Brak"};
 
 
         navController = Navigation.findNavController(view);
-        addBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AddCattleDialog exampleDialog = new AddCattleDialog();
-                exampleDialog.show(getParentFragmentManager(), "example dialog");
-            }
+        addBtn.setOnClickListener(v -> {
+            AddCattleDialog exampleDialog = new AddCattleDialog();
+            exampleDialog.show(getParentFragmentManager(), "example dialog");
         });
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
@@ -97,30 +95,22 @@ public class CattleFragment extends Fragment implements CAdapter.OnModelListener
 
         }
 
-        viewModel.getLiveDatafromFireStore().observe(getViewLifecycleOwner(), new Observer<List<CattleModel>>() {
-            @Override
-            public void onChanged(List<CattleModel> cattleModels) {
-                cattleModels.sort((d1, d2) -> LocalDate.parse(d1.getBirthday(), formatter).compareTo(LocalDate.parse(d2.getBirthday(), formatter)));
-                cAdapter.setCattleModelData(cattleModels);
-                String dd = searchView.getQuery().toString();
-                if (!dd.isEmpty()) {
-                    cAdapter.getFilter().filter(dd);
-                }
-                if (checkFiltr != -1) {
-                    cAdapter.getFilter().filter(choicesArray[checkFiltr]);
-                }
-                cAdapter.notifyDataSetChanged();
-                progressBar.setVisibility(View.GONE);
+        viewModel.getLiveDatafromFireStore().observe(getViewLifecycleOwner(), cattleModels -> {
+            cattleModels.sort(Comparator.comparing(d -> LocalDate.parse(d.getBirthday(), formatter)));
+            cAdapter.setCattleModelData(cattleModels);
+            String searchText = searchView.getQuery().toString();
+            if (!searchText.isEmpty()) {
+                cAdapter.getFilter().filter(searchText);
             }
+            if (checkFiltr != 4) {
+                cAdapter.getFilter().filter(choicesArray[checkFiltr]);
+            }
+            cAdapter.notifyDataSetChanged();
+            progressBar.setVisibility(View.GONE);
         });
 
 
-        searchView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                searchView.onActionViewExpanded();
-            }
-        });
+        searchView.setOnClickListener(v -> searchView.onActionViewExpanded());
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -131,7 +121,7 @@ public class CattleFragment extends Fragment implements CAdapter.OnModelListener
             @Override
             public boolean onQueryTextChange(String newText) {
                 if (!newText.isEmpty()) {
-                    checkFiltr = -1;
+                    checkFiltr = 4;
                 }
                 cAdapter.getFilter().filter(newText);
                 return true;
@@ -139,35 +129,24 @@ public class CattleFragment extends Fragment implements CAdapter.OnModelListener
             }
         });
 
-        filterBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        filterBtn.setOnClickListener(v -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 
-                searchView.setIconified(true);
-                searchView.setIconified(true);
+            searchView.setIconified(true);
+            searchView.setIconified(true);
 
-                List<String> choicesList = Arrays.asList(choicesArray);
-                builder.setTitle("Filtr")
-                        .setSingleChoiceItems(choicesArray, checkFiltr, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                String currentItem = choicesList.get(i);
-                                checkFiltr = i;
-                                cAdapter.getFilter().filter(currentItem);
-                                dialogInterface.dismiss();
-                            }
-                        });
-                builder.setNegativeButton("Anuluj", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        checkFiltr = -1;
-                        cAdapter.getFilter().filter("");
+            List<String> choicesList = Arrays.asList(choicesArray);
+            builder.setTitle("Filtr")
+                    .setSingleChoiceItems(choicesArray, checkFiltr, (dialogInterface, i) -> {
+                        String currentItem = choicesList.get(i);
+                        checkFiltr = i;
+                        cAdapter.getFilter().filter(currentItem);
                         dialogInterface.dismiss();
-                    }
-                });
-                builder.create().show();
-            }
+                    });
+            builder.setNegativeButton("Anuluj", (dialogInterface, i) -> {
+                dialogInterface.dismiss();
+            });
+            builder.create().show();
         });
 
     }

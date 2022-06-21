@@ -51,158 +51,126 @@ public class SettingsFragment extends Fragment {
         deleteBtn = view.findViewById(R.id.deleteBtn);
 
         authenticationViewModel = new ViewModelProvider(requireActivity()).get(AuthenticationViewModel.class);
-        authenticationViewModel.getUserData().observe(getViewLifecycleOwner(), new Observer<FirebaseUser>() {
-            @Override
-            public void onChanged(FirebaseUser firebaseUser) {
-                if (firebaseUser != null) {
-                    accountMail.setText(firebaseUser.getEmail());
-                }
+        authenticationViewModel.getUserData().observe(getViewLifecycleOwner(), firebaseUser -> {
+            if (firebaseUser != null) {
+                accountMail.setText(firebaseUser.getEmail());
             }
         });
 
 
-        editBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                LayoutInflater inflater = getActivity().getLayoutInflater();
-                View dialogView = inflater.inflate(R.layout.dialog_editemail, null);
+        editBtn.setOnClickListener(v -> {
+            LayoutInflater inflater = getActivity().getLayoutInflater();
+            View dialogView = inflater.inflate(R.layout.dialog_editemail, null);
 
-                TextInputEditText password = dialogView.findViewById(R.id.InputPassword);
-                TextInputEditText newEmail = dialogView.findViewById(R.id.editTextNewEmail);
+            TextInputEditText password = dialogView.findViewById(R.id.InputPassword);
+            TextInputEditText newEmail = dialogView.findViewById(R.id.editTextNewEmail);
 
-                TextInputLayout passwordTextInputLayout = dialogView.findViewById(R.id.passwordTextInputLayout);
-                TextInputLayout emailTextInputLayout = dialogView.findViewById(R.id.emailTextInputLayout);
+            TextInputLayout passwordTextInputLayout = dialogView.findViewById(R.id.passwordTextInputLayout);
+            TextInputLayout emailTextInputLayout = dialogView.findViewById(R.id.emailTextInputLayout);
 
-                AlertDialog alertDialog = new AlertDialog.Builder(view.getContext())
-                        .setTitle("Zmiana e-maila")
-                        .setView(dialogView)
-                        .setPositiveButton("Zmień", null)
-                        .create();
+            AlertDialog alertDialog = new AlertDialog.Builder(v.getContext())
+                    .setTitle("Zmiana e-maila")
+                    .setView(dialogView)
+                    .setPositiveButton("Zmień", null)
+                    .create();
 
-                alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            alertDialog.setOnShowListener(dialogInterface -> {
+
+                Button button = ((AlertDialog) alertDialog).getButton(AlertDialog.BUTTON_POSITIVE);
+                button.setOnClickListener(new View.OnClickListener() {
 
                     @Override
-                    public void onShow(DialogInterface dialogInterface) {
+                    public void onClick(View view1) {
+                        String passwordString = password.getText().toString();
+                        String newEmailString = newEmail.getText().toString();
 
-                        Button button = ((AlertDialog) alertDialog).getButton(AlertDialog.BUTTON_POSITIVE);
-                        button.setOnClickListener(new View.OnClickListener() {
-
-                            @Override
-                            public void onClick(View view) {
-                                String passwordString = password.getText().toString();
-                                String newEmailString = newEmail.getText().toString();
-
-                                if (passwordString.length() < 6) {
-                                    passwordTextInputLayout.setError("Hasło za krótkie");
-                                } else if (!android.util.Patterns.EMAIL_ADDRESS.matcher(newEmailString).matches()) {
-                                    emailTextInputLayout.setError("Nieprawidłowy e-mail");
-                                    passwordTextInputLayout.setErrorEnabled(false);
-                                } else {
-                                    authenticationViewModel.changeEmail(passwordString, newEmailString);
-                                    alertDialog.dismiss();
-                                }
-                            }
-                        });
+                        if (passwordString.length() < 6) {
+                            passwordTextInputLayout.setError("Hasło za krótkie");
+                        } else if (!android.util.Patterns.EMAIL_ADDRESS.matcher(newEmailString).matches()) {
+                            emailTextInputLayout.setError("Nieprawidłowy e-mail");
+                            passwordTextInputLayout.setErrorEnabled(false);
+                        } else {
+                            authenticationViewModel.changeEmail(passwordString, newEmailString);
+                            alertDialog.dismiss();
+                        }
                     }
                 });
-                alertDialog.show();
-            }
+            });
+            alertDialog.show();
         });
 
-        editPassworBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                LayoutInflater inflater = getActivity().getLayoutInflater();
-                View dialogView = inflater.inflate(R.layout.dialog_editpassword, null);
+        editPassworBtn.setOnClickListener(v -> {
+            LayoutInflater inflater = getActivity().getLayoutInflater();
+            View dialogView = inflater.inflate(R.layout.dialog_editpassword, null);
 
-                TextInputEditText oldPassword = dialogView.findViewById(R.id.editTextOldPassword);
-                TextInputEditText newPassword = dialogView.findViewById(R.id.editTextNewPassword);
-                TextInputEditText confrimPassword = dialogView.findViewById(R.id.editTextConfirmPassword);
+            TextInputEditText oldPassword = dialogView.findViewById(R.id.editTextOldPassword);
+            TextInputEditText newPassword = dialogView.findViewById(R.id.editTextNewPassword);
+            TextInputEditText confrimPassword = dialogView.findViewById(R.id.editTextConfirmPassword);
 
-                TextInputLayout oldPasswordTextInputLayout = dialogView.findViewById(R.id.oldPasswordTextInputLayout);
-                TextInputLayout newPasswordTextInputLayout = dialogView.findViewById(R.id.newPasswordTextInputLayout);
-                TextInputLayout confirmPasswordTextInputLayout = dialogView.findViewById(R.id.confirmPasswordTextInputLayout);
+            TextInputLayout oldPasswordTextInputLayout = dialogView.findViewById(R.id.oldPasswordTextInputLayout);
+            TextInputLayout newPasswordTextInputLayout = dialogView.findViewById(R.id.newPasswordTextInputLayout);
+            TextInputLayout confirmPasswordTextInputLayout = dialogView.findViewById(R.id.confirmPasswordTextInputLayout);
 
-                AlertDialog alertDialog = new AlertDialog.Builder(view.getContext())
-                        .setTitle("Zmiana hasła")
-                        .setView(dialogView)
-                        .setPositiveButton("Zmień", null)
-                        .create();
+            AlertDialog alertDialog = new AlertDialog.Builder(v.getContext())
+                    .setTitle("Zmiana hasła")
+                    .setView(dialogView)
+                    .setPositiveButton("Zmień", null)
+                    .create();
 
-                alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            alertDialog.setOnShowListener(dialogInterface -> {
 
-                    @Override
-                    public void onShow(DialogInterface dialogInterface) {
+                Button button = ((AlertDialog) alertDialog).getButton(AlertDialog.BUTTON_POSITIVE);
+                button.setOnClickListener(view1 -> {
+                    String oldPasswordString = oldPassword.getText().toString();
+                    String newPasswordString = newPassword.getText().toString();
+                    String confrimPasswordString = confrimPassword.getText().toString();
 
-                        Button button = ((AlertDialog) alertDialog).getButton(AlertDialog.BUTTON_POSITIVE);
-                        button.setOnClickListener(new View.OnClickListener() {
-
-                            @Override
-                            public void onClick(View view) {
-                                String oldPasswordString = oldPassword.getText().toString();
-                                String newPasswordString = newPassword.getText().toString();
-                                String confrimPasswordString = confrimPassword.getText().toString();
-
-                                if (oldPasswordString.length() < 6) {
-                                    oldPasswordTextInputLayout.setError("Hasło za ktrótkie");
-                                } else if (newPasswordString.equals(oldPasswordString)) {
-                                    newPasswordTextInputLayout.setError("Nowe hasło musi różnić od poprzedniego");
-                                    oldPasswordTextInputLayout.setErrorEnabled(false);
-                                } else if (newPasswordString.length() < 6) {
-                                    newPasswordTextInputLayout.setError("Hasło za ktrótkie");
-                                } else if (!confrimPasswordString.equals(newPasswordString)) {
-                                    confirmPasswordTextInputLayout.setError("Hasła nie pasują do siebie ");
-                                    newPasswordTextInputLayout.setErrorEnabled(false);
-                                } else {
-                                    authenticationViewModel.changePassword(oldPasswordString, newPasswordString);
-                                    alertDialog.dismiss();
-                                }
-                            }
-                        });
+                    if (oldPasswordString.length() < 6) {
+                        oldPasswordTextInputLayout.setError("Hasło za ktrótkie");
+                    } else if (newPasswordString.equals(oldPasswordString)) {
+                        newPasswordTextInputLayout.setError("Nowe hasło musi różnić od poprzedniego");
+                        oldPasswordTextInputLayout.setErrorEnabled(false);
+                    } else if (newPasswordString.length() < 6) {
+                        newPasswordTextInputLayout.setError("Hasło za ktrótkie");
+                    } else if (!confrimPasswordString.equals(newPasswordString)) {
+                        confirmPasswordTextInputLayout.setError("Hasła nie pasują do siebie ");
+                        newPasswordTextInputLayout.setErrorEnabled(false);
+                    } else {
+                        authenticationViewModel.changePassword(oldPasswordString, newPasswordString);
+                        alertDialog.dismiss();
                     }
                 });
-                alertDialog.show();
-            }
+            });
+            alertDialog.show();
         });
 
-        deleteBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                LayoutInflater inflater = getActivity().getLayoutInflater();
-                View dialogView = inflater.inflate(R.layout.dialog_deleteuser, null);
-                TextInputEditText password = dialogView.findViewById(R.id.InputPassword);
-                TextInputLayout passwordTextInputLayout = dialogView.findViewById(R.id.passwordTextInputLayout);
-                AlertDialog alertDialog = new AlertDialog.Builder(view.getContext())
-                        .setTitle("Usunięcie konta")
-                        .setView(dialogView)
-                        .setPositiveButton("Usuń", null)
-                        .create();
-                alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+        deleteBtn.setOnClickListener(v -> {
+            LayoutInflater inflater = getActivity().getLayoutInflater();
+            View dialogView = inflater.inflate(R.layout.dialog_deleteuser, null);
+            TextInputEditText password = dialogView.findViewById(R.id.InputPassword);
+            TextInputLayout passwordTextInputLayout = dialogView.findViewById(R.id.passwordTextInputLayout);
+            AlertDialog alertDialog = new AlertDialog.Builder(v.getContext())
+                    .setTitle("Usunięcie konta")
+                    .setView(dialogView)
+                    .setPositiveButton("Usuń", null)
+                    .create();
+            alertDialog.setOnShowListener(dialogInterface -> {
 
-                    @Override
-                    public void onShow(DialogInterface dialogInterface) {
+                Button button = ((AlertDialog) alertDialog).getButton(AlertDialog.BUTTON_POSITIVE);
+                button.setOnClickListener(view1 -> {
+                    String oldPasswordString = password.getText().toString();
 
-                        Button button = ((AlertDialog) alertDialog).getButton(AlertDialog.BUTTON_POSITIVE);
-                        button.setOnClickListener(new View.OnClickListener() {
-
-                            @Override
-                            public void onClick(View view) {
-                                String oldPasswordString = password.getText().toString();
-
-                                if (oldPasswordString.length() < 6) {
-                                    passwordTextInputLayout.setError("Hasło za krótkie");
-                                } else {
-                                    authenticationViewModel.delete(oldPasswordString);
-                                    alertDialog.dismiss();
-                                }
-                            }
-                        });
+                    if (oldPasswordString.length() < 6) {
+                        passwordTextInputLayout.setError("Hasło za krótkie");
+                    } else {
+                        authenticationViewModel.delete(oldPasswordString);
+                        alertDialog.dismiss();
                     }
                 });
-                alertDialog.show();
+            });
+            alertDialog.show();
 
 
-            }
         });
 
 

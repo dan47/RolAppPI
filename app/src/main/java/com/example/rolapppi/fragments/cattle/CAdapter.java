@@ -22,6 +22,7 @@ import java.time.format.DateTimeFormatter;;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class CAdapter extends RecyclerView.Adapter<CAdapter.MyHolder> implements Filterable {
@@ -140,7 +141,7 @@ public class CAdapter extends RecyclerView.Adapter<CAdapter.MyHolder> implements
         protected FilterResults performFiltering(CharSequence charSequence) {
 
             List<CattleModel> filteredList = new ArrayList<>();
-            if (charSequence.toString().isEmpty()) {
+            if (charSequence.toString().isEmpty() || charSequence.equals("Brak")) {
                 filteredList.addAll(cattleModelListAll);
             } else {
                 if (charSequence.equals("Samiec") || charSequence.equals("Samica")) {
@@ -153,16 +154,16 @@ public class CAdapter extends RecyclerView.Adapter<CAdapter.MyHolder> implements
                     for (CattleModel item : cattleModelListAll) {
                         if (!item.getCaliving().isEmpty()) {
                             filteredList.add(item);
-                            filteredList.sort((a, b) -> Long.compare(duration(a.getCaliving()), duration(b.getCaliving())));
+                            filteredList.sort(Comparator.comparingLong(a -> duration(a.getCaliving())));
                             Collections.reverse(filteredList);
                         }
                     }
                 } else if (charSequence.equals("Zasuszenie")) {
                     for (CattleModel item : cattleModelListAll) {
                         if (!item.getCaliving().isEmpty()) {
-                            if(duration(item.getCaliving())>235){
+                            if (duration(item.getCaliving()) > 235) {
                                 filteredList.add(item);
-                                filteredList.sort((a, b) -> Long.compare(duration(a.getCaliving()), duration(b.getCaliving())));
+                                filteredList.sort(Comparator.comparingLong(a -> duration(a.getCaliving())));
                                 Collections.reverse(filteredList);
                             }
                         }

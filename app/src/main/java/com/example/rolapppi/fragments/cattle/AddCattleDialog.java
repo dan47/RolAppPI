@@ -32,16 +32,15 @@ import java.util.stream.Collectors;
 public class AddCattleDialog extends AppCompatDialogFragment {
 
     public static EditText animal_idE;
-    private Chip male_chip, female_chip;
     private TextView birthdayE;
-    private Button mPickDateButton;
     private CattleViewModel cattleViewModel;
-    private Button submitBtnE, scanBtnE;
     private Boolean edit;
     private CattleModel cattleModel;
     private AutoCompleteTextView mother_idChoose;
-    private ArrayAdapter arrayAdapter;
     private String calving;
+    private ArrayAdapter arrayAdapter;
+    private Button submitBtnE, scanBtnE, mPickDateButton;
+    private Chip male_chip, female_chip;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -103,13 +102,7 @@ public class AddCattleDialog extends AppCompatDialogFragment {
 
         final MaterialDatePicker materialDatePicker = materialDateBuilder.build();
         mPickDateButton.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
-                        materialDatePicker.show(getParentFragmentManager(), "MATERIAL_DATE_PICKER");
-                    }
-                });
+                v -> materialDatePicker.show(getParentFragmentManager(), "MATERIAL_DATE_PICKER"));
         materialDatePicker.addOnPositiveButtonClickListener(
                 new MaterialPickerOnPositiveButtonClickListener() {
                     @SuppressLint("SetTextI18n")
@@ -145,67 +138,59 @@ public class AddCattleDialog extends AppCompatDialogFragment {
         arrayAdapter = new ArrayAdapter(getContext(), android.R.layout.simple_dropdown_item_1line, mothers_list);
         mother_idChoose.setAdapter(arrayAdapter);
 
-        scanBtnE.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(getContext(), ScannerCode.class));
+        scanBtnE.setOnClickListener(v -> startActivity(new Intent(getContext(), ScannerCode.class)));
+
+
+        submitBtnE.setOnClickListener(v -> {
+
+            String animal_id = animal_idE.getText().toString();
+            String mother_id = mother_idChoose.getText().toString();
+            String birthday = birthdayE.getText().toString();
+            String gender;
+
+
+            if (TextUtils.isEmpty(animal_id)) {
+                animal_idE.setError("Proszę wprowadzić numer identyfikacyjny");
+                return;
             }
-        });
+            if (animal_id.length()<13){
+                animal_idE.setError("Za krótki numer identyfikacyjny");
+                return;
+            }
+
+            if (TextUtils.isEmpty(mother_id)) {
+                mother_idChoose.setError("Proszę wprowadzić numer identyfikacyjny matki");
+                return;
+            }
+            if (mother_id.length()<13){
+                mother_idChoose.setError("Za krótki numer identyfikacyjny");
+                return;
+            }
+
+            if (male_chip.isChecked()) {
+                gender = getString(R.string.male);
+            } else {
+                gender = getString(R.string.female);
+            }
 
 
-        submitBtnE.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                String animal_id = animal_idE.getText().toString();
-                String mother_id = mother_idChoose.getText().toString();
-                String birthday = birthdayE.getText().toString();
-                String gender;
-
-
-                if (TextUtils.isEmpty(animal_id)) {
-                    animal_idE.setError("Proszę wprowadzić numer identyfikacyjny");
-                    return;
-                }
-                if (animal_id.length()<13){
-                    animal_idE.setError("Za krótki numer identyfikacyjny");
-                    return;
-                }
-
-                if (TextUtils.isEmpty(mother_id)) {
-                    mother_idChoose.setError("Proszę wprowadzić numer identyfikacyjny matki");
-                    return;
-                }
-                if (mother_id.length()<13){
-                    mother_idChoose.setError("Za krótki numer identyfikacyjny");
-                    return;
-                }
-
-                if (male_chip.isChecked()) {
-                    gender = getString(R.string.male);
-                } else {
-                    gender = getString(R.string.female);
-                }
-
-
-                if (edit) {
-                    CattleModel model = new CattleModel(animal_id, birthday, gender, mother_id, calving);
-                        cattleViewModel.cattleEdit(model);
-                        if (!model.getAnimal_id().equals(cattleModel.getAnimal_id())) {
-                            cattleViewModel.cattleDelete(cattleModel);
-                        }
-                } else {
-                    CattleModel model = new CattleModel(animal_id, birthday, gender, mother_id);
-                    cattleViewModel.cattleAdd(model);
-                    if(mothers_list.contains(mother_id)){
-                        cattleViewModel.cattleUpdateMother(mother_id, birthday);
+            if (edit) {
+                CattleModel model = new CattleModel(animal_id, birthday, gender, mother_id, calving);
+                    cattleViewModel.cattleEdit(model);
+                    if (!model.getAnimal_id().equals(cattleModel.getAnimal_id())) {
+                        cattleViewModel.cattleDelete(cattleModel);
                     }
+            } else {
+                CattleModel model = new CattleModel(animal_id, birthday, gender, mother_id);
+                cattleViewModel.cattleAdd(model);
+                if(mothers_list.contains(mother_id)){
+                    cattleViewModel.cattleUpdateMother(mother_id, birthday);
                 }
-
-
-                dismiss();
-
             }
+
+
+            dismiss();
+
         });
 
         return builder.create();

@@ -47,28 +47,22 @@ public class LoginFragment extends Fragment {
 
         viewModel = new ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory
                 .getInstance(getActivity().getApplication())).get(AuthenticationViewModel.class);
-        viewModel.getUserData().observe(this, new Observer<FirebaseUser>() {
-            @Override
-            public void onChanged(FirebaseUser firebaseUser) {
-                if (firebaseUser != null) {
-                    progressBar.setVisibility(View.GONE);
-                    Intent intent = new Intent(getActivity(), HomeActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(intent);
-                }
+        viewModel.getUserData().observe(this, firebaseUser -> {
+            if (firebaseUser != null) {
+                progressBar.setVisibility(View.GONE);
+                Intent intent = new Intent(getActivity(), HomeActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
             }
         });
 
-        viewModel.getProgressbarObservable().observe(this, new Observer<Boolean>() {
-            @Override
-            public void onChanged(final Boolean progressObserve) {
-                if (progressObserve) {
-                    progressBar.setVisibility(View.VISIBLE);
-                    getActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
-                } else {
-                    getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
-                    progressBar.setVisibility(View.GONE);
-                }
+        viewModel.getProgressbarObservable().observe(this, progressObserve -> {
+            if (progressObserve) {
+                progressBar.setVisibility(View.VISIBLE);
+                getActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+            } else {
+                getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+                progressBar.setVisibility(View.GONE);
             }
         });
     }
@@ -101,66 +95,47 @@ public class LoginFragment extends Fragment {
 
 
         navController = Navigation.findNavController(view);
-        createAccuont.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                navController.navigate(R.id.action_loginFragment_to_registerFragment);
-            }
-        });
+        createAccuont.setOnClickListener(v -> navController.navigate(R.id.action_loginFragment_to_registerFragment));
 
-        forgotPassword.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                LayoutInflater inflater = getActivity().getLayoutInflater();
-                View dialogView = inflater.inflate(R.layout.dialog_resetpassword, null);
-                TextInputEditText email = dialogView.findViewById(R.id.inputEmail);
-                TextInputLayout emailTextInputLayout = dialogView.findViewById(R.id.emailTextInputLayout);
-                AlertDialog alertDialog = new AlertDialog.Builder(view.getContext())
-                        .setTitle("Resetowanie hasła")
-                        .setView(dialogView)
-                        .setPositiveButton("resetuj", null)
-                        .create();
-                alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+        forgotPassword.setOnClickListener(v -> {
+            LayoutInflater inflater = getActivity().getLayoutInflater();
+            View dialogView = inflater.inflate(R.layout.dialog_resetpassword, null);
+            TextInputEditText email = dialogView.findViewById(R.id.inputEmail);
+            TextInputLayout emailTextInputLayout = dialogView.findViewById(R.id.emailTextInputLayout);
+            AlertDialog alertDialog = new AlertDialog.Builder(view.getContext())
+                    .setTitle("Resetowanie hasła")
+                    .setView(dialogView)
+                    .setPositiveButton("resetuj", null)
+                    .create();
+            alertDialog.setOnShowListener(dialogInterface -> {
 
-                    @Override
-                    public void onShow(DialogInterface dialogInterface) {
+                Button button = ((AlertDialog) alertDialog).getButton(AlertDialog.BUTTON_POSITIVE);
+                button.setOnClickListener(view1 -> {
+                    String emailString = email.getText().toString();
 
-                        Button button = ((AlertDialog) alertDialog).getButton(AlertDialog.BUTTON_POSITIVE);
-                        button.setOnClickListener(new View.OnClickListener() {
-
-                            @Override
-                            public void onClick(View view) {
-                                String emailString = email.getText().toString();
-
-                                if (!android.util.Patterns.EMAIL_ADDRESS.matcher(emailString).matches()) {
-                                    emailTextInputLayout.setError("Nieprawidłowy e-mail");
-                                } else {
-                                    viewModel.resetPassword(emailString);
-                                    alertDialog.dismiss();
-                                }
-                            }
-                        });
+                    if (!android.util.Patterns.EMAIL_ADDRESS.matcher(emailString).matches()) {
+                        emailTextInputLayout.setError("Nieprawidłowy e-mail");
+                    } else {
+                        viewModel.resetPassword(emailString);
+                        alertDialog.dismiss();
                     }
                 });
-                alertDialog.show();
-            }
+            });
+            alertDialog.show();
         });
 
-        loginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String email = emailView.getText().toString();
-                String pass = passwordView.getText().toString();
+        loginButton.setOnClickListener(v -> {
+            String email = emailView.getText().toString();
+            String pass = passwordView.getText().toString();
 
-                if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-                    emailInputLayout.setError("Nieprawidłowy email");
-                } else if (pass.length() < 6) {
-                    passswordInputLayout.setError("Hasło za krótkie");
-                    emailInputLayout.setErrorEnabled(false);
-                }else{
-                    passswordInputLayout.setErrorEnabled(false);
-                    viewModel.signIn(email, pass);
-                }
+            if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                emailInputLayout.setError("Nieprawidłowy email");
+            } else if (pass.length() < 6) {
+                passswordInputLayout.setError("Hasło za krótkie");
+                emailInputLayout.setErrorEnabled(false);
+            }else{
+                passswordInputLayout.setErrorEnabled(false);
+                viewModel.signIn(email, pass);
             }
         });
 

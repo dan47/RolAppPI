@@ -59,14 +59,11 @@ public class AuthenticationRepository {
     public void register(String email, String pass) {
         CheckNetwork checkNetwork = new CheckNetwork();
         if (checkNetwork.isConnected(application)) {
-            firebaseAuth.createUserWithEmailAndPassword(email, pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                @Override
-                public void onComplete(@NonNull Task<AuthResult> task) {
-                    if (task.isSuccessful()) {
-                        firebaseUserMutableLiveData.postValue(firebaseAuth.getCurrentUser());
-                    } else {
-                        Toast.makeText(application, "Podany użytkownik już istnieje", Toast.LENGTH_SHORT).show();
-                    }
+            firebaseAuth.createUserWithEmailAndPassword(email, pass).addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    firebaseUserMutableLiveData.postValue(firebaseAuth.getCurrentUser());
+                } else {
+                    Toast.makeText(application, "Podany użytkownik już istnieje", Toast.LENGTH_SHORT).show();
                 }
             });
         } else
@@ -77,16 +74,13 @@ public class AuthenticationRepository {
         CheckNetwork checkNetwork = new CheckNetwork();
         if (checkNetwork.isConnected(application)) {
             progressbarObservable.setValue(true);
-            firebaseAuth.signInWithEmailAndPassword(email, pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                @Override
-                public void onComplete(@NonNull Task<AuthResult> task) {
-                    if (task.isSuccessful()) {
-                        progressbarObservable.setValue(false);
-                        firebaseUserMutableLiveData.postValue(firebaseAuth.getCurrentUser());
-                    } else {
-                        progressbarObservable.setValue(false);
-                        Toast.makeText(application, "Nieprawidłowe dane", Toast.LENGTH_SHORT).show();
-                    }
+            firebaseAuth.signInWithEmailAndPassword(email, pass).addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    progressbarObservable.setValue(false);
+                    firebaseUserMutableLiveData.postValue(firebaseAuth.getCurrentUser());
+                } else {
+                    progressbarObservable.setValue(false);
+                    Toast.makeText(application, "Nieprawidłowe dane", Toast.LENGTH_SHORT).show();
                 }
             });
         } else
@@ -102,61 +96,43 @@ public class AuthenticationRepository {
 
             AuthCredential credential = EmailAuthProvider.getCredential(user.getEmail(), password);
 
-            user.reauthenticate(credential).addOnCompleteListener(new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull Task<Void> task) {
-                    Log.d("TAG", "User re-authenticated.");
+            user.reauthenticate(credential).addOnCompleteListener(task -> {
+                Log.d("TAG", "User re-authenticated.");
 
-                    if (task.isSuccessful()) {
-                        firebaseAuth.getCurrentUser().delete().addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                if (task.isSuccessful()) {
-                                    firestore.collection("user_data/" + uid + "/feed").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                            for (QueryDocumentSnapshot snapshot : task.getResult()) {
-                                                firestore.collection("user_data/" + uid + "/feed").document(snapshot.getId()).delete();
-                                            }
-                                        }
-                                    });
-                                    firestore.collection("user_data/" + uid + "/cattle").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                            for (QueryDocumentSnapshot snapshot : task.getResult()) {
-                                                firestore.collection("user_data/" + uid + "/cattle").document(snapshot.getId()).delete();
-                                            }
-                                        }
-                                    });
-                                    firestore.collection("user_data/" + uid + "/cropProtection").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                            for (QueryDocumentSnapshot snapshot : task.getResult()) {
-                                                firestore.collection("user_data/" + uid + "/cropProtection").document(snapshot.getId()).delete();
-                                            }
-                                        }
-                                    });
-                                    firestore.collection("user_data/" + uid + "/feedProduced").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                            for (QueryDocumentSnapshot snapshot : task.getResult()) {
-                                                firestore.collection("user_data/" + uid + "/feedProduced").document(snapshot.getId()).delete();
-                                            }
-                                        }
-                                    });
-                                    firestore.collection("user_data").document(uid).delete();
+                if (task.isSuccessful()) {
+                    firebaseAuth.getCurrentUser().delete().addOnCompleteListener(task1 -> {
+                        if (task1.isSuccessful()) {
+                            firestore.collection("user_data/" + uid + "/feed").get().addOnCompleteListener(t -> {
+                                for (QueryDocumentSnapshot snapshot : t.getResult()) {
+                                    firestore.collection("user_data/" + uid + "/feed").document(snapshot.getId()).delete();
                                 }
-                                if (task.isSuccessful()) {
-                                    Toast.makeText(application, "Konto usunięto", Toast.LENGTH_SHORT).show();
-                                    logOut();
-                                    application.startActivity(new Intent(application, MainActivity.class));
-                                } else
-                                    Toast.makeText(application, task.getException().toString(), Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                    } else
-                        Toast.makeText(application, "Hasło nieprawidłowe", Toast.LENGTH_SHORT).show();
-                }
+                            });
+                            firestore.collection("user_data/" + uid + "/cattle").get().addOnCompleteListener(t -> {
+                                for (QueryDocumentSnapshot snapshot : t.getResult()) {
+                                    firestore.collection("user_data/" + uid + "/cattle").document(snapshot.getId()).delete();
+                                }
+                            });
+                            firestore.collection("user_data/" + uid + "/cropProtection").get().addOnCompleteListener(t -> {
+                                for (QueryDocumentSnapshot snapshot : t.getResult()) {
+                                    firestore.collection("user_data/" + uid + "/cropProtection").document(snapshot.getId()).delete();
+                                }
+                            });
+                            firestore.collection("user_data/" + uid + "/feedProduced").get().addOnCompleteListener(t -> {
+                                for (QueryDocumentSnapshot snapshot : t.getResult()) {
+                                    firestore.collection("user_data/" + uid + "/feedProduced").document(snapshot.getId()).delete();
+                                }
+                            });
+                            firestore.collection("user_data").document(uid).delete();
+                        }
+                        if (task1.isSuccessful()) {
+                            Toast.makeText(application, "Konto usunięto", Toast.LENGTH_SHORT).show();
+                            logOut();
+                            application.startActivity(new Intent(application, MainActivity.class));
+                        } else
+                            Toast.makeText(application, task1.getException().toString(), Toast.LENGTH_SHORT).show();
+                    });
+                } else
+                    Toast.makeText(application, "Hasło nieprawidłowe", Toast.LENGTH_SHORT).show();
             });
         } else
             Toast.makeText(application, "Brak połączenia z internetem", Toast.LENGTH_SHORT).show();
@@ -170,46 +146,37 @@ public class AuthenticationRepository {
             FirebaseUser user = firebaseAuth.getCurrentUser();
             AuthCredential credential = EmailAuthProvider.getCredential(user.getEmail(), password);
 
-            user.reauthenticate(credential).addOnCompleteListener(new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull Task<Void> task) {
-                    Log.d("TAG", "User re-authenticated.");
+            user.reauthenticate(credential).addOnCompleteListener(task -> {
+                Log.d("TAG", "User re-authenticated.");
 
-                    if (task.isSuccessful()) {
+                if (task.isSuccessful()) {
 
-                        firebaseAuth.fetchSignInMethodsForEmail(newEmail).addOnCompleteListener(new OnCompleteListener<SignInMethodQueryResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<SignInMethodQueryResult> task) {
-                                if (task.isSuccessful()) {
-                                    try {
+                    firebaseAuth.fetchSignInMethodsForEmail(newEmail).addOnCompleteListener(task1 -> {
+                        if (task1.isSuccessful()) {
+                            try {
 
-                                        if (task.getResult().getSignInMethods().size() == 1) {
-                                            Toast.makeText(application, "Podany email jest już w użyciu", Toast.LENGTH_SHORT).show();
-                                        } else {
-                                            user.updateEmail(newEmail)
-                                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                        @Override
-                                                        public void onComplete(@NonNull Task<Void> task) {
-                                                            if (task.isSuccessful()) {
-                                                                firebaseUserMutableLiveData.setValue(user);
-                                                                Log.d("TAG", "User email address updated.");
-                                                                Toast.makeText(application, "Email użytkownika zmieniony", Toast.LENGTH_SHORT).show();
-                                                            } else
-                                                                Toast.makeText(application, "Nie udało się zmienić email użytkownika", Toast.LENGTH_SHORT).show();
-                                                        }
-                                                    });
-                                        }
-                                    } catch (NullPointerException e) {
-                                        Log.e("DIPA", "onComplete: NullPointerException" + e.getMessage());
-                                    }
+                                if (task1.getResult().getSignInMethods().size() == 1) {
+                                    Toast.makeText(application, "Podany email jest już w użyciu", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    user.updateEmail(newEmail)
+                                            .addOnCompleteListener(t -> {
+                                                if (t.isSuccessful()) {
+                                                    firebaseUserMutableLiveData.setValue(user);
+                                                    Log.d("TAG", "User email address updated.");
+                                                    Toast.makeText(application, "Email użytkownika zmieniony", Toast.LENGTH_SHORT).show();
+                                                } else
+                                                    Toast.makeText(application, "Nie udało się zmienić email użytkownika", Toast.LENGTH_SHORT).show();
+                                            });
                                 }
+                            } catch (NullPointerException e) {
+                                Log.e("DIPA", "onComplete: NullPointerException" + e.getMessage());
                             }
-                        });
+                        }
+                    });
 
 
-                    } else
-                        Toast.makeText(application, "Podane hasło jest nieprawidłowe", Toast.LENGTH_SHORT).show();
-                }
+                } else
+                    Toast.makeText(application, "Podane hasło jest nieprawidłowe", Toast.LENGTH_SHORT).show();
             });
         } else
             Toast.makeText(application, "Brak połączenia z internetem", Toast.LENGTH_SHORT).show();
@@ -222,27 +189,21 @@ public class AuthenticationRepository {
             FirebaseUser user = firebaseAuth.getCurrentUser();
             AuthCredential credential = EmailAuthProvider.getCredential(user.getEmail(), oldPassword);
 
-            user.reauthenticate(credential).addOnCompleteListener(new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull Task<Void> task) {
-                    Log.d("TAG", "User re-authenticated.");
+            user.reauthenticate(credential).addOnCompleteListener(task -> {
+                Log.d("TAG", "User re-authenticated.");
 
-                    if (task.isSuccessful()) {
-                        user.updatePassword(newPassword)
-                                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<Void> task) {
-                                        if (task.isSuccessful()) {
-                                            firebaseUserMutableLiveData.setValue(user);
-                                            Log.d("TAG", "User password updated.");
-                                            Toast.makeText(application, "Hasło użytkownika zmienione", Toast.LENGTH_SHORT).show();
-                                        } else
-                                            Toast.makeText(application, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                                    }
-                                });
-                    } else
-                        Toast.makeText(application, "Stare hasło nieprawidłowe", Toast.LENGTH_SHORT).show();
-                }
+                if (task.isSuccessful()) {
+                    user.updatePassword(newPassword)
+                            .addOnCompleteListener(task1 -> {
+                                if (task1.isSuccessful()) {
+                                    firebaseUserMutableLiveData.setValue(user);
+                                    Log.d("TAG", "User password updated.");
+                                    Toast.makeText(application, "Hasło użytkownika zmienione", Toast.LENGTH_SHORT).show();
+                                } else
+                                    Toast.makeText(application, task1.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                            });
+                } else
+                    Toast.makeText(application, "Stare hasło nieprawidłowe", Toast.LENGTH_SHORT).show();
             });
         } else
             Toast.makeText(application, "Brak połączenia z internetem", Toast.LENGTH_SHORT).show();
@@ -258,16 +219,13 @@ public class AuthenticationRepository {
         CheckNetwork checkNetwork = new CheckNetwork();
 
         if (checkNetwork.isConnected(application)) {
-            firebaseAuth.sendPasswordResetEmail(email).addOnCompleteListener(new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull Task<Void> task) {
+            firebaseAuth.sendPasswordResetEmail(email).addOnCompleteListener(task -> {
 
-                    if (task.isSuccessful()) {
-                        Toast.makeText(application, "Sprawdź swoją pocztę", Toast.LENGTH_SHORT).show();
+                if (task.isSuccessful()) {
+                    Toast.makeText(application, "Sprawdź swoją pocztę", Toast.LENGTH_SHORT).show();
 
-                    } else {
-                        Toast.makeText(application, "Nieprawidłowe dane", Toast.LENGTH_SHORT).show();
-                    }
+                } else {
+                    Toast.makeText(application, "Nieprawidłowe dane", Toast.LENGTH_SHORT).show();
                 }
             });
         } else {

@@ -15,8 +15,11 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.rolapppi.R;
+import com.example.rolapppi.fragments.cattle.CAdapter;
 import com.example.rolapppi.fragments.cattle.CattleModel;
 import com.example.rolapppi.fragments.cattle.CattleViewModel;
 import com.github.mikephil.charting.charts.PieChart;
@@ -31,14 +34,17 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements HAdapter.OnModelListener {
 
     CattleViewModel viewModel;
-    TextView text_countCattle, text_countGenderMale, text_countGenderFemale, text_countCaliving, text_countDryness;
+    TextView text_countCattle, text_countGenderMale, text_countGenderFemale, text_countCaliving, text_countDryness, drynessTextResult;
     private TextView countCattle, countGender, countCalving, countDryness;
     private PieChart cattlePieChart, calvingPieChart;
     private NavController navController;
+    private RecyclerView recyclerView;
+    private HAdapter hAdapter;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -72,6 +78,13 @@ public class HomeFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         navController = Navigation.findNavController(view);
+        recyclerView = view.findViewById(R.id.cattleDrynessRecyclerView);
+        drynessTextResult = view.findViewById(R.id.drynessTextResult);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setHasFixedSize(true);
+        hAdapter = new HAdapter(this);
+        recyclerView.setAdapter(hAdapter);
+
         countCattle = view.findViewById(R.id.countCattle);
         countGender = view.findViewById(R.id.countGender);
         countCalving = view.findViewById(R.id.countCalving);
@@ -114,23 +127,34 @@ public class HomeFragment extends Fragment {
 
         viewModel.getLiveDatafromFireStore().observe(getViewLifecycleOwner(), cattleModels -> {
 
-            countCattle.setText(String.format("%s",cattleModels.size()));
+            countCattle.setText(String.format("%s", cattleModels.size()));
 
             List<CattleModel> countG = new ArrayList<>();
 
             cattleModels.stream().filter(e -> e.getGender().equals("Samica")).forEach(countG::add);
             int female = countG.size();
             int male = cattleModels.size() - countG.size();
-            countGender.setText(getString(R.string.female_male,female,male));
+            countGender.setText(getString(R.string.female_male, female, male));
 
 
             countG.clear();
             cattleModels.stream().filter(e -> !e.getCaliving().isEmpty() && e.getGender().equals("Samica")).forEach(countG::add);
+
             int calving = countG.size();
-            countCalving.setText(String.format("%s",calving));
+            countCalving.setText(String.format("%s", calving));
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+
             int dryness = (int) countG.stream().filter(e -> DAYS.between(LocalDate.parse(e.getCaliving(), formatter), LocalDate.now()) > 235).count();
             countDryness.setText((Integer.toString(dryness)));
+            countG = countG.stream().filter(e -> DAYS.between(LocalDate.parse(e.getCaliving(), formatter), LocalDate.now()) > 185).filter(e -> DAYS.between(LocalDate.parse(e.getCaliving(), formatter), LocalDate.now()) < 235).collect(Collectors.toList());
+            hAdapter.setCattleModelData(countG);
+            hAdapter.notifyDataSetChanged();
+
+            if (countG.size() == 0) {
+                drynessTextResult.setVisibility(View.VISIBLE);
+            }else{
+                drynessTextResult.setVisibility(View.GONE);
+            }
 //                AlarmManager am = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
 //                int i = 0;
 //
@@ -210,4 +234,11 @@ public class HomeFragment extends Fragment {
         });
     }
 
+    @Override
+    public void onModelClick(int position) {
+        viewModel.setSelected(hAdapter.cattleModelList.get(position));
+//        searchView.setQuery("", false);
+//        searchView.setIconified(true);
+        navController.navigate(R.id.action_nav_home_to_detailsCattleFragment);
+    }
 }

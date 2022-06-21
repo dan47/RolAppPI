@@ -27,14 +27,11 @@ public class LogoutFragment extends Fragment {
         super.onCreate(savedInstanceState);
         viewModel = new ViewModelProvider(this , ViewModelProvider.AndroidViewModelFactory
                 .getInstance(getActivity().getApplication())).get(AuthenticationViewModel.class);
-        viewModel.getLoggedStatus().observe(this, new Observer<Boolean>() {
-            @Override
-            public void onChanged(Boolean aBoolean) {
-                if (aBoolean){
-                    Intent intent = new Intent(getActivity(), MainActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(intent);
-                }
+        viewModel.getLoggedStatus().observe(this, aBoolean -> {
+            if (aBoolean){
+                Intent intent = new Intent(getActivity(), MainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
             }
         });
     }
@@ -52,18 +49,8 @@ public class LogoutFragment extends Fragment {
 
         new AlertDialog.Builder(view.getContext())
                 .setTitle("Czy chcesz się wylogować?")
-                .setPositiveButton("Tak", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        viewModel.logOut();
-                    }
-                })
-                .setNegativeButton("Nie", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        getActivity().onBackPressed();
-                    }
-                }).show();
+                .setPositiveButton("Tak", (dialogInterface, i) -> viewModel.logOut())
+                .setNegativeButton("Nie", (dialogInterface, i) -> getActivity().onBackPressed()).show();
 
 //        navController = Navigation.findNavController(view);
 //        signOutBtn = view.findViewById(R.id.signOutBtn);
