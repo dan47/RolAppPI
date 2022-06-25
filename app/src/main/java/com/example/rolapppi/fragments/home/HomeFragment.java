@@ -137,8 +137,8 @@ public class HomeFragment extends Fragment implements HAdapter.OnModelListener, 
 
             countCattle.setText(String.format("%s", cattleModels.size()));
 
-            List<CattleModel> countG = new ArrayList<>();
-            List<CattleModel> countG2 = new ArrayList<>();
+            List<CattleModel> countG = new ArrayList<>(); // zasuszenie za
+            List<CattleModel> countG2 = new ArrayList<>(); // zasuszenie po
 
             cattleModels.stream().filter(e -> e.getGender().equals("Samica")).forEach(countG::add);
             int female = countG.size();
@@ -155,14 +155,15 @@ public class HomeFragment extends Fragment implements HAdapter.OnModelListener, 
 
             int dryness = (int) countG.stream().filter(e -> DAYS.between(LocalDate.parse(e.getCaliving(), formatter), LocalDate.now()) > 235).count();
             countDryness.setText((Integer.toString(dryness)));
-            countG2 = countG.stream().filter(e -> DAYS.between(LocalDate.parse(e.getCaliving(), formatter), LocalDate.now()) > 235).filter(e -> DAYS.between(LocalDate.parse(e.getCaliving(), formatter), LocalDate.now()) < 243).collect(Collectors.toList());
-            countG = countG.stream().filter(e -> DAYS.between(LocalDate.parse(e.getCaliving(), formatter), LocalDate.now()) > 185).filter(e -> DAYS.between(LocalDate.parse(e.getCaliving(), formatter), LocalDate.now()) < 236).collect(Collectors.toList());
+            //            countG2 = countG.stream().filter(e -> DAYS.between(LocalDate.parse(e.getCaliving(), formatter), LocalDate.now()) > 235).filter(e -> DAYS.between(LocalDate.parse(e.getCaliving(), formatter), LocalDate.now()) < 243).collect(Collectors.toList());
+            countG2 = countG.stream().filter(e -> DAYS.between(LocalDate.parse(e.getCaliving(), formatter), LocalDate.now()) > 235).collect(Collectors.toList());
+            countG = countG.stream().filter(e -> DAYS.between(LocalDate.parse(e.getCaliving(), formatter), LocalDate.now()) > 221).filter(e -> DAYS.between(LocalDate.parse(e.getCaliving(), formatter), LocalDate.now()) < 236).collect(Collectors.toList());
             hAdapter.setCattleModelData(countG);
             hAdapter.notifyDataSetChanged();
 
             if (countG.size() == 0) {
                 drynessTextResult.setVisibility(View.VISIBLE);
-            }else{
+            } else {
                 drynessTextResult.setVisibility(View.GONE);
             }
             hAdapterSecond.setCattleModelData(countG2);
@@ -170,7 +171,7 @@ public class HomeFragment extends Fragment implements HAdapter.OnModelListener, 
 
             if (countG2.size() != 0) {
                 drynessRecently.setVisibility(View.VISIBLE);
-            }else{
+            } else {
                 drynessRecently.setVisibility(View.GONE);
             }
 //                AlarmManager am = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
@@ -257,6 +258,7 @@ public class HomeFragment extends Fragment implements HAdapter.OnModelListener, 
         viewModel.setSelected(hAdapter.cattleModelList.get(position));
         navController.navigate(R.id.action_nav_home_to_detailsCattleFragment);
     }
+
     @Override
     public void onModelClickSecond(int position) {
         viewModel.setSelected(hAdapterSecond.cattleModelList.get(position));

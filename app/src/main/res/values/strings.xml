@@ -31,6 +31,14 @@
     <string name="female">Samica</string>
     <string name="male">Samiec</string>
     <string name="no_calivng">Brak</string>
+    <string name="dryness_after">Dni zasuszenia:</string>
+    <string name="dryness_before">Dni do zasuszenia:</string>
+    <string name="dryness_soon">Krowy do zasuszenia wkrótce</string>
+    <string name="dryness_soon2">(id/dni)</string>
+    <string name="dryness_now">Krowy zasuszone</string>
+
+
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <!-- Preference Titles -->

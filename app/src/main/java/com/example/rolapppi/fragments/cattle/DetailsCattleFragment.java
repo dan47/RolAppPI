@@ -18,6 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.rolapppi.R;
+import com.example.rolapppi.utills.TimeCalculate;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
 
@@ -33,8 +34,8 @@ import java.util.Date;
 
 public class DetailsCattleFragment extends Fragment {
 
-    TextView animal_id, birthday, gender, mother_id, calving, previousCalving;
-    LinearLayout calvingLayout, previousCalvingLayout;
+    TextView animal_id, birthday, gender, mother_id, calving, previousCalving, dryness, drynessTextView;
+    LinearLayout calvingLayout, previousCalvingLayout, drynessLayout;
     Button editBtn, deleteBtn, calvingBtn, calvingDeleteBtn;
     String previousCalvingString, dateBirth;
 
@@ -61,13 +62,18 @@ public class DetailsCattleFragment extends Fragment {
         mother_id = view.findViewById(R.id.mother_id);
         calving = view.findViewById(R.id.calving);
         previousCalving = view.findViewById(R.id.previousCalving);
+        dryness = view.findViewById(R.id.dryness);
+        drynessTextView = view.findViewById(R.id.drynessTextView);
         calvingLayout = view.findViewById(R.id.calvingLayout);
         previousCalvingLayout = view.findViewById(R.id.previousCalvingLayout);
+        drynessLayout = view.findViewById(R.id.drynessLayout);
 
         editBtn = view.findViewById(R.id.editBtn);
         deleteBtn = view.findViewById(R.id.deleteBtn);
         calvingBtn = view.findViewById(R.id.calvingBtn);
         calvingDeleteBtn = view.findViewById(R.id.calvingDeleteBtn);
+
+        TimeCalculate timeCalculate = new TimeCalculate();
 
         //zmieniam observe na get - dla pozostałych modółów później //odmieniłem bo nie aktualizuje - bym musial wysylac info z alertdialog do fragmentu
         CattleModel cattleModel = cattleViewModel.getSelected().getValue(); //prawdopodobbnie niepotrzebn
@@ -93,10 +99,21 @@ public class DetailsCattleFragment extends Fragment {
                 calvingDeleteBtn.setVisibility(View.GONE);
                 if (calvingT.isEmpty()) {
                     calving.setText(getString(R.string.no_calivng));
-
                 } else {
                     calving.setText(calvingT);
                     previousCalving.setText(calvingT);
+                    int time = (int) timeCalculate.duration(calvingT) - 235;
+                    if (time > 0) {
+                        dryness.setText(Integer.toString(time));
+                        drynessTextView.setText(getString(R.string.dryness_after));
+                        drynessLayout.setVisibility(View.VISIBLE);
+                    }else {
+                        time = Math.abs(time) + 1;
+                        dryness.setText(Integer.toString(time));
+                        drynessTextView.setText(getString(R.string.dryness_before));
+                        drynessLayout.setVisibility(View.VISIBLE);
+                    }
+
                     calvingDeleteBtn.setVisibility(View.VISIBLE);
                 }
 
