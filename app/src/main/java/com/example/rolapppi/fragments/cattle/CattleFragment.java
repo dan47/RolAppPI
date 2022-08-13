@@ -42,7 +42,7 @@ public class CattleFragment extends Fragment implements CAdapter.OnModelListener
     private FloatingActionButton addBtn;
     private ProgressBar progressBar;
     private NavController navController;
-    int checkFiltr = 4;
+    int checkFiltr = 5;
 
     public CattleFragment() {
         // Required empty public constructor
@@ -71,7 +71,7 @@ public class CattleFragment extends Fragment implements CAdapter.OnModelListener
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(cAdapter);
 
-        String[] choicesArray = new String[]{"Samica", "Samiec", "Zacielenie", "Zasuszenie", "Brak"};
+        String[] choicesArray = new String[]{"Samica", "Samiec", "Zacielenie", "Zasuszenie", "Karmienie", "Brak"};
 
 
         navController = Navigation.findNavController(view);
@@ -96,13 +96,14 @@ public class CattleFragment extends Fragment implements CAdapter.OnModelListener
         }
 
         viewModel.getLiveDatafromFireStore().observe(getViewLifecycleOwner(), cattleModels -> {
+
             cattleModels.sort(Comparator.comparing(d -> LocalDate.parse(d.getBirthday(), formatter)));
             cAdapter.setCattleModelData(cattleModels);
             String searchText = searchView.getQuery().toString();
             if (!searchText.isEmpty()) {
                 cAdapter.getFilter().filter(searchText);
             }
-            if (checkFiltr != 4) {
+            if (checkFiltr != 5) {
                 cAdapter.getFilter().filter(choicesArray[checkFiltr]);
             }
             cAdapter.notifyDataSetChanged();

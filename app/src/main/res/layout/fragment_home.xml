@@ -160,70 +160,115 @@
             app:layout_constraintTop_toTopOf="@+id/text_countDryness" />
 
         <TextView
-            android:id="@+id/drynessText"
-            android:layout_width="match_parent"
+            android:id="@+id/text_countFeed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="@string/count_feed"
+            android:textAlignment="center"
+            android:textSize="20sp"
+
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_countDryness"
+            app:layout_constraintVertical_bias="0.044" />
+
+        <TextView
+            android:id="@+id/countFeed"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:textAlignment="center"
             android:textSize="20sp"
             android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/text_countFeed"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.1"
+            app:layout_constraintStart_toEndOf="@+id/text_countFeed"
+            app:layout_constraintTop_toTopOf="@+id/text_countFeed" />
+
+        <TextView
+            android:id="@+id/drynessText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
             android:text="@string/dryness_soon"
-            app:layout_constraintTop_toBottomOf="@+id/text_countDryness"
-            />
+            android:textAlignment="center"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@+id/text_countFeed" />
 
         <TextView
             android:id="@+id/drynessText2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
+            android:text="@string/dryness_soon2"
             android:textAlignment="center"
             android:textSize="17sp"
             android:textStyle="bold"
-            android:text="@string/dryness_soon2"
-            app:layout_constraintTop_toBottomOf="@+id/drynessText"
-            />
+            app:layout_constraintTop_toBottomOf="@+id/drynessText" />
 
         <TextView
             android:id="@+id/drynessTextResult"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
             android:layout_marginEnd="8dp"
+            android:text="@string/no_calivng"
             android:textAlignment="center"
-            android:visibility="gone"
             android:textSize="20sp"
             android:textStyle="bold"
-            android:layout_marginTop="16dp"
-            android:text="@string/no_calivng"
-            app:layout_constraintTop_toBottomOf="@+id/drynessText2"
-            />
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@+id/drynessText2" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/cattleDrynessRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            app:layout_constraintTop_toBottomOf="@+id/drynessTextResult"/>
+            app:layout_constraintTop_toBottomOf="@+id/drynessTextResult" />
 
         <TextView
             android:id="@+id/drynessRecently"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
             android:layout_marginEnd="8dp"
+            android:text="@string/dryness_now"
             android:textAlignment="center"
             android:textSize="20sp"
             android:textStyle="bold"
-            android:layout_marginTop="16dp"
-            android:text="@string/dryness_now"
-            app:layout_constraintTop_toBottomOf="@+id/cattleDrynessRecyclerView"
-            />
+            app:layout_constraintTop_toBottomOf="@+id/cattleDrynessRecyclerView" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/cattleDrynessRecentlyRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            app:layout_constraintTop_toBottomOf="@+id/drynessRecently"/>
+            app:layout_constraintTop_toBottomOf="@+id/drynessRecently" />
+
+        <TextView
+            android:id="@+id/feedRecently"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            android:text="@string/feed_now"
+            android:textAlignment="center"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@+id/cattleDrynessRecentlyRecyclerView" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/cattleFeedRecentlyRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:layout_constraintTop_toBottomOf="@+id/feedRecently" />
 
         <com.github.mikephil.charting.charts.PieChart
             android:id="@+id/cattlePieChart"
@@ -231,7 +276,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:minHeight="300dp"
-            app:layout_constraintTop_toBottomOf="@+id/cattleDrynessRecentlyRecyclerView"
+            app:layout_constraintTop_toBottomOf="@+id/cattleFeedRecentlyRecyclerView"
             tools:layout_editor_absoluteX="8dp" />
 
         <com.github.mikephil.charting.charts.PieChart

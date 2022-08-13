@@ -37,7 +37,7 @@ public class AddCattleDialog extends AppCompatDialogFragment {
     private Boolean edit;
     private CattleModel cattleModel;
     private AutoCompleteTextView mother_idChoose;
-    private String calving;
+    private String calving, previousCalving;
     private ArrayAdapter arrayAdapter;
     private Button submitBtnE, scanBtnE, mPickDateButton;
     private Chip male_chip, female_chip;
@@ -73,6 +73,7 @@ public class AddCattleDialog extends AppCompatDialogFragment {
             mother_idChoose.setText(cattleModel.getMother_id());
             birthdayE.setText(cattleModel.getBirthday());
             calving = cattleModel.getCaliving();
+            previousCalving = cattleModel.getPreviousCaliving();
             edit = true;
             if (cattleModel.getGender().equals(getString(R.string.female))) {
                 female_chip.setChecked(true);
@@ -175,7 +176,7 @@ public class AddCattleDialog extends AppCompatDialogFragment {
 
 
             if (edit) {
-                CattleModel model = new CattleModel(animal_id, birthday, gender, mother_id, calving);
+                CattleModel model = new CattleModel(animal_id, birthday, gender, mother_id, calving, previousCalving);
                     cattleViewModel.cattleEdit(model);
                     if (!model.getAnimal_id().equals(cattleModel.getAnimal_id())) {
                         cattleViewModel.cattleDelete(cattleModel);

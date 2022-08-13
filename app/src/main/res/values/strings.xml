@@ -23,6 +23,7 @@
     <string name="count_gender_male">/samce:</string>
     <string name="count_caliving">Ilość zacielonych:</string>
     <string name="count_dryness">Ilość zasuszonych:</string>
+    <string name="count_feed">Ilość karmiących:</string>
     <string name="stats">Statystyki</string>
 
     <string name="female_male">%1$d/%2$d</string>
@@ -36,6 +37,7 @@
     <string name="dryness_soon">Krowy do zasuszenia wkrótce</string>
     <string name="dryness_soon2">(id/dni)</string>
     <string name="dryness_now">Krowy zasuszone</string>
+    <string name="feed_now">Krowy karmiące</string>
 
 
 

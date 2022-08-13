@@ -25,13 +25,13 @@ public class CattleModel {
     public CattleModel() {
     }
 
-    public CattleModel(String animal_id, String birthday, String gender, String mother_id, String caliving) {
+    public CattleModel(String animal_id, String birthday, String gender, String mother_id, String caliving, String previousCaliving) {
         this.animal_id = animal_id;
         this.birthday = birthday;
         this.gender = gender;
         this.mother_id = mother_id;
         this.caliving = caliving;
-        this.previousCaliving = "";
+        this.previousCaliving = previousCaliving;
     }
 
     public String getAnimal_id() {

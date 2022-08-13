@@ -35,16 +35,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class HomeFragment extends Fragment implements HAdapter.OnModelListener, HAdapterSecond.OnModelListener {
+public class HomeFragment extends Fragment implements HAdapter.OnModelListener, HAdapterSecond.OnModelListener, HAdapterThird.OnModelListener {
 
     CattleViewModel viewModel;
-    TextView text_countCattle, text_countGenderMale, text_countGenderFemale, text_countCaliving, text_countDryness, drynessTextResult, drynessRecently;
-    private TextView countCattle, countGender, countCalving, countDryness;
+    TextView text_countCattle, text_countGenderMale, text_countGenderFemale, text_countCaliving, text_countDryness, text_countFeed, drynessTextResult, drynessRecently, feedRecently;
+    private TextView countCattle, countGender, countCalving, countDryness, countFeed;
     private PieChart cattlePieChart, calvingPieChart;
     private NavController navController;
-    private RecyclerView cattleDrynessRecyclerView, cattleDrynessRecentlyRecyclerView;
+    private RecyclerView cattleDrynessRecyclerView, cattleDrynessRecentlyRecyclerView, cattleFeedRecentlyRecyclerView;
     private HAdapter hAdapter;
     private HAdapterSecond hAdapterSecond;
+    private HAdapterThird hAdapterThird;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -80,29 +81,37 @@ public class HomeFragment extends Fragment implements HAdapter.OnModelListener, 
         navController = Navigation.findNavController(view);
         cattleDrynessRecyclerView = view.findViewById(R.id.cattleDrynessRecyclerView);
         cattleDrynessRecentlyRecyclerView = view.findViewById(R.id.cattleDrynessRecentlyRecyclerView);
+        cattleFeedRecentlyRecyclerView = view.findViewById(R.id.cattleFeedRecentlyRecyclerView);
         drynessTextResult = view.findViewById(R.id.drynessTextResult);
         drynessRecently = view.findViewById(R.id.drynessRecently);
+        feedRecently = view.findViewById(R.id.feedRecently);
 
         cattleDrynessRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         cattleDrynessRecyclerView.setHasFixedSize(true);
         cattleDrynessRecentlyRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         cattleDrynessRecentlyRecyclerView.setHasFixedSize(true);
+        cattleFeedRecentlyRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        cattleFeedRecentlyRecyclerView.setHasFixedSize(true);
 
         hAdapter = new HAdapter(this);
         hAdapterSecond = new HAdapterSecond(this);
+        hAdapterThird = new HAdapterThird(this);
         cattleDrynessRecyclerView.setAdapter(hAdapter);
         cattleDrynessRecentlyRecyclerView.setAdapter(hAdapterSecond);
+        cattleFeedRecentlyRecyclerView.setAdapter(hAdapterThird);
 
         countCattle = view.findViewById(R.id.countCattle);
         countGender = view.findViewById(R.id.countGender);
         countCalving = view.findViewById(R.id.countCalving);
         countDryness = view.findViewById(R.id.countDryness);
+        countFeed = view.findViewById(R.id.countFeed);
 
         text_countCattle = view.findViewById(R.id.text_countCattle);
         text_countGenderFemale = view.findViewById(R.id.text_countGenderFemale);
         text_countGenderMale = view.findViewById(R.id.text_countGenderMale);
         text_countCaliving = view.findViewById(R.id.text_countCaliving);
         text_countDryness = view.findViewById(R.id.text_countDryness);
+        text_countFeed = view.findViewById(R.id.text_countFeed);
 
         cattlePieChart = view.findViewById(R.id.cattlePieChart);
         calvingPieChart = view.findViewById(R.id.calvingPieChart);
@@ -131,14 +140,19 @@ public class HomeFragment extends Fragment implements HAdapter.OnModelListener, 
             bundle.putString("filtr", "3");
             navController.navigate(R.id.nav_cattle, bundle);
         });
+        text_countFeed.setOnClickListener(view1 -> {
+            Bundle bundle = new Bundle();
+            bundle.putString("filtr", "4");
+            navController.navigate(R.id.nav_cattle, bundle);
+        });
 
 
         viewModel.getLiveDatafromFireStore().observe(getViewLifecycleOwner(), cattleModels -> {
 
             countCattle.setText(String.format("%s", cattleModels.size()));
 
-            List<CattleModel> countG = new ArrayList<>(); // zasuszenie za
-            List<CattleModel> countG2 = new ArrayList<>(); // zasuszenie po
+            List<CattleModel> countG = new ArrayList<>();
+            List<CattleModel> countG2 = new ArrayList<>(); // zasuszenie za/po
 
             cattleModels.stream().filter(e -> e.getGender().equals("Samica")).forEach(countG::add);
             int female = countG.size();
@@ -153,27 +167,46 @@ public class HomeFragment extends Fragment implements HAdapter.OnModelListener, 
             countCalving.setText(String.format("%s", calving));
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 
-            int dryness = (int) countG.stream().filter(e -> DAYS.between(LocalDate.parse(e.getCaliving(), formatter), LocalDate.now()) > 235).count();
-            countDryness.setText((Integer.toString(dryness)));
             //            countG2 = countG.stream().filter(e -> DAYS.between(LocalDate.parse(e.getCaliving(), formatter), LocalDate.now()) > 235).filter(e -> DAYS.between(LocalDate.parse(e.getCaliving(), formatter), LocalDate.now()) < 243).collect(Collectors.toList());
-            countG2 = countG.stream().filter(e -> DAYS.between(LocalDate.parse(e.getCaliving(), formatter), LocalDate.now()) > 235).collect(Collectors.toList());
-            countG = countG.stream().filter(e -> DAYS.between(LocalDate.parse(e.getCaliving(), formatter), LocalDate.now()) > 221).filter(e -> DAYS.between(LocalDate.parse(e.getCaliving(), formatter), LocalDate.now()) < 236).collect(Collectors.toList());
-            hAdapter.setCattleModelData(countG);
+            countG2 = countG.stream().filter(e -> DAYS.between(LocalDate.parse(e.getCaliving(), formatter), LocalDate.now()) > 221).filter(e -> DAYS.between(LocalDate.parse(e.getCaliving(), formatter), LocalDate.now()) < 236).collect(Collectors.toList());
+            hAdapter.setCattleModelData(countG2);
             hAdapter.notifyDataSetChanged();
 
-            if (countG.size() == 0) {
+            if (countG2.size() == 0) {
                 drynessTextResult.setVisibility(View.VISIBLE);
             } else {
                 drynessTextResult.setVisibility(View.GONE);
             }
+
+            countG2 = countG.stream().filter(e -> DAYS.between(LocalDate.parse(e.getCaliving(), formatter), LocalDate.now()) > 235).collect(Collectors.toList());
             hAdapterSecond.setCattleModelData(countG2);
             hAdapterSecond.notifyDataSetChanged();
 
-            if (countG2.size() != 0) {
+            int dryness = countG2.size();
+            countDryness.setText((Integer.toString(dryness)));
+
+            if (dryness != 0) {
                 drynessRecently.setVisibility(View.VISIBLE);
             } else {
                 drynessRecently.setVisibility(View.GONE);
             }
+
+            countG.clear();
+            cattleModels.stream().filter(e -> e.getCaliving().isEmpty() && e.getGender().equals("Samica") && !e.getPreviousCaliving().isEmpty()).forEach(countG::add);
+
+            countG2 = countG.stream().filter(e -> DAYS.between(LocalDate.parse(e.getPreviousCaliving(), formatter), LocalDate.now()) < 90).collect(Collectors.toList());
+            hAdapterThird.setCattleModelData(countG2);
+            hAdapterThird.notifyDataSetChanged();
+
+            int feed = countG2.size();
+            countFeed.setText((Integer.toString(feed)));
+
+            if (feed != 0) {
+                feedRecently.setVisibility(View.VISIBLE);
+            } else {
+                feedRecently.setVisibility(View.GONE);
+            }
+
 //                AlarmManager am = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
 //                int i = 0;
 //
@@ -262,6 +295,12 @@ public class HomeFragment extends Fragment implements HAdapter.OnModelListener, 
     @Override
     public void onModelClickSecond(int position) {
         viewModel.setSelected(hAdapterSecond.cattleModelList.get(position));
+        navController.navigate(R.id.action_nav_home_to_detailsCattleFragment);
+    }
+
+    @Override
+    public void onModelClickThird(int position) {
+        viewModel.setSelected(hAdapterThird.cattleModelList.get(position));
         navController.navigate(R.id.action_nav_home_to_detailsCattleFragment);
     }
 }

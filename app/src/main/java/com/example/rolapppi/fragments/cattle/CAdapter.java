@@ -58,6 +58,7 @@ public class CAdapter extends RecyclerView.Adapter<CAdapter.MyHolder> implements
         holder.birthday.setText(cattleModelList.get(position).getBirthday());
         holder.gender.setText(gender);
         String calving = cattleModelList.get(position).getCaliving();
+        String previousCalving = cattleModelList.get(position).getPreviousCaliving();
 
 
         if (gender.equals("Samica")) {
@@ -66,15 +67,18 @@ public class CAdapter extends RecyclerView.Adapter<CAdapter.MyHolder> implements
                 holder.birthday.setVisibility(View.GONE);
                 holder.calving.setText(calving);
                 holder.textBC.setText("Za.");
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
-                LocalDate localDate = java.time.LocalDate.parse(calving, formatter);
-                long duration = DAYS.between(localDate, LocalDate.now());
-                if (duration(calving) > 235) {
+                long duration = duration(calving);
+                if (duration > 235) {
                     holder.relativeLayoutCard.setBackgroundColor(Color.parseColor("#FF7F7F"));
                 } else if (duration > 140) {
                     holder.relativeLayoutCard.setBackgroundColor(Color.parseColor("#FFFF99"));
                 } else {
                     holder.relativeLayoutCard.setBackgroundColor(Color.parseColor("#90EE90"));
+                }
+            } else if (!previousCalving.isEmpty()) {
+                long duration = duration(previousCalving);
+                if (duration < 90) {
+                    holder.relativeLayoutCard.setBackgroundColor(Color.parseColor("#EE90DE"));
                 }
             } else {
                 holder.relativeLayoutCard.setBackgroundColor(Color.WHITE);
@@ -168,7 +172,17 @@ public class CAdapter extends RecyclerView.Adapter<CAdapter.MyHolder> implements
                             }
                         }
                     }
-                } else {
+                } else if (charSequence.equals("Karmienie")) {
+                    for (CattleModel item : cattleModelListAll) {
+                        if (!item.getPreviousCaliving().isEmpty()) {
+                            if (duration(item.getPreviousCaliving()) < 90) {
+                                filteredList.add(item);
+                                filteredList.sort(Comparator.comparingLong(a -> duration(a.getPreviousCaliving())));
+                                Collections.reverse(filteredList);
+                            }
+                        }
+                    }
+                }else {
                     for (CattleModel item : cattleModelListAll) {
                         if (item.getAnimal_id().toLowerCase().contains(charSequence.toString().toLowerCase())) {
                             filteredList.add(item);
