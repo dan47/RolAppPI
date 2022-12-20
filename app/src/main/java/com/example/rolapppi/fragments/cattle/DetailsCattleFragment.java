@@ -107,7 +107,7 @@ public class DetailsCattleFragment extends Fragment {
                         dryness.setText(Integer.toString(time));
                         drynessTextView.setText(getString(R.string.dryness_after));
                         drynessLayout.setVisibility(View.VISIBLE);
-                    }else {
+                    } else {
                         time = Math.abs(time) + 1;
                         dryness.setText(Integer.toString(time));
                         drynessTextView.setText(getString(R.string.dryness_before));
@@ -200,17 +200,20 @@ public class DetailsCattleFragment extends Fragment {
                             LocalDate dateBirthTemp = LocalDate.parse(dateBirth, formatter);
                             long months = ChronoUnit.MONTHS.between(dateBirthTemp, dateCalvingTemp);
                             long weeks = 8;
+                            long days = 0;
 
                             if (!previousCalvingString.equals("")) {
                                 LocalDate datePreviousCalvingTemp = LocalDate.parse(previousCalvingString, formatter);
                                 weeks = ChronoUnit.WEEKS.between(datePreviousCalvingTemp, dateCalvingTemp);
+                                days = ChronoUnit.DAYS.between(datePreviousCalvingTemp, dateCalvingTemp);
                             }
 
                             if (weeks < 6) {
 
                                 new AlertDialog.Builder(view.getContext())
                                         .setTitle("Czy jesteś pewny?")
-                                        .setMessage("Jeszcze nie mineło 6 tygodni od ostatniego wycielenia! Ostatnie wycielenie: " + previousCalvingString)
+                                        .setMessage("Jeszcze nie mineło 6 tygodni od ostatniego wycielenia!\nBrakuje: " + days +
+                                                " dni\nOstatnie wycielenie: " + previousCalvingString + "\nZacielona: " + simpleFormat.format(date))
                                         .setPositiveButton("Tak", new DialogInterface.OnClickListener() {
                                             @Override
                                             public void onClick(DialogInterface dialogInterface, int i) {
@@ -225,7 +228,8 @@ public class DetailsCattleFragment extends Fragment {
 
                                 new AlertDialog.Builder(view.getContext())
                                         .setTitle("Czy jesteś pewny?")
-                                        .setMessage("Zwierzę ma mniej niż 15 miesięcy! Urodzone: " + birthday.getText())
+                                        .setMessage("Zwierzę ma mniej niż 15 miesięcy!\nBrakuje: " + (15 - months) +
+                                                " miesięcy\nUrodzona: " + birthday.getText() + "\nZacielona: " + simpleFormat.format(date))
                                         .setPositiveButton("Tak", (dialogInterface, i) -> {
                                             calving.setText(simpleFormat.format(date));
                                             calvingDeleteBtn.setVisibility(View.VISIBLE);

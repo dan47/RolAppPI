@@ -122,7 +122,7 @@ public class CattleFragment extends Fragment implements CAdapter.OnModelListener
             @Override
             public boolean onQueryTextChange(String newText) {
                 if (!newText.isEmpty()) {
-                    checkFiltr = 4;
+                    checkFiltr = 5;
                 }
                 cAdapter.getFilter().filter(newText);
                 return true;

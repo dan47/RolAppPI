@@ -176,13 +176,15 @@ public class CAdapter extends RecyclerView.Adapter<CAdapter.MyHolder> implements
                     for (CattleModel item : cattleModelListAll) {
                         if (!item.getPreviousCaliving().isEmpty()) {
                             if (duration(item.getPreviousCaliving()) < 90) {
-                                filteredList.add(item);
-                                filteredList.sort(Comparator.comparingLong(a -> duration(a.getPreviousCaliving())));
-                                Collections.reverse(filteredList);
+                                if (item.getCaliving().isEmpty()) {
+                                    filteredList.add(item);
+                                    filteredList.sort(Comparator.comparingLong(a -> duration(a.getPreviousCaliving())));
+                                    Collections.reverse(filteredList);
+                                }
                             }
                         }
                     }
-                }else {
+                } else {
                     for (CattleModel item : cattleModelListAll) {
                         if (item.getAnimal_id().toLowerCase().contains(charSequence.toString().toLowerCase())) {
                             filteredList.add(item);
