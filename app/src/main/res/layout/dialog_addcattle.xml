@@ -21,7 +21,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Numer identyfikacyjny zwierzęcia"
-                android:imeOptions="actionNext"
+                android:imeOptions="actionDone"
                 android:inputType="textCapCharacters"
                 android:maxLength="14" />
 
@@ -123,6 +123,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="32dp"
                     android:hint="Numer identyfikacyjny matki"
+                    android:imeOptions="actionDone"
                     android:maxLength="14" />
             </com.google.android.material.textfield.TextInputLayout>
 

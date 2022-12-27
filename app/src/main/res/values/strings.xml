@@ -12,20 +12,35 @@
 
     <string name="menu_home">Home</string>
     <string name="menu_cattle">Bydło</string>
-    <string name="menu_cropProtection">Ewidencja ochrony roślin</string>
-    <string name="menu_feed">Rejestr pasz</string>
-    <string name="menu_feedProduced">Zbiór pasz</string>
+    <string name="menu_cropProtection">Zabiegi ochrony roślin</string>
+    <string name="menu_feed">Pasze zakupione</string>
+    <string name="menu_feedProduced">Pasze wyprodukowane</string>
     <string name="menu_logout">Wyloguj</string>
 
 
     <string name="count_cattle">Ilość bydła:</string>
-    <string name="count_gender">Ilość samice/samce:</string>
+    <string name="count_gender_female">Ilość samice</string>
+    <string name="count_gender_male">/samce:</string>
     <string name="count_caliving">Ilość zacielonych:</string>
+    <string name="count_dryness">Ilość zasuszonych:</string>
+    <string name="count_feed">Ilość karmiących:</string>
     <string name="stats">Statystyki</string>
+
+    <string name="female_male">%1$d/%2$d</string>
+
 
     <string name="female">Samica</string>
     <string name="male">Samiec</string>
     <string name="no_calivng">Brak</string>
+    <string name="dryness_after">Dni zasuszenia:</string>
+    <string name="dryness_before">Dni do zasuszenia:</string>
+    <string name="dryness_soon">Krowy do zasuszenia wkrótce</string>
+    <string name="dryness_soon2">(id/dni)</string>
+    <string name="dryness_now">Krowy zasuszone</string>
+    <string name="feed_now">Krowy karmiące</string>
+
+
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <!-- Preference Titles -->

@@ -1,137 +1,203 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="21dp"
-    android:orientation="vertical">
+    android:layout_margin="21dp">
 
-    <TextView
-        android:id="@+id/animal_id"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="PL123456789012"
-        android:textColor="@color/black"
-        android:textSize="30sp"
-        android:textStyle="bold" />
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="8dp"
-            android:text="Płeć:"
-            android:textSize="18sp" />
-
-        <TextView
-            android:id="@+id/gender"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Samica"
-            android:textColor="#6B000000"
-            android:textSize="20sp"
-            android:textStyle="bold" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="8dp"
-            android:text="Data urodzenia:"
-            android:textSize="18sp" />
-
-        <TextView
-            android:id="@+id/birthday"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="12.12.2020"
-            android:textColor="#6B000000"
-            android:textSize="20sp"
-            android:textStyle="bold" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="8dp"
-            android:text="Matka:"
-            android:textSize="18sp" />
-
-        <TextView
-            android:id="@+id/mother_id"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="PL123456789012"
-            android:textColor="#6B000000"
-            android:textSize="20sp"
-            android:textStyle="bold" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/calvingLayout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:visibility="gone">
-
-        <TextView
-            android:id="@+id/calvingTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="8dp"
-            android:text="Data zacielenia:"
-            android:textSize="18sp" />
-
-        <TextView
-            android:id="@+id/calving"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Data wycielenia"
-            android:textColor="#6B000000"
-            android:textSize="20sp"
-            android:textStyle="bold" />
-    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:orientation="horizontal">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <Button
-            android:id="@+id/calvingBtn"
+        <TextView
+            android:id="@+id/animal_id"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="8dp"
-            android:text="Dodaj zacielenie"
-            android:visibility="gone" />
+            android:text="PL123456789012"
+            android:textColor="@color/black"
+            android:textSize="29sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="8dp"
+                android:text="Płeć:"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/gender"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Samica"
+                android:textColor="#6B000000"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="8dp"
+                android:text="Data urodzenia:"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/birthday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="12.12.2020"
+                android:textColor="#6B000000"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="8dp"
+                android:text="Matka:"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/mother_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="PL123456789012"
+                android:textColor="#6B000000"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/calvingLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/calvingTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="8dp"
+                android:text="Data zacielenia:"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/calving"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Data wycielenia"
+                android:textColor="#6B000000"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/drynessLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/drynessTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="8dp"
+                android:text="Dni zasuszenia:"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/dryness"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#6B000000"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/previousCalvingLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/previousCalvingTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="8dp"
+                android:text="Ostatnie wyciel.:"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/previousCalving"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Data wycielenia"
+                android:textColor="#6B000000"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/calvingBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:text="Dodaj zacielenie" />
+
+            <Button
+                android:id="@+id/calvingDeleteBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Usuń zacielenie"
+                android:visibility="gone"
+
+                />
+        </LinearLayout>
 
         <Button
             android:id="@+id/editBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
             android:layout_marginBottom="10dp"
             android:text="Edytuj" />
+
+
+        <Button
+            android:id="@+id/deleteBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Usuń" />
+
     </LinearLayout>
 
-    <Button
-        android:id="@+id/deleteBtn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Usuń" />
-</LinearLayout>
+</ScrollView>

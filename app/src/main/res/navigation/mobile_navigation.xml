@@ -7,13 +7,17 @@
 
     <fragment
         android:id="@+id/nav_home"
-        android:name="com.example.rolapppi.ui.home.HomeFragment"
+        android:name="com.example.rolapppi.fragments.home.HomeFragment"
         android:label="@string/menu_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home">
+    <action
+    android:id="@+id/action_nav_home_to_detailsCattleFragment"
+    app:destination="@id/detailsCattleFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/nav_cattle"
-        android:name="com.example.rolapppi.ui.cattle.CattleFragment"
+        android:name="com.example.rolapppi.fragments.cattle.CattleFragment"
         android:label="@string/menu_cattle"
         tools:layout="@layout/fragment_cattle">
         <action
@@ -26,16 +30,16 @@
 
     <fragment
         android:id="@+id/nav_logout"
-        android:name="com.example.rolapppi.ui.auth.LogoutFragment"
+        android:name="com.example.rolapppi.fragments.auth.LogoutFragment"
         android:label="@string/menu_logout"
         tools:layout="@layout/fragment_logout" />
     <fragment
         android:id="@+id/detailsCattleFragment"
-        android:name="com.example.rolapppi.ui.cattle.DetailsCattleFragment"
+        android:name="com.example.rolapppi.fragments.cattle.DetailsCattleFragment"
         android:label="Szczegóły zwierzęcia" />
     <fragment
         android:id="@+id/nav_feed"
-        android:name="com.example.rolapppi.ui.feed.FeedFragment"
+        android:name="com.example.rolapppi.fragments.feed.FeedFragment"
         android:label="@string/menu_feed"
         tools:layout="@layout/fragment_feed" >
         <action
@@ -44,7 +48,7 @@
     </fragment>
     <fragment
         android:id="@+id/nav_feedProduced"
-        android:name="com.example.rolapppi.ui.feedProduced.FeedProducedFragment"
+        android:name="com.example.rolapppi.fragments.feedProduced.FeedProducedFragment"
         android:label="@string/menu_feedProduced"
         tools:layout="@layout/fragment_feed_produced" >
         <action
@@ -53,7 +57,7 @@
     </fragment>
     <fragment
         android:id="@+id/nav_cropProtection"
-        android:name="com.example.rolapppi.ui.cropProtection.CropProtectionFragment"
+        android:name="com.example.rolapppi.fragments.cropProtection.CropProtectionFragment"
         android:label="@string/menu_cropProtection"
         tools:layout="@layout/fragment_crop_protection" >
         <action
@@ -62,21 +66,21 @@
     </fragment>
     <fragment
         android:id="@+id/detailsCropProtectionFragment"
-        android:name="com.example.rolapppi.ui.cropProtection.DetailsCropProtectionFragment"
+        android:name="com.example.rolapppi.fragments.cropProtection.DetailsCropProtectionFragment"
         android:label="Szczegóły zabiegu" />
     <fragment
         android:id="@+id/detailsFeedFragment"
-        android:name="com.example.rolapppi.ui.feed.DetailsFeedFragment"
+        android:name="com.example.rolapppi.fragments.feed.DetailsFeedFragment"
         android:label="Szczegóły paszy"
         tools:layout="@layout/fragment_details_feed" />
     <fragment
         android:id="@+id/settingsFragment"
-        android:name="com.example.rolapppi.ui.auth.SettingsFragment"
+        android:name="com.example.rolapppi.fragments.auth.SettingsFragment"
         android:label="Ustawienia"
         tools:layout="@layout/fragment_settings" />
     <fragment
         android:id="@+id/detailsFeedProducedFragment"
-        android:name="com.example.rolapppi.ui.feedProduced.DetailsFeedProducedFragment"
+        android:name="com.example.rolapppi.fragments.feedProduced.DetailsFeedProducedFragment"
         android:label="Szczegółu zbioru"
         tools:layout="@layout/fragment_details_feed_produced" />
     <fragment

@@ -1,15 +1,16 @@
 package com.example.rolapppi;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.Menu;
+import android.widget.Toast;
 
-import com.example.rolapppi.ui.cattle.CattleModel;
-import com.example.rolapppi.ui.cattle.CattleViewModel;
-import com.example.rolapppi.ui.cropProtection.CropProtectionModel;
-import com.example.rolapppi.ui.cropProtection.CropProtectionViewModel;
+import com.example.rolapppi.fragments.cattle.CattleModel;
+import com.example.rolapppi.fragments.cattle.CattleViewModel;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.annotation.NonNull;
@@ -33,6 +34,9 @@ public class HomeActivity extends AppCompatActivity {
     private ActivityHomeBinding binding;
     private CattleViewModel cattleViewModel;
     private final int CHOOSE_FILE = 1001;
+    private static final int REQUEST_CODE = 100;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,42 +47,6 @@ public class HomeActivity extends AppCompatActivity {
 
         setSupportActionBar(binding.appBarHome.toolbar);
 
-//        binding.appBarHome.fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//              //  Log.e("DD", String.valueOf(position));
-//                final Dialog dialog = new Dialog(HomeActivity.this);
-//                //We have added a title in the custom layout. So let's disable the default title.
-//                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-//                //The user will be able to cancel the dialog bu clicking anywhere outside the dialog.
-//                dialog.setCancelable(true);
-//                //Mention the name of the layout of your custom dialog.
-//                dialog.setContentView(R.layout.custom_dialog);
-//
-//                //Initializing the views of the dialog.
-//                final EditText nameEt = dialog.findViewById(R.id.name_et);
-//                final EditText ageEt = dialog.findViewById(R.id.age_et);
-//                final CheckBox termsCb = dialog.findViewById(R.id.terms_cb);
-//                Button submitButton = dialog.findViewById(R.id.submit_button);
-//
-//
-//                submitButton.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        String name = nameEt.getText().toString();
-//                        String age = ageEt.getText().toString();
-//                        Boolean hasAccepted = termsCb.isChecked();R.o
-//                        // populateInfoTv(name,age,hasAccepted);
-//                        dialog.dismiss();
-//                    }
-//                });
-//
-//                dialog.show();
-//                Snackbar.make(view, "dd", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
-//
         DrawerLayout drawer = binding.drawerLayout;
         NavigationView navigationView = binding.navView;
         // Passing each menu ID as a set of Ids because each
@@ -90,8 +58,24 @@ public class HomeActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_home);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
-    }
 
+        if (checkSelfPermission(Manifest.permission.CAMERA) + checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{Manifest.permission.CAMERA,Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CODE);
+        }
+
+
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == REQUEST_CODE) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(this, "Uprawnienia uzyskano", Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(this, "Uprawnień nie uzyskano", Toast.LENGTH_LONG).show();
+            }
+        }
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -134,19 +118,31 @@ public class HomeActivity extends AppCompatActivity {
                     CSVReader reader = new CSVReader(fileReader);
 
                     String[] line = reader.readNext();
-                    cattleViewModel = new ViewModelProvider(this).get(CattleViewModel.class);
-                    while (line != null) {
-                        line = reader.readNext();
-                        // nextLine[] is an array of values from the line
-                        String[] lineN = line;
-                        String[] dd = lineN[0].split(";");
+                    String[] lineA = line;
 
-                        if (lineN[0].contains("PARAMETRY")) {
-                            return;
+                    String[] check = lineA[0].split(";");
+                    if (check[2].contains("Numer identyfikacyjny")&&check[3].contains("Data urodzenia")
+                            &&check[18].contains("Identyfikator matki")){
+                        cattleViewModel = new ViewModelProvider(this).get(CattleViewModel.class);
+                        while (line != null) {
+                            line = reader.readNext();
+
+                            String[] lineN = line;
+                            String[] cell = lineN[0].split(";");
+
+
+                            if (lineN[0].contains("PARAMETRY")) {
+                                return;
+                            }
+
+                            cell[3] = cell[3].replace("-", ".");
+                            cattleViewModel.cattleAdd(new CattleModel(cell[2], cell[3], cell[5], cell[18]));
                         }
-                        dd[3] = dd[3].replace("-", ".");
-                        cattleViewModel.cattleAdd(new CattleModel(dd[2], dd[3], dd[5], dd[18]));
+                    }else{
+                        Toast.makeText(getApplicationContext(), "Problem z odczytem pliku", Toast.LENGTH_SHORT).show();
+                        return;
                     }
+
                 } catch (Exception e) {
                     Log.e("DIPA", e.toString());
                 }

@@ -24,7 +24,7 @@
 
         <item
             android:id="@+id/nav_feedProduced"
-            android:icon="@drawable/feed2"
+            android:icon="@drawable/bale"
             android:title="@string/menu_feedProduced" />
 
 
