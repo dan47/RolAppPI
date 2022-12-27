@@ -1,4 +1,4 @@
-package com.example.rolapppi.ui.cattle.customCattle;
+package com.example.rolapppi.fragments.cattle.customCattle;
 
 import android.os.Bundle;
 
@@ -23,8 +23,8 @@ import android.widget.ProgressBar;
 import android.widget.Spinner;
 
 import com.example.rolapppi.R;
-import com.example.rolapppi.ui.cattle.CAdapter;
-import com.example.rolapppi.ui.cattle.CattleModel;
+import com.example.rolapppi.fragments.cattle.CAdapter;
+import com.example.rolapppi.fragments.cattle.CattleModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.time.format.DateTimeFormatter;

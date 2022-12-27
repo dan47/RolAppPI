@@ -1,4 +1,4 @@
-package com.example.rolapppi.ui.cattle.customCattle;
+package com.example.rolapppi.fragments.cattle.customCattle;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -20,9 +20,9 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 
 import com.example.rolapppi.R;
-import com.example.rolapppi.ui.cattle.CattleModel;
-import com.example.rolapppi.ui.cattle.CattleViewModel;
-import com.example.rolapppi.ui.cattle.ScannerCode;
+import com.example.rolapppi.fragments.cattle.CattleModel;
+import com.example.rolapppi.fragments.cattle.CattleViewModel;
+import com.example.rolapppi.fragments.cattle.ScannerCode;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
 import com.google.android.material.textfield.TextInputEditText;

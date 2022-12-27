@@ -1,4 +1,4 @@
-package com.example.rolapppi.ui.cattle;
+package com.example.rolapppi.fragments.cattle;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -26,7 +26,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.rolapppi.R;
-import com.example.rolapppi.ui.cattle.customCattle.AddCustomDialog;
+import com.example.rolapppi.fragments.cattle.CAdapter;
+import com.example.rolapppi.fragments.cattle.CattleViewModel;
+import com.example.rolapppi.fragments.cattle.customCattle.AddCustomDialog;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.time.LocalDate;

@@ -85,6 +85,6 @@
         tools:layout="@layout/fragment_details_feed_produced" />
     <fragment
         android:id="@+id/customCattleFragment"
-        android:name="com.example.rolapppi.ui.cattle.customCattle.CustomCattleFragment"
+        android:name="com.example.rolapppi.fragments.cattle.customCattle.CustomCattleFragment"
         android:label="CustomCattleFragment" />
 </navigation>

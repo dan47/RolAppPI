@@ -1,11 +1,11 @@
-package com.example.rolapppi.ui.cattle.customCattle;
+package com.example.rolapppi.fragments.cattle.customCattle;
 
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.example.rolapppi.ui.cattle.CattleModel;
+import com.example.rolapppi.fragments.cattle.CattleModel;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;

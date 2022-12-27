@@ -1,4 +1,4 @@
-package com.example.rolapppi.ui.cattle;
+package com.example.rolapppi.fragments.cattle;
 
 import static java.time.temporal.ChronoUnit.DAYS;
 
@@ -246,7 +246,7 @@ public class CAdapter extends RecyclerView.Adapter<CAdapter.MyHolder> implements
         LocalDate localDate = java.time.LocalDate.parse(calving, formatter);
         long duration = DAYS.between(localDate, LocalDate.now());
         return duration;
-
+    }
     public interface OnModelListener {
         void onModelClick(int position);
         boolean onModelLongClick(int position);

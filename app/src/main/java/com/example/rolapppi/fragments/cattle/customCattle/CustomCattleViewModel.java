@@ -1,11 +1,11 @@
-package com.example.rolapppi.ui.cattle.customCattle;
+package com.example.rolapppi.fragments.cattle.customCattle;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.example.rolapppi.ui.cattle.CattleModel;
-import com.example.rolapppi.ui.cattle.CattleRepository;
+import com.example.rolapppi.fragments.cattle.CattleModel;
+import com.example.rolapppi.fragments.cattle.CattleRepository;
 
 import java.util.HashMap;
 import java.util.List;
