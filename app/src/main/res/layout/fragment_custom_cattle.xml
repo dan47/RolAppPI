@@ -19,7 +19,7 @@
 
             <Spinner
                 android:id="@+id/spinner"
-                android:layout_width="@id/filterBtn"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
                 android:layout_marginBottom="20dp"
@@ -27,19 +27,7 @@
                 android:minHeight="40dp"
                 android:textAlignment="center"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/filterBtn"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <Button
-                android:id="@+id/filterBtn"
-                android:layout_width="46dp"
-                android:layout_height="49dp"
-                android:layout_margin="8dp"
-                android:layout_toEndOf="@+id/spinner"
-                android:background="@drawable/ic_baseline_filter_list_24"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
+                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

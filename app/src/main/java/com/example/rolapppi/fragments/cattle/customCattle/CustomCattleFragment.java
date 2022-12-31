@@ -32,10 +32,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 
-public class CustomCattleFragment extends Fragment implements CAdapter.OnModelListener{
+public class CustomCattleFragment extends Fragment implements CAdapter.OnModelListener {
 
     private RecyclerView recyclerView;
     private SearchView searchView;
@@ -83,48 +84,76 @@ public class CustomCattleFragment extends Fragment implements CAdapter.OnModelLi
         deleteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                viewModel.deleteCustomCattleGroup(spinner.getSelectedItem().toString());
+                cAdapter2.notifyDataSetChanged();
             }
         });
-
 
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
         viewModel = new ViewModelProvider(requireActivity()).get(CustomCattleViewModel.class);
+        viewModel.getLiveDatafromFireStore().observe(getViewLifecycleOwner(), cattleModels -> {
 
-        viewModel.getLiveDatafromFireStore().observe(getViewLifecycleOwner(), new Observer<Map<String, List<CattleModel>>>() {
-            @Override
-            public void onChanged(Map<String, List<CattleModel>> cattleModels) {
+            List<String> years = new ArrayList<>();
+            for (Map.Entry<String, List<CattleModel>> entry : cattleModels.entrySet()) {
+                years.add(entry.getKey());
+            }
+            List<String> sortedNames = years.stream().sorted().collect(Collectors.toList());
 
-                List<String> years = new ArrayList<>();
-                for(Map.Entry<String, List<CattleModel>> entry: cattleModels.entrySet()){
-                    years.add(entry.getKey());
-                }
-                List<String> sortedNames =  years.stream().sorted().collect(Collectors.toList());
-
-                if(!years.isEmpty()){
-                    cAdapter2.setCattleModelData(cattleModels.get(sortedNames.get(0)));
-                    cAdapter2.notifyDataSetChanged();
-                }
-                spinner.setAdapter(new ArrayAdapter(getContext(), android.R.layout.simple_dropdown_item_1line, sortedNames));
-                progressBar.setVisibility(View.GONE);
+            if (!years.isEmpty()) {
+                cAdapter2.setCattleModelData(cattleModels.get(sortedNames.get(0)));
+                cAdapter2.notifyDataSetChanged();
+            }
+            spinner.setAdapter(new ArrayAdapter(getContext(), android.R.layout.simple_dropdown_item_1line, sortedNames));
+            progressBar.setVisibility(View.GONE);
 //                recyclerView.setAnimation(fadein);
 //                progressBar.setAnimation(fadeout);
-                spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                    @Override
-                    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                        cAdapter2.setCattleModelData(cattleModels.get(sortedNames.get(i)));
-                        cAdapter2.notifyDataSetChanged();
-                    }
+            spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                    cAdapter2.setCattleModelData(cattleModels.get(sortedNames.get(i)));
+                    cAdapter2.notifyDataSetChanged();
+                }
 
-                    @Override
-                    public void onNothingSelected(AdapterView<?> adapterView) {
+                @Override
+                public void onNothingSelected(AdapterView<?> adapterView) {
 
-                    }
-                });
-            }
+                }
+            });
         });
 
+//        viewModel.getLiveDatafromFireStore().observe(getViewLifecycleOwner(), new Observer<Map<String, List<CattleModel>>>() {
+//            @Override
+//            public void onChanged(Map<String, List<CattleModel>> cattleModels) {
+//
+//                List<String> years = new ArrayList<>();
+//                for (Map.Entry<String, List<CattleModel>> entry : cattleModels.entrySet()) {
+//                    years.add(entry.getKey());
+//                }
+//                List<String> sortedNames = years.stream().sorted().collect(Collectors.toList());
+//
+//                if (!years.isEmpty()) {
+//                    cAdapter2.setCattleModelData(cattleModels.get(sortedNames.get(0)));
+//                    cAdapter2.notifyDataSetChanged();
+//                }
+//                spinner.setAdapter(new ArrayAdapter(getContext(), android.R.layout.simple_dropdown_item_1line, sortedNames));
+//                progressBar.setVisibility(View.GONE);
+////                recyclerView.setAnimation(fadein);
+////                progressBar.setAnimation(fadeout);
+//                spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//                    @Override
+//                    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+//                       cAdapter2.setCattleModelData(cattleModels.get(sortedNames.get(i)));
+//                        cAdapter2.notifyDataSetChanged();
+//                    }
+//
+//                    @Override
+//                    public void onNothingSelected(AdapterView<?> adapterView) {
+//
+//                    }
+//                });
+//            }
+//        });
 
 
     }

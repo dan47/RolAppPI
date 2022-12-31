@@ -25,6 +25,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
 
 public class CAdapter extends RecyclerView.Adapter<CAdapter.MyHolder> implements Filterable {
 
@@ -42,7 +43,13 @@ public class CAdapter extends RecyclerView.Adapter<CAdapter.MyHolder> implements
         this.cattleModelList.addAll(cattleModelData);
         this.cattleModelListAll.addAll(cattleModelData);
     }
-
+    public void setCattleModelData2(Set<CattleModel> cattleModelData) {
+        this.cattleModelList = new ArrayList<>();
+        this.cattleModelListAll = new ArrayList<>();
+        this.cattleModelSelected = new ArrayList<>();
+        this.cattleModelList.addAll(cattleModelData);
+        this.cattleModelListAll.addAll(cattleModelData);
+    }
     public CAdapter(OnModelListener onModelListener) {
         this.mOnModelListener = onModelListener;
     }
@@ -234,7 +241,6 @@ public class CAdapter extends RecyclerView.Adapter<CAdapter.MyHolder> implements
                 cattleModelList.clear();
                 cattleModelList.addAll((Collection<? extends CattleModel>) filterResults.values);
             }
-
             notifyDataSetChanged();
 
         }

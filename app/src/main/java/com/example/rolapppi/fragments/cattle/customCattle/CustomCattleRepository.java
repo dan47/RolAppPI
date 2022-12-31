@@ -79,8 +79,6 @@ public class CustomCattleRepository {
                     return;
                 }
 
-
-
                     Map<String, List<CattleModel>> temp = new HashMap<>();
                 for(DocumentSnapshot dc : value.getDocuments()){
 
@@ -97,11 +95,8 @@ public class CustomCattleRepository {
                             }
                         }
                     });
-                    temp.put(dc.getId(), (List<CattleModel>) cattleModelList);
-
-
+                    temp.put(dc.getId(), cattleModelList);
                 }
-
                     fireStoreDataAdded.customCattleDataAdded(temp);
 
             }
@@ -124,11 +119,38 @@ public class CustomCattleRepository {
 
     public void deleteCustomCattle(List<CattleModel> cattleModel, String name) {
         for (CattleModel model : cattleModel) {
-            FirebaseFirestore.getInstance().collection("user_data").document(FirebaseAuth.getInstance().getUid())
+            firestore.collection("user_data").document(FirebaseAuth.getInstance().getUid())
                     .collection("customCattle").document(name).collection("customCattle").document(model.getAnimal_id()).delete();
         }
     }
+    public void deleteCustomCattleGroup(String name) {
 
+
+        firestore.collection("user_data").document(FirebaseAuth.getInstance().getUid())
+                .collection("customCattle").document(name).collection("customCattle").addSnapshotListener(new EventListener<QuerySnapshot>() {
+                @Override
+                public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                    if(error != null){
+                        Log.e("Firestore error", error.getMessage());
+                        return;
+                    }
+                    List<CattleModel> cattleModelList = new ArrayList<>();
+                    for(DocumentSnapshot dc : value.getDocuments()){
+                        cattleModelList.add(dc.toObject(CattleModel.class));
+                    }
+                    for (CattleModel model : cattleModelList) {
+                        firestore.collection("user_data").document(FirebaseAuth.getInstance().getUid())
+                                .collection("customCattle").document(name).collection("customCattle").document(model.getAnimal_id()).delete();
+                    }
+                    firestore.collection("user_data").document(FirebaseAuth.getInstance().getUid())
+                            .collection("customCattle").document(name).delete();
+                    return;
+                }
+            });
+
+
+
+    }
 
     public interface OnFireStoreDataAdded {
         void customCattleDataAdded(Map<String, List<CattleModel>> cattleModelList);

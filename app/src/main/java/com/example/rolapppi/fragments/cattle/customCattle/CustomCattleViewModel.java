@@ -5,11 +5,10 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.rolapppi.fragments.cattle.CattleModel;
-import com.example.rolapppi.fragments.cattle.CattleRepository;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class CustomCattleViewModel extends ViewModel implements CustomCattleRepository.OnFireStoreDataAdded {
 
@@ -26,7 +25,7 @@ public class CustomCattleViewModel extends ViewModel implements CustomCattleRepo
     }
 
     @Override
-    public void customCattleDataAdded(Map<String,List<CattleModel>> cattleModelLists) {
+    public void customCattleDataAdded(Map<String, List<CattleModel>> cattleModelLists) {
         cattleModelListsData.setValue(cattleModelLists);
     }
 
@@ -41,6 +40,9 @@ public class CustomCattleViewModel extends ViewModel implements CustomCattleRepo
 
     public void customCattleDelete(List<CattleModel> cattleModelList, String name) {
         firebaseRepo.deleteCustomCattle(cattleModelList, name);
+    }
+    public void deleteCustomCattleGroup(String name) {
+        firebaseRepo.deleteCustomCattleGroup(name);
     }
 
     @Override
