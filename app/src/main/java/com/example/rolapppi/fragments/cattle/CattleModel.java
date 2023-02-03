@@ -1,6 +1,11 @@
 package com.example.rolapppi.fragments.cattle;
 
+import static java.time.temporal.ChronoUnit.DAYS;
+
 import com.google.firebase.firestore.DocumentId;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 
 public class CattleModel {
@@ -42,7 +47,9 @@ public class CattleModel {
         this.animal_id = animal_id;
     }
 
-    public String getBirthday() { return birthday; }
+    public String getBirthday() {
+        return birthday;
+    }
 
     public void setBirthday(String birthday) {
         this.birthday = birthday;
@@ -68,11 +75,29 @@ public class CattleModel {
         return caliving;
     }
 
+    public long getDurationCalving() {
+        if (caliving.isEmpty()) {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+            LocalDate localDate = java.time.LocalDate.parse(previousCaliving, formatter);
+            long duration = DAYS.between(localDate, LocalDate.now());
+            return duration;
+        } else {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+            LocalDate localDate = java.time.LocalDate.parse(caliving, formatter);
+            long duration = DAYS.between(localDate, LocalDate.now());
+            return duration;
+        }
+    }
+
     public void setCaliving(String caliving) {
         this.caliving = caliving;
     }
 
-    public String getPreviousCaliving() { return previousCaliving; }
+    public String getPreviousCaliving() {
+        return previousCaliving;
+    }
 
-    public void setPreviousCaliving(String previousCaliving) { this.previousCaliving = previousCaliving; }
+    public void setPreviousCaliving(String previousCaliving) {
+        this.previousCaliving = previousCaliving;
+    }
 }

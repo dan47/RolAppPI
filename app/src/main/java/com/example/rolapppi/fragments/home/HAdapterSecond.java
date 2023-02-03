@@ -35,7 +35,6 @@ public class HAdapterSecond extends RecyclerView.Adapter<HAdapterSecond.MyHolder
         this.cattleModelList = new ArrayList<>();
         this.cattleModelList.addAll(cattleModelData);
     }
-
     public HAdapterSecond(OnModelListener onModelListener) {
         this.mOnModelListener = onModelListener;
     }
@@ -52,11 +51,14 @@ public class HAdapterSecond extends RecyclerView.Adapter<HAdapterSecond.MyHolder
     public void onBindViewHolder(@NonNull MyHolder holder, int position) {
 
         holder.animal_id.setText(cattleModelList.get(position).getAnimal_id());
+        long duration = cattleModelList.get(position).getDurationCalving();
+        int result = (int) (duration - 235);
+        holder.time_dryness.setText(Integer.toString(result));
     }
 
     public class MyHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        TextView animal_id;
+        TextView animal_id, time_dryness;
         RelativeLayout relativeLayoutCard;
         OnModelListener onModelListener;
 
@@ -64,6 +66,7 @@ public class HAdapterSecond extends RecyclerView.Adapter<HAdapterSecond.MyHolder
             super(itemView);
 
             animal_id = itemView.findViewById(R.id.animal_id);
+            time_dryness = itemView.findViewById(R.id.time_dryness);
             relativeLayoutCard = itemView.findViewById(R.id.relativeLayoutCard);
 
             this.onModelListener = onModelListener;

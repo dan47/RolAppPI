@@ -32,6 +32,8 @@ import com.github.mikephil.charting.utils.ColorTemplate;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -167,8 +169,12 @@ public class HomeFragment extends Fragment implements HAdapter.OnModelListener, 
             countCalving.setText(String.format("%s", calving));
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 
+            countG.sort(Comparator.comparingLong(a -> a.getDurationCalving()));
+            Collections.reverse(countG);
+
             //            countG2 = countG.stream().filter(e -> DAYS.between(LocalDate.parse(e.getCaliving(), formatter), LocalDate.now()) > 235).filter(e -> DAYS.between(LocalDate.parse(e.getCaliving(), formatter), LocalDate.now()) < 243).collect(Collectors.toList());
-            countG2 = countG.stream().filter(e -> DAYS.between(LocalDate.parse(e.getCaliving(), formatter), LocalDate.now()) > 221).filter(e -> DAYS.between(LocalDate.parse(e.getCaliving(), formatter), LocalDate.now()) < 236).collect(Collectors.toList());
+            countG2 = countG.stream().filter(e -> e.getDurationCalving() > 221).filter(e -> e.getDurationCalving() < 236).collect(Collectors.toList());
+
             hAdapter.setCattleModelData(countG2);
             hAdapter.notifyDataSetChanged();
 
@@ -178,7 +184,7 @@ public class HomeFragment extends Fragment implements HAdapter.OnModelListener, 
                 drynessTextResult.setVisibility(View.GONE);
             }
 
-            countG2 = countG.stream().filter(e -> DAYS.between(LocalDate.parse(e.getCaliving(), formatter), LocalDate.now()) > 235).collect(Collectors.toList());
+            countG2 = countG.stream().filter(e -> e.getDurationCalving() > 235).collect(Collectors.toList());
             hAdapterSecond.setCattleModelData(countG2);
             hAdapterSecond.notifyDataSetChanged();
 
@@ -194,7 +200,7 @@ public class HomeFragment extends Fragment implements HAdapter.OnModelListener, 
             countG.clear();
             cattleModels.stream().filter(e -> e.getCaliving().isEmpty() && e.getGender().equals("Samica") && !e.getPreviousCaliving().isEmpty()).forEach(countG::add);
 
-            countG2 = countG.stream().filter(e -> DAYS.between(LocalDate.parse(e.getPreviousCaliving(), formatter), LocalDate.now()) < 90).collect(Collectors.toList());
+            countG2 = countG.stream().filter(e -> e.getDurationCalving() < 90).collect(Collectors.toList());
             hAdapterThird.setCattleModelData(countG2);
             hAdapterThird.notifyDataSetChanged();
 

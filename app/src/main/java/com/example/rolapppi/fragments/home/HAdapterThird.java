@@ -47,7 +47,7 @@ public class HAdapterThird extends RecyclerView.Adapter<HAdapterThird.MyHolder> 
         holder.animal_id.setText(cattleModelList.get(position).getAnimal_id());
 
 
-        long duration = duration(cattleModelList.get(position).getPreviousCaliving());
+        long duration = cattleModelList.get(position).getDurationCalving();
         int result = (int) (duration);
 
         holder.time_dryness.setText(Integer.toString(result));

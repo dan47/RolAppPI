@@ -31,11 +31,11 @@ public class HAdapter extends RecyclerView.Adapter<HAdapter.MyHolder> {
     List<CattleModel> cattleModelList;
     private OnModelListener mOnModelListener;
 
+
     public void setCattleModelData(List<CattleModel> cattleModelData) {
         this.cattleModelList = new ArrayList<>();
         this.cattleModelList.addAll(cattleModelData);
     }
-
     public HAdapter(OnModelListener onModelListener) {
         this.mOnModelListener = onModelListener;
     }
@@ -52,10 +52,9 @@ public class HAdapter extends RecyclerView.Adapter<HAdapter.MyHolder> {
     public void onBindViewHolder(@NonNull MyHolder holder, int position) {
 
         holder.animal_id.setText(cattleModelList.get(position).getAnimal_id());
-
-
-        long duration = duration(cattleModelList.get(position).getCaliving());
+        long duration = cattleModelList.get(position).getDurationCalving();
         int result = (int) (236 - duration);
+
 
         holder.time_dryness.setText(Integer.toString(result));
     }
@@ -96,13 +95,6 @@ public class HAdapter extends RecyclerView.Adapter<HAdapter.MyHolder> {
 
     }
 
-
-    private long duration(String calving) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
-        LocalDate localDate = java.time.LocalDate.parse(calving, formatter);
-        long duration = DAYS.between(localDate, LocalDate.now());
-        return duration;
-    }
 
     public interface OnModelListener {
         void onModelClick(int position);
