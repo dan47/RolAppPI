@@ -34,7 +34,7 @@ import java.util.Date;
 
 public class DetailsCattleFragment extends Fragment {
 
-    TextView animal_id, birthday, gender, mother_id, calving, previousCalving, dryness, drynessTextView;
+    TextView animal_id, birthday, gender, mother_id, calving, previousCalving, dryness, drynessTextView, sell;
     LinearLayout calvingLayout, previousCalvingLayout, drynessLayout;
     Button editBtn, deleteBtn, calvingBtn, calvingDeleteBtn;
     String previousCalvingString, dateBirth;
@@ -64,6 +64,7 @@ public class DetailsCattleFragment extends Fragment {
         previousCalving = view.findViewById(R.id.previousCalving);
         dryness = view.findViewById(R.id.dryness);
         drynessTextView = view.findViewById(R.id.drynessTextView);
+        sell = view.findViewById(R.id.sell);
         calvingLayout = view.findViewById(R.id.calvingLayout);
         previousCalvingLayout = view.findViewById(R.id.previousCalvingLayout);
         drynessLayout = view.findViewById(R.id.drynessLayout);
@@ -72,6 +73,7 @@ public class DetailsCattleFragment extends Fragment {
         deleteBtn = view.findViewById(R.id.deleteBtn);
         calvingBtn = view.findViewById(R.id.calvingBtn);
         calvingDeleteBtn = view.findViewById(R.id.calvingDeleteBtn);
+
 
         TimeCalculate timeCalculate = new TimeCalculate();
 
@@ -85,6 +87,7 @@ public class DetailsCattleFragment extends Fragment {
             mother_id.setText(cattleModelT.getMother_id());
 
             dateBirth = cattleModelT.getBirthday();
+            sell.setText(getString(R.string.yes));
 
             previousCalvingString = cattleModel.getPreviousCaliving();
 
@@ -92,7 +95,11 @@ public class DetailsCattleFragment extends Fragment {
             if (previousCalvingString == null) {
                 previousCalvingString = "";
             }
-
+            String birthT = cattleModelT.getBirthday();
+            int time = (int) timeCalculate.duration(birthT) - 7;
+            if (time <= 0) {
+                sell.setText(getString(R.string.no));
+            }
 
             if (cattleModelT.getGender().equals(getString(R.string.female))) {
                 String calvingT = cattleModelT.getCaliving();
@@ -100,9 +107,10 @@ public class DetailsCattleFragment extends Fragment {
                 if (calvingT.isEmpty()) {
                     calving.setText(getString(R.string.no_calivng));
                 } else {
+                    sell.setText(getString(R.string.no));
                     calving.setText(calvingT);
                     previousCalving.setText(calvingT);
-                    int time = (int) timeCalculate.duration(calvingT) - 235;
+                    time = (int) (timeCalculate.duration(calvingT) - 235);
                     if (time > 0) {
                         dryness.setText(Integer.toString(time));
                         drynessTextView.setText(getString(R.string.dryness_after));
@@ -119,6 +127,10 @@ public class DetailsCattleFragment extends Fragment {
 
                 if (!previousCalvingString.isEmpty()) {
                     previousCalving.setText(previousCalvingString);
+                    time = (int) (timeCalculate.duration(previousCalvingString) - 7);
+                    if (time <= 0) {
+                        sell.setText(R.string.no);
+                    }
                 } else {
                     previousCalving.setText(getString(R.string.no_calivng));
                 }
@@ -133,6 +145,7 @@ public class DetailsCattleFragment extends Fragment {
                 previousCalvingLayout.setVisibility(View.GONE);
                 calvingBtn.setVisibility(View.GONE);
             }
+
         });
 
 

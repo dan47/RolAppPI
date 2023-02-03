@@ -159,6 +159,30 @@
                 android:textStyle="bold" />
         </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/sellLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="visible">
+
+            <TextView
+                android:id="@+id/sellTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="8dp"
+                android:text="Sprzedawalne:"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/sell"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tak"
+                android:textColor="#6B000000"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"

@@ -59,7 +59,7 @@ public class CAdapter extends RecyclerView.Adapter<CAdapter.MyHolder> implements
         holder.gender.setText(gender);
         String calving = cattleModelList.get(position).getCaliving();
         String previousCalving = cattleModelList.get(position).getPreviousCaliving();
-
+        holder.relativeLayoutCard.setBackgroundColor(Color.WHITE);
 
         if (gender.equals("Samica")) {
             if (!calving.isEmpty()) {
@@ -83,10 +83,7 @@ public class CAdapter extends RecyclerView.Adapter<CAdapter.MyHolder> implements
             } else {
                 holder.relativeLayoutCard.setBackgroundColor(Color.WHITE);
             }
-        } else {
-
-            holder.relativeLayoutCard.setBackgroundColor(Color.WHITE);
-        } //change color card
+        }  //change color card
         if (calving.isEmpty()) {
             holder.calving.setVisibility(View.GONE);
             holder.birthday.setVisibility(View.VISIBLE);
