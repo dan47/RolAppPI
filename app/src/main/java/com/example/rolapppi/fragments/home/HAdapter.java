@@ -53,8 +53,8 @@ public class HAdapter extends RecyclerView.Adapter<HAdapter.MyHolder> {
         holder.animal_id.setText(cattleModelList.get(position).getAnimal_id());
 
 
-                long duration = duration(cattleModelList.get(position).getCaliving());
-                int result = (int) (236 - duration);
+        long duration = duration(cattleModelList.get(position).getCaliving());
+        int result = (int) (236 - duration);
 
         holder.time_dryness.setText(Integer.toString(result));
     }
