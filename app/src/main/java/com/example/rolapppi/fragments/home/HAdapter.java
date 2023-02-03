@@ -35,6 +35,7 @@ public class HAdapter extends RecyclerView.Adapter<HAdapter.MyHolder> {
         this.cattleModelList = new ArrayList<>();
         this.cattleModelList.addAll(cattleModelData);
     }
+
     public HAdapter(OnModelListener onModelListener) {
         this.mOnModelListener = onModelListener;
     }
