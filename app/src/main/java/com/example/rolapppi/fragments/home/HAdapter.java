@@ -30,14 +30,16 @@ public class HAdapter extends RecyclerView.Adapter<HAdapter.MyHolder> {
 
     List<CattleModel> cattleModelList;
     private OnModelListener mOnModelListener;
+    private String type;
 
 
     public void setCattleModelData(List<CattleModel> cattleModelData) {
         this.cattleModelList = new ArrayList<>();
         this.cattleModelList.addAll(cattleModelData);
     }
-    public HAdapter(OnModelListener onModelListener) {
+    public HAdapter(OnModelListener onModelListener, String type) {
         this.mOnModelListener = onModelListener;
+        this.type = type;
     }
 
     @NonNull
@@ -53,8 +55,19 @@ public class HAdapter extends RecyclerView.Adapter<HAdapter.MyHolder> {
 
         holder.animal_id.setText(cattleModelList.get(position).getAnimal_id());
         long duration = cattleModelList.get(position).getDurationCalving();
-        int result = (int) (236 - duration);
+        int result = 0;
 
+        switch(type){
+            case "Before":
+                result= (int) (236 - duration);
+                break;
+            case "Now":
+                result = (int) (duration - 235);
+                break;
+            case "After":
+                result= (int) (duration);
+                break;
+        }
 
         holder.time_dryness.setText(Integer.toString(result));
     }
@@ -78,7 +91,7 @@ public class HAdapter extends RecyclerView.Adapter<HAdapter.MyHolder> {
 
         @Override
         public void onClick(View view) {
-            onModelListener.onModelClick(getAdapterPosition());
+            onModelListener.onModelClick(getAdapterPosition(),type);
         }
     }
 
@@ -97,6 +110,6 @@ public class HAdapter extends RecyclerView.Adapter<HAdapter.MyHolder> {
 
 
     public interface OnModelListener {
-        void onModelClick(int position);
+        void onModelClick(int position, String type);
     }
 }
