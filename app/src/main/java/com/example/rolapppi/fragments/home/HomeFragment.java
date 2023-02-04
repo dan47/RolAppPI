@@ -294,7 +294,7 @@ public class HomeFragment extends Fragment implements HAdapter.OnModelListener {
 
     @Override
     public void onModelClick(int position, String type) {
-        switch(type){
+        switch (type) {
             case "Before":
                 viewModel.setSelected(hAdapterBefore.cattleModelList.get(position));
                 navController.navigate(R.id.action_nav_home_to_detailsCattleFragment);

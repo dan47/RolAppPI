@@ -76,18 +76,20 @@ public class CattleModel {
     }
 
     public long getDurationCalving() {
-        if (caliving.isEmpty()) {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
-            LocalDate localDate = java.time.LocalDate.parse(previousCaliving, formatter);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+        LocalDate localDate;
+        if (!caliving.isEmpty() ) {
+            localDate = java.time.LocalDate.parse(caliving, formatter);
             long duration = DAYS.between(localDate, LocalDate.now());
             return duration;
-        } else {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
-            LocalDate localDate = java.time.LocalDate.parse(caliving, formatter);
+        } else if (!previousCaliving.isEmpty()) {
+            localDate = java.time.LocalDate.parse(previousCaliving, formatter);
             long duration = DAYS.between(localDate, LocalDate.now());
             return duration;
         }
+        return 0;
     }
+
 
     public void setCaliving(String caliving) {
         this.caliving = caliving;

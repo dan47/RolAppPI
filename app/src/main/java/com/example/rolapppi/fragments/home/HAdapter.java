@@ -37,6 +37,7 @@ public class HAdapter extends RecyclerView.Adapter<HAdapter.MyHolder> {
         this.cattleModelList = new ArrayList<>();
         this.cattleModelList.addAll(cattleModelData);
     }
+
     public HAdapter(OnModelListener onModelListener, String type) {
         this.mOnModelListener = onModelListener;
         this.type = type;
@@ -57,15 +58,15 @@ public class HAdapter extends RecyclerView.Adapter<HAdapter.MyHolder> {
         long duration = cattleModelList.get(position).getDurationCalving();
         int result = 0;
 
-        switch(type){
+        switch (type) {
             case "Before":
-                result= (int) (236 - duration);
+                result = (int) (236 - duration);
                 break;
             case "Now":
                 result = (int) (duration - 235);
                 break;
             case "After":
-                result= (int) (duration);
+                result = (int) (duration);
                 break;
         }
 
@@ -91,7 +92,7 @@ public class HAdapter extends RecyclerView.Adapter<HAdapter.MyHolder> {
 
         @Override
         public void onClick(View view) {
-            onModelListener.onModelClick(getAdapterPosition(),type);
+            onModelListener.onModelClick(getAdapterPosition(), type);
         }
     }
 
