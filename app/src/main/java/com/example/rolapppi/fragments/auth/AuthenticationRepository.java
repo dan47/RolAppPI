@@ -4,23 +4,16 @@ import android.app.Application;
 import android.content.Intent;
 import android.util.Log;
 import android.widget.Toast;
-
-import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
-
 import com.example.rolapppi.MainActivity;
 import com.example.rolapppi.utills.CheckNetwork;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.SignInMethodQueryResult;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
+import java.util.HashMap;
 
 
 public class AuthenticationRepository {
@@ -56,12 +49,15 @@ public class AuthenticationRepository {
         }
     }
 
-    public void register(String email, String pass) {
+    public void register(String email, String pass, String farm_id) {
         CheckNetwork checkNetwork = new CheckNetwork();
         if (checkNetwork.isConnected(application)) {
             firebaseAuth.createUserWithEmailAndPassword(email, pass).addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
                     firebaseUserMutableLiveData.postValue(firebaseAuth.getCurrentUser());
+                    firestore.collection("user_data").document(firebaseAuth.getCurrentUser().getUid()).set(new HashMap<String, Object>() {{
+                        put("farm_id", farm_id);
+                    }});
                 } else {
                     Toast.makeText(application, "Podany użytkownik już istnieje", Toast.LENGTH_SHORT).show();
                 }
@@ -91,46 +87,36 @@ public class AuthenticationRepository {
 
         CheckNetwork checkNetwork = new CheckNetwork();
         if (checkNetwork.isConnected(application)) {
-            String uid = firebaseAuth.getCurrentUser().getUid();
-            FirebaseUser user = firebaseAuth.getCurrentUser();
 
+            String uid = firebaseAuth.getCurrentUser().getUid();
+            FirebaseUser  user = firebaseAuth.getCurrentUser();
             AuthCredential credential = EmailAuthProvider.getCredential(user.getEmail(), password);
 
             user.reauthenticate(credential).addOnCompleteListener(task -> {
                 Log.d("TAG", "User re-authenticated.");
 
                 if (task.isSuccessful()) {
-                    firebaseAuth.getCurrentUser().delete().addOnCompleteListener(task1 -> {
-                        if (task1.isSuccessful()) {
-                            firestore.collection("user_data/" + uid + "/feed").get().addOnCompleteListener(t -> {
-                                for (QueryDocumentSnapshot snapshot : t.getResult()) {
-                                    firestore.collection("user_data/" + uid + "/feed").document(snapshot.getId()).delete();
-                                }
-                            });
-                            firestore.collection("user_data/" + uid + "/cattle").get().addOnCompleteListener(t -> {
-                                for (QueryDocumentSnapshot snapshot : t.getResult()) {
-                                    firestore.collection("user_data/" + uid + "/cattle").document(snapshot.getId()).delete();
-                                }
-                            });
-                            firestore.collection("user_data/" + uid + "/cropProtection").get().addOnCompleteListener(t -> {
-                                for (QueryDocumentSnapshot snapshot : t.getResult()) {
-                                    firestore.collection("user_data/" + uid + "/cropProtection").document(snapshot.getId()).delete();
-                                }
-                            });
-                            firestore.collection("user_data/" + uid + "/feedProduced").get().addOnCompleteListener(t -> {
-                                for (QueryDocumentSnapshot snapshot : t.getResult()) {
-                                    firestore.collection("user_data/" + uid + "/feedProduced").document(snapshot.getId()).delete();
-                                }
-                            });
-                            firestore.collection("user_data").document(uid).delete();
-                        }
-                        if (task1.isSuccessful()) {
+
+                    deleteCollection(firestore, "user_data/" + uid + "/feed");
+                    deleteCollection(firestore, "user_data/" + uid + "/cattle");
+                    deleteCollection(firestore, "user_data/" + uid + "/cropProtection");
+                    deleteCollection(firestore, "user_data/" + uid + "/feedProduced");
+
+                    firestore.collection("user_data").document(uid).delete();
+
+                    firebaseAuth.getCurrentUser().delete().addOnCompleteListener(t -> {
+                        if (t.isSuccessful()) {
                             Toast.makeText(application, "Konto usunięto", Toast.LENGTH_SHORT).show();
                             logOut();
-                            application.startActivity(new Intent(application, MainActivity.class));
+                            Intent intent = new Intent(application, MainActivity.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            application.startActivity(intent);
                         } else
-                            Toast.makeText(application, task1.getException().toString(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(application, task.getException().toString(), Toast.LENGTH_SHORT).show();
+
                     });
+
+
                 } else
                     Toast.makeText(application, "Hasło nieprawidłowe", Toast.LENGTH_SHORT).show();
             });
@@ -231,5 +217,15 @@ public class AuthenticationRepository {
         } else {
             Toast.makeText(application, "Brak połączenia z internetem", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void deleteCollection(FirebaseFirestore firestore, String documentId) {
+        firestore.collection(documentId).get().addOnCompleteListener(t -> {
+            for (QueryDocumentSnapshot snapshot : t.getResult()) {
+                firestore.collection(documentId).document(snapshot.getId()).delete();
+            }
+            if (!t.isSuccessful())
+                Toast.makeText(application, "Problem z usunięciem danych", Toast.LENGTH_SHORT).show();
+        });
     }
 }

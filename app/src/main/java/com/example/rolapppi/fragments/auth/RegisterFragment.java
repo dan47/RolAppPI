@@ -26,8 +26,8 @@ import com.example.rolapppi.R;
 
 
 public class RegisterFragment extends Fragment {
-    private TextInputEditText emailView, passwordView, confirmPassword;
-    private TextInputLayout emailTextInputLayout, passwordTextInputLayout, confirmPasswordTextInputLayout;
+    private TextInputEditText emailView, passwordView, confirmPassword, farm_id;
+    private TextInputLayout emailTextInputLayout, passwordTextInputLayout, confirmPasswordTextInputLayout, farmTextInputLayout;
     private TextView alreadyHaveAccount;
     private Button registerButton;
     private AuthenticationViewModel viewModel;
@@ -59,9 +59,11 @@ public class RegisterFragment extends Fragment {
         emailView = view.findViewById(R.id.inputEmail);
         passwordView = view.findViewById(R.id.inputPassword);
         confirmPassword = view.findViewById(R.id.inputConfirmPassword);
+        farm_id = view.findViewById(R.id.inputFarmId);
         emailTextInputLayout = view.findViewById(R.id.emailTextInputLayout);
         passwordTextInputLayout = view.findViewById(R.id.passwordTextInputLayout);
         confirmPasswordTextInputLayout = view.findViewById(R.id.confirmPasswordTextInputLayout);
+        farmTextInputLayout = view.findViewById(R.id.farmTextInputLayout);
         alreadyHaveAccount = view.findViewById(R.id.alreadyHaveAccount);
         registerButton = view.findViewById(R.id.btnRegister);
 
@@ -73,15 +75,18 @@ public class RegisterFragment extends Fragment {
             String email = emailView.getText().toString();
             String pass = passwordView.getText().toString();
             String confPass = confirmPassword.getText().toString();
+            String farmId = farm_id.getText().toString();
 
             if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
                 emailTextInputLayout.setError("Nieprawidłowy email");
+            } else if (farmId.length() != 12) {
+                farmTextInputLayout.setError("Nr powinien mieć 12 cyfr");
             } else if (pass.length() < 6) {
                 passwordTextInputLayout.setError("Hasło za krótkie");
             } else if (!confPass.equals(pass)) {
                 confirmPasswordTextInputLayout.setError("Hasła są różne");
             } else {
-                viewModel.register(email, pass);
+                viewModel.register(email, pass, farmId);
             }
         });
     }

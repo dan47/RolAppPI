@@ -96,7 +96,7 @@ public class DetailsCattleFragment extends Fragment {
                 previousCalvingString = "";
             }
             String birthT = cattleModelT.getBirthday();
-            int time = (int) timeCalculate.duration(birthT) - 7;
+            int time = (int) timeCalculate.duration(birthT) - 10;
             if (time <= 0) {
                 sell.setText(getString(R.string.no));
             }
@@ -127,7 +127,7 @@ public class DetailsCattleFragment extends Fragment {
 
                 if (!previousCalvingString.isEmpty()) {
                     previousCalving.setText(previousCalvingString);
-                    time = (int) (timeCalculate.duration(previousCalvingString) - 7);
+                    time = (int) (timeCalculate.duration(previousCalvingString) - 10);
                     if (time <= 0) {
                         sell.setText(R.string.no);
                     }

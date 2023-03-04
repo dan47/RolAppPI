@@ -25,6 +25,7 @@
     <string name="count_dryness">Ilość zasuszonych:</string>
     <string name="count_feed">Ilość karmiących:</string>
     <string name="stats">Statystyki</string>
+    <string name="farm_id">Gospodarstwo</string>
 
     <string name="female_male">%1$d/%2$d</string>
 

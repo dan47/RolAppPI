@@ -36,8 +36,8 @@ public class AuthenticationViewModel extends AndroidViewModel {
         progressbarObservable = repository.getProgressbarObservable();
     }
 
-    public void register(String email, String pass) {
-        repository.register(email, pass);
+    public void register(String email, String pass, String farmId) {
+        repository.register(email, pass, farmId);
     }
 
     public void delete(String password) {

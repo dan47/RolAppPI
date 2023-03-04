@@ -39,7 +39,6 @@
         android:id="@+id/editBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
         android:text="Zmień email"
         app:layout_constraintBottom_toTopOf="@+id/editPasswordBtn"
         app:layout_constraintEnd_toEndOf="parent"
@@ -50,8 +49,8 @@
         android:id="@+id/editPasswordBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Zmień hasło"
         android:layout_marginBottom="20dp"
+        android:text="Zmień hasło"
         app:layout_constraintBottom_toTopOf="@+id/deleteBtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -64,5 +63,34 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+<!--    <LinearLayout-->
+<!--        android:id="@+id/linearLayout4"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:orientation="horizontal"-->
+<!--        app:layout_constraintBottom_toTopOf="@+id/linearLayout3"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent">-->
+
+<!--        <EditText-->
+<!--            android:id="@+id/editTextCountDaysLimitSell"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:ems="10"-->
+<!--            android:inputType="numberDecimal"-->
+<!--            tools:layout_editor_absoluteX="16dp"-->
+<!--            tools:layout_editor_absoluteY="48dp" />-->
+
+<!--        <Button-->
+<!--            android:id="@+id/buttonCountDaysLimitSell"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginStart="30dp"-->
+<!--            android:text="Zmień"-->
+<!--            tools:layout_editor_absoluteX="266dp"-->
+<!--            tools:layout_editor_absoluteY="46dp" />-->
+<!--    </LinearLayout>-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

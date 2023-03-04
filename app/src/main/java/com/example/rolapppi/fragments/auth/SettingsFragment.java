@@ -2,6 +2,7 @@ package com.example.rolapppi.fragments.auth;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -14,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.rolapppi.R;
@@ -27,7 +29,10 @@ public class SettingsFragment extends Fragment {
 
     private AuthenticationViewModel authenticationViewModel;
     private TextView accountMail;
-    private Button editBtn, deleteBtn, editPassworBtn;
+    private Button editBtn, deleteBtn, editPassworBtn, buttonCountDaysLimitSell;
+//    private EditText countDaysLimitSell;
+//    SharedPreferences sharedPreferences;
+
 
     public SettingsFragment() {
         // Required empty public constructor
@@ -50,6 +55,9 @@ public class SettingsFragment extends Fragment {
         editPassworBtn = view.findViewById(R.id.editPasswordBtn);
         deleteBtn = view.findViewById(R.id.deleteBtn);
 
+//        buttonCountDaysLimitSell = view.findViewById(R.id.buttonCountDaysLimitSell);
+//        countDaysLimitSell = view.findViewById(R.id.editTextCountDaysLimitSell);
+
         authenticationViewModel = new ViewModelProvider(requireActivity()).get(AuthenticationViewModel.class);
         authenticationViewModel.getUserData().observe(getViewLifecycleOwner(), firebaseUser -> {
             if (firebaseUser != null) {
@@ -57,6 +65,8 @@ public class SettingsFragment extends Fragment {
             }
         });
 
+//        buttonCountDaysLimitSell.setOnClickListener(v -> {
+//                });
 
         editBtn.setOnClickListener(v -> {
             LayoutInflater inflater = getActivity().getLayoutInflater();

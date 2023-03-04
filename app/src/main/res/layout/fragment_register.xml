@@ -72,6 +72,36 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/farmTextInputLayout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginEnd="24dp"
+                android:layout_marginTop="16dp"
+                android:textColorHint="@color/white"
+                app:boxStrokeColor="@color/white"
+                app:errorIconDrawable="@null"
+                app:errorTextAppearance="@style/ErrorTextAppearance"
+                app:hintTextColor="@color/white"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/emailTextInputLayout">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/inputFarmId"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:drawableStart="@android:drawable/stat_notify_more"
+                    android:drawablePadding="10dp"
+                    android:maxLength="12"
+                    android:ems="10"
+                    android:hint="Nr Gospodarstwa"
+                    android:imeOptions="actionDone"
+                    android:inputType="number"
+                    android:textColor="@color/white" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/passwordTextInputLayout"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
@@ -85,7 +115,7 @@
                 app:errorTextAppearance="@style/ErrorTextAppearance"
                 app:hintTextColor="@color/white"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/emailTextInputLayout"
+                app:layout_constraintTop_toBottomOf="@+id/farmTextInputLayout"
                 app:passwordToggleEnabled="true"
                 app:passwordToggleTint="@color/white">
 

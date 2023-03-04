@@ -19,8 +19,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.rolapppi.R;
+import com.example.rolapppi.fragments.auth.AuthenticationViewModel;
 import com.example.rolapppi.fragments.cattle.CattleModel;
 import com.example.rolapppi.fragments.cattle.CattleViewModel;
+import com.example.rolapppi.user.UserDataViewModel;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.data.PieData;
@@ -39,9 +41,10 @@ import java.util.stream.Collectors;
 
 public class HomeFragment extends Fragment implements HAdapter.OnModelListener {
 
-    CattleViewModel viewModel;
-    TextView text_countCattle, text_countGenderMale, text_countGenderFemale, text_countCaliving, text_countDryness, text_countFeed, drynessTextResult, drynessRecently, feedRecently;
-    private TextView countCattle, countGender, countCalving, countDryness, countFeed;
+    private CattleViewModel viewModel;
+    private UserDataViewModel userDataViewModel;
+    private TextView text_countCattle, text_countGenderMale, text_countGenderFemale, text_countCaliving, text_countDryness, text_countFeed, drynessTextResult, drynessRecently, feedRecently;
+    private TextView countCattle, countGender, countCalving, countDryness, countFeed, farmId;
     private PieChart cattlePieChart, calvingPieChart;
     private NavController navController;
     private RecyclerView cattleDrynessRecyclerView, cattleDrynessRecentlyRecyclerView, cattleFeedRecentlyRecyclerView;
@@ -107,6 +110,7 @@ public class HomeFragment extends Fragment implements HAdapter.OnModelListener {
         countCalving = view.findViewById(R.id.countCalving);
         countDryness = view.findViewById(R.id.countDryness);
         countFeed = view.findViewById(R.id.countFeed);
+        farmId = view.findViewById(R.id.farmId);
 
         text_countCattle = view.findViewById(R.id.text_countCattle);
         text_countGenderFemale = view.findViewById(R.id.text_countGenderFemale);
@@ -120,6 +124,9 @@ public class HomeFragment extends Fragment implements HAdapter.OnModelListener {
         setupPieChart(cattlePieChart, "Bydło");
         setupPieChart(calvingPieChart, "Zacielone");
         viewModel = new ViewModelProvider(requireActivity()).get(CattleViewModel.class);
+        userDataViewModel = new ViewModelProvider(requireActivity()).get(UserDataViewModel.class);
+
+
 
         text_countCattle.setOnClickListener(view1 -> navController.navigate(R.id.nav_cattle));
         text_countGenderFemale.setOnClickListener(view1 -> {
@@ -148,6 +155,10 @@ public class HomeFragment extends Fragment implements HAdapter.OnModelListener {
             navController.navigate(R.id.nav_cattle, bundle);
         });
 
+
+        userDataViewModel.getLiveDatafromFireStore().observe(getViewLifecycleOwner(), userData -> {
+            farmId.setText("PL" + userData.getFarmId());
+                });
 
         viewModel.getLiveDatafromFireStore().observe(getViewLifecycleOwner(), cattleModels -> {
 
@@ -199,6 +210,7 @@ public class HomeFragment extends Fragment implements HAdapter.OnModelListener {
 
             countG.clear();
             cattleModels.stream().filter(e -> e.getCaliving().isEmpty() && e.getGender().equals("Samica") && !e.getPreviousCaliving().isEmpty()).forEach(countG::add);
+            countG.sort(Comparator.comparingLong(a -> a.getDurationCalving()));
 
             countG2 = countG.stream().filter(e -> e.getDurationCalving() < 90).collect(Collectors.toList());
             hAdapterAfter.setCattleModelData(countG2);
