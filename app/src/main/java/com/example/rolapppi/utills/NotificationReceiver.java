@@ -42,9 +42,9 @@ public class NotificationReceiver extends BroadcastReceiver {
         Intent intent = new Intent(context, MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_IMMUTABLE  | PendingIntent.FLAG_UPDATE_CURRENT);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID)
-                .setSmallIcon(R.drawable.common_google_signin_btn_icon_dark) // Użyj swojego ikona
+                .setSmallIcon(R.drawable.cow2) // Użyj swojego ikona
                 .setContentTitle("Zasuszenie")
-                .setContentText("Id " + animalId)
+                .setContentText("Krowa " + animalId)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setContentIntent(pendingIntent)
                 .setAutoCancel(true);
