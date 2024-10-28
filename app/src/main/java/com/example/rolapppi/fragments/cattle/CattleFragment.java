@@ -1,21 +1,17 @@
 package com.example.rolapppi.fragments.cattle;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
 import android.widget.Button;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -156,8 +152,6 @@ public class CattleFragment extends Fragment implements CAdapter.OnModelListener
     @Override
     public void onModelClick(int position) {
         viewModel.setSelected(cAdapter.cattleModelList.get(position));
-//        searchView.setQuery("", false);
-//        searchView.setIconified(true);
         searchView.clearFocus();
         navController.navigate(R.id.action_nav_cattle_to_detailsCattleFragment);
     }

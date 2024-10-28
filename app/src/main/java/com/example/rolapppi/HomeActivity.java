@@ -37,7 +37,6 @@ public class HomeActivity extends AppCompatActivity {
     private static final int REQUEST_CODE = 100;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,13 +57,16 @@ public class HomeActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_home);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
-
-        if (checkSelfPermission(Manifest.permission.CAMERA) + checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            requestPermissions(new String[]{Manifest.permission.CAMERA,Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CODE);
+        if (checkSelfPermission(Manifest.permission.VIBRATE) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{Manifest.permission.VIBRATE}, REQUEST_CODE);
+        }
+        if (checkSelfPermission(Manifest.permission.VIBRATE) + checkSelfPermission(Manifest.permission.CAMERA) + checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.VIBRATE}, REQUEST_CODE);
         }
 
 
     }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -76,6 +78,7 @@ public class HomeActivity extends AppCompatActivity {
             }
         }
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -86,7 +89,7 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
-        if (item.getItemId()==R.id.action_settings){
+        if (item.getItemId() == R.id.action_settings) {
             Navigation.findNavController(this, R.id.nav_host_fragment_content_home).navigate(R.id.settingsFragment);
         }
 
@@ -97,6 +100,7 @@ public class HomeActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
     @Override
     public boolean onSupportNavigateUp() {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_home);
@@ -121,8 +125,8 @@ public class HomeActivity extends AppCompatActivity {
                     String[] lineA = line;
 
                     String[] check = lineA[0].split(";");
-                    if (check[2].contains("Numer identyfikacyjny")&&check[3].contains("Data urodzenia")
-                            &&check[18].contains("Identyfikator matki")){
+                    if (check[2].contains("Numer identyfikacyjny") && check[3].contains("Data urodzenia")
+                            && check[18].contains("Identyfikator matki")) {
                         cattleViewModel = new ViewModelProvider(this).get(CattleViewModel.class);
                         while (line != null) {
                             line = reader.readNext();
@@ -138,7 +142,7 @@ public class HomeActivity extends AppCompatActivity {
                             cell[3] = cell[3].replace("-", ".");
                             cattleViewModel.cattleAdd(new CattleModel(cell[2], cell[3], cell[5], cell[18]));
                         }
-                    }else{
+                    } else {
                         Toast.makeText(getApplicationContext(), "Problem z odczytem pliku", Toast.LENGTH_SHORT).show();
                         return;
                     }

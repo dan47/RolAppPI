@@ -166,7 +166,7 @@ public class HomeFragment extends Fragment implements HAdapter.OnModelListener {
 
             List<CattleModel> countG = new ArrayList<>();
             List<CattleModel> countG2 = new ArrayList<>(); // zasuszenie za/po
-
+      
             cattleModels.stream().filter(e -> e.getGender().equals("Samica")).forEach(countG::add);
             int female = countG.size();
             int male = cattleModels.size() - countG.size();

@@ -24,6 +24,9 @@ import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClic
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -48,7 +51,7 @@ public class AddCattleDialog extends AppCompatDialogFragment {
 
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.dialog_addcattle, null);
-
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
         mPickDateButton = view.findViewById(R.id.birthdayBtn);
 
 
@@ -59,7 +62,7 @@ public class AddCattleDialog extends AppCompatDialogFragment {
         male_chip = view.findViewById(R.id.male);
         female_chip = view.findViewById(R.id.female);
         mother_idChoose = view.findViewById(R.id.autoCompleteTextView);
-        male_chip.setChecked(true);
+//        male_chip.setChecked(true);
 
         SimpleDateFormat simpleFormat = new SimpleDateFormat("dd.MM.yyyy");
         Date date = new Date();
@@ -130,7 +133,7 @@ public class AddCattleDialog extends AppCompatDialogFragment {
                     .setTitle("Bydło dodanie zwierzęcia");
             mothers_list = cattleViewModel.getLiveDatafromFireStore().getValue().stream()
                     .filter(e->e.getGender().equals(getString(R.string.female)))
-                    .filter(y->!y.getCaliving().isEmpty())
+                    .filter(y->!y.getCaliving().isEmpty()).sorted(Comparator.comparing(d -> LocalDate.parse(d.getCaliving(), formatter)))
                     .map(x->x.getAnimal_id())
                     .collect(Collectors.toList());
         }
@@ -141,6 +144,8 @@ public class AddCattleDialog extends AppCompatDialogFragment {
 
         scanBtnE.setOnClickListener(v -> startActivity(new Intent(getContext(), ScannerCode.class)));
 
+        male_chip.setOnClickListener(v ->  male_chip.setError(null));
+        female_chip.setOnClickListener(v ->  male_chip.setError(null));
 
         submitBtnE.setOnClickListener(v -> {
 
@@ -167,6 +172,12 @@ public class AddCattleDialog extends AppCompatDialogFragment {
                 mother_idChoose.setError("Za krótki numer identyfikacyjny");
                 return;
             }
+
+            if(!male_chip.isChecked()&&!female_chip.isChecked()){
+                male_chip.setError("Wybierz płeć");
+                return;
+            }
+
 
             if (male_chip.isChecked()) {
                 gender = getString(R.string.male);

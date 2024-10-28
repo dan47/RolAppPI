@@ -4,8 +4,13 @@ import static java.time.temporal.ChronoUnit.DAYS;
 
 import com.google.firebase.firestore.DocumentId;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 
 public class CattleModel {
@@ -102,4 +107,18 @@ public class CattleModel {
     public void setPreviousCaliving(String previousCaliving) {
         this.previousCaliving = previousCaliving;
     }
+
+    //zmien date urodzin z String na Date
+    //dodać powiadomienie 90 dni plus dla samic?
+    public Date getBirthdayDate() throws ParseException {
+        SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
+        return format.parse(birthday);
+    }
+
+//    public Date getNotificationDate() throws ParseException {
+//        Calendar calendar = Calendar.getInstance();
+//        calendar.setTime(getBirthdayDate());
+//        calendar.add(Calendar.DATE, 90);
+//        return calendar.getTime();
+//    }
 }
