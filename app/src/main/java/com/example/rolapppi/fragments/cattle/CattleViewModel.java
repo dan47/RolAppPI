@@ -26,6 +26,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Observer;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class CattleViewModel extends AndroidViewModel implements CattleRepository.OnFireStoreDataAdded {
 
@@ -40,57 +41,51 @@ public class CattleViewModel extends AndroidViewModel implements CattleRepositor
         super(application);
         firebaseRepo.loadData();
         notificationIdsMap = new HashMap<>();
-//getSharedPreferences().edit().clear().apply();
         cattleModelListData.observeForever(cattleModels -> {
-            updateNotifications(cattleModels);
+            updateNotifications( cattleModels.stream().filter(e->e.getGender().equals("Samica")).collect(Collectors.toList()));
         });
 
 
     }
 
     private void updateNotifications(List<CattleModel> cattleModels) {
-        // Pętla po modelach w liście
+
+        Map<String, ?> savedAnimalIds = getSharedPreferences().getAll();
+        for (String savedAnimalId : savedAnimalIds.keySet()) {
+            boolean found = false;
+            for (CattleModel cattleModel : cattleModels) {
+                if (savedAnimalId.equals(String.valueOf(cattleModel.getAnimal_id().hashCode()))) {
+                    // Jeśli animalId istnieje w mapie, sprawdzamy czy data urodzin się zmieniła
+                    if (cattleModel.getCaliving().isEmpty()){
+                        removeNotification(cattleModel.getAnimal_id().hashCode());
+                        getSharedPreferences().edit().remove(String.valueOf(cattleModel.getAnimal_id().hashCode())).apply();}
+                    else {
+                        String oldCalving = getSharedPreferences().getString(savedAnimalId, "");
+                        if (!oldCalving.equals(cattleModel.getCaliving())) {
+                            // Jeśli data urodzin się zmieniła, usuwamy stare powiadomienie i tworzymy nowe
+                            removeNotification(cattleModel.getAnimal_id().hashCode());
+                            createNotification(cattleModel);
+                        }
+                    }
+                    found = true;
+                    break;
+                }
+            }
+            //Jeśli nie ma takiego zwierzęcia na którego jest powiadomienie to usuń powiadomienie
+            if (!found) {
+                removeNotification(Integer.parseInt(savedAnimalId));
+                getSharedPreferences().edit().remove(savedAnimalId).apply();
+            }
+        }
         for (CattleModel cattleModel : cattleModels) {
-            String animalId = cattleModel.getAnimal_id();
+            String animalId = String.valueOf(cattleModel.getAnimal_id().hashCode());
             if (!cattleModel.getCaliving().isEmpty()) {
                 // Jeśli animalId nie istnieje w mapie, tworzymy nowe powiadomienie
                 if (!getSharedPreferences().contains(animalId)) {
                     createNotification(cattleModel);
-                } else {
-                    // Jeśli animalId istnieje w mapie, sprawdzamy czy data urodzin się zmieniła
-//                    int notificationId = notificationIdsMap.get(animalId);
-                    String oldCalving = getSharedPreferences().getString(animalId, "");
-                    if (!oldCalving.equals(cattleModel.getCaliving())) {
-                        // Jeśli data urodzin się zmieniła, usuwamy stare powiadomienie i tworzymy nowe
-                        removeNotification(cattleModel.getAnimal_id().hashCode());
-                        createNotification(cattleModel);
-                    }
                 }
-            }else if(getSharedPreferences().contains(animalId)){
-                removeNotification(cattleModel.getAnimal_id().hashCode());
-                getSharedPreferences().edit().remove(animalId).apply();
             }
         }
-
-        //Dodaj usuwanie powiadomień gdy zwierzę zostanie usunięte/zmieniona płeć itd.
-        //sprawdz puste daty zacielenia
-
-        // Usuwamy powiadomienia powiązane z usuniętymi modelami
-//        Set<String> animalIdsSet = new HashSet<>();
-//        for (CattleModel cattleModel : cattleModels) {
-//            animalIdsSet.add(cattleModel.getAnimal_id());
-//        }
-//        Map<String, ?> allEntries = getSharedPreferences().getAll();
-//        for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
-//            String key = entry.getKey();
-//            if (key.startsWith("notification_")) {
-//                String animalId = key.substring(13);
-//                if (!animalIdsSet.contains(animalId)) {
-//                    removeNotification(Integer.parseInt(entry.getValue().toString()));
-//                    getSharedPreferences().edit().remove(key).apply();
-//                }
-//            }
-//        }
     }
 
     private void createNotification(CattleModel cattleModel) {
@@ -107,15 +102,15 @@ public class CattleViewModel extends AndroidViewModel implements CattleRepositor
             intent.putExtra("animalIntent", cattleModel.getAnimal_id().hashCode());
             PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplication(), cattleModel.getAnimal_id().hashCode(), intent, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
 
-         //   if (calendar.getTimeInMillis() > System.currentTimeMillis()) {
-                if (alarmManager != null) {
-                    alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
-                }
-         //   }
+            //   if (calendar.getTimeInMillis() > System.currentTimeMillis()) {
+            if (alarmManager != null) {
+                alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+            }
+            //   }
             // Zapisujemy ID powiadomienia do mapy
             notificationIdsMap.put(cattleModel.getAnimal_id(), intent.hashCode());
             // Zapisujemy datę urodzenia do SharedPreferences, aby móc porównać ją w przyszłości
-            getSharedPreferences().edit().putString(cattleModel.getAnimal_id(), cattleModel.getCaliving()).apply();
+            getSharedPreferences().edit().putString(String.valueOf(cattleModel.getAnimal_id().hashCode()), cattleModel.getCaliving()).apply();
         } catch (ParseException e) {
             e.printStackTrace();
         }
